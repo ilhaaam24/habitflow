@@ -1,41 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
 import 'package:pattern_box/pattern_box.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 3), () {
+      context.go('/login');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         const Text(
-    //           'HabitFlow AI',
-    //           style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-    //         ),
-    //         const SizedBox(height: 20),
-    //         ElevatedButton(
-    //           onPressed: () => context.go('/onboarding'),
-    //           child: const Text('Go to Onboarding'),
-    //         ),
-    //         const SizedBox(height: 10),
-    //         ElevatedButton(
-    //           onPressed: () => context.go('/login'),
-    //           child: const Text('Go to Login'),
-    //         ),
-    //         const SizedBox(height: 10),
-    //         ElevatedButton(
-    //           onPressed: () => context.go('/home'),
-    //           child: const Text('Go to Home (bypass auth)'),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Stack(
