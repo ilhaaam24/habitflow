@@ -441,7 +441,7 @@ text
 ```
 TASK-005 | Setup Theme (Light & Dark)
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 3 jam
 
