@@ -66,7 +66,10 @@ class AppTheme {
           borderSide: BorderSide(color: AppColors.black, width: 4),
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
-        labelStyle: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
+        labelStyle: TextStyle(
+          color: AppColors.black,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       textTheme: TextTheme(
         headlineLarge: AppTextStyles.headingLarge,
@@ -75,10 +78,7 @@ class AppTheme {
         bodyLarge: AppTextStyles.bodyLarge,
         bodyMedium: AppTextStyles.bodyMedium,
         bodySmall: AppTextStyles.caption,
-      ).apply(
-        bodyColor: AppColors.black,
-        displayColor: AppColors.black,
-      ),
+      ).apply(bodyColor: AppColors.black, displayColor: AppColors.black),
     );
   }
 
@@ -143,7 +143,10 @@ class AppTheme {
           borderSide: BorderSide(color: AppColors.darkText, width: 4),
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
-        labelStyle: TextStyle(color: AppColors.darkText, fontWeight: FontWeight.bold),
+        labelStyle: TextStyle(
+          color: AppColors.darkText,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       textTheme: TextTheme(
         headlineLarge: AppTextStyles.headingLarge,
@@ -152,10 +155,7 @@ class AppTheme {
         bodyLarge: AppTextStyles.bodyLarge,
         bodyMedium: AppTextStyles.bodyMedium,
         bodySmall: AppTextStyles.caption,
-      ).apply(
-        bodyColor: AppColors.darkText,
-        displayColor: AppColors.darkText,
-      ),
+      ).apply(bodyColor: AppColors.darkText, displayColor: AppColors.darkText),
     );
   }
 }

@@ -12,22 +12,13 @@ import '../../features/settings/ai_settings_screen.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const SplashScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
     GoRoute(
       path: '/onboarding',
       builder: (context, state) => const OnboardingScreen(),
     ),
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScreen(),
-    ),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
     GoRoute(
       path: '/habit/add',
       builder: (context, state) => const AddHabitScreen(),
@@ -39,10 +30,7 @@ final GoRouter appRouter = GoRouter(
         return HabitDetailScreen(id: id);
       },
     ),
-    GoRoute(
-      path: '/stats',
-      builder: (context, state) => const StatsScreen(),
-    ),
+    GoRoute(path: '/stats', builder: (context, state) => const StatsScreen()),
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),

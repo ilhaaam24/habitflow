@@ -8,7 +8,9 @@ import '../../features/auth/domain/repositories/auth_repository.dart';
 
 final GetIt sl = GetIt.instance;
 
-Future<void> initDependencyInjection(SharedPreferences sharedPreferences) async {
+Future<void> initDependencyInjection(
+  SharedPreferences sharedPreferences,
+) async {
   // Core & External
   sl.registerSingleton<SharedPreferences>(sharedPreferences);
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
@@ -17,16 +19,11 @@ Future<void> initDependencyInjection(SharedPreferences sharedPreferences) async 
   // Features - Auth
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(
-      firebaseAuth: sl(),
-      googleSignIn: sl(),
-    ),
+    () => AuthRemoteDataSourceImpl(firebaseAuth: sl(), googleSignIn: sl()),
   );
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
-      remoteDataSource: sl(),
-    ),
+    () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
 }

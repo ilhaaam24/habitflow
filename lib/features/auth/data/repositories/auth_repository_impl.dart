@@ -10,7 +10,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserModel> signInWithGoogle() async {
-    final firebase.UserCredential credential = await remoteDataSource.signInWithGoogle();
+    final firebase.UserCredential credential = await remoteDataSource
+        .signInWithGoogle();
     final firebase.User? user = credential.user;
     if (user == null) {
       throw firebase.FirebaseAuthException(

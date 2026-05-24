@@ -13,7 +13,8 @@ class ThemeCubit extends Cubit<ThemeMode> {
     if (themeIndex != null) {
       return ThemeMode.values[themeIndex];
     }
-    return ThemeMode.dark; // Default to Dark Mode as per PRD "sleek dark modes" preference
+    return ThemeMode
+        .dark; // Default to Dark Mode as per PRD "sleek dark modes" preference
   }
 
   void toggleTheme() {

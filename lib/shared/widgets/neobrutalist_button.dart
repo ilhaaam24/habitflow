@@ -38,9 +38,15 @@ class _NeobrutalistButtonState extends State<NeobrutalistButton> {
     final double translation = _isPressed ? widget.shadowOffset - 1.0 : 0.0;
 
     return GestureDetector(
-      onTapDown: widget.onTap != null ? (_) => setState(() => _isPressed = true) : null,
-      onTapUp: widget.onTap != null ? (_) => setState(() => _isPressed = false) : null,
-      onTapCancel: widget.onTap != null ? () => setState(() => _isPressed = false) : null,
+      onTapDown: widget.onTap != null
+          ? (_) => setState(() => _isPressed = true)
+          : null,
+      onTapUp: widget.onTap != null
+          ? (_) => setState(() => _isPressed = false)
+          : null,
+      onTapCancel: widget.onTap != null
+          ? () => setState(() => _isPressed = false)
+          : null,
       onTap: widget.onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 50),

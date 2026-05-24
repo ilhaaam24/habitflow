@@ -21,6 +21,7 @@ void main() {
     await tester.pumpWidget(const MyApp());
 
     // Verify that Splash screen is displayed.
-    expect(find.text('HabitFlow AI'), findsOneWidget);
+    expect(find.text('HABIT'), findsOneWidget);
+    expect(find.text('FLOW'), findsNWidgets(2));
   });
 }

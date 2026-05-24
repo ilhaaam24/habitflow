@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '579306392370',
     projectId: 'habit-flow-79f0a',
     storageBucket: 'habit-flow-79f0a.firebasestorage.app',
-    iosClientId: '579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com',
+    iosClientId:
+        '579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com',
     iosBundleId: 'com.example.habitFlow',
   );
 
@@ -74,7 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '579306392370',
     projectId: 'habit-flow-79f0a',
     storageBucket: 'habit-flow-79f0a.firebasestorage.app',
-    iosClientId: '579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com',
+    iosClientId:
+        '579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com',
     iosBundleId: 'com.example.habitFlow',
   );
 

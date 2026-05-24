@@ -33,10 +33,7 @@ class NeobrutalistCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        border: Border.all(color: borderColor, width: borderWidth),
         boxShadow: [
           BoxShadow(
             color: shadowColor,
