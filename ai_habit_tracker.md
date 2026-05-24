@@ -399,7 +399,7 @@ text
 ```
 TASK-003 | Setup Firebase Project
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 1 jam
 

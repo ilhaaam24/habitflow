@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "579306392370",
+    "project_id": "habit-flow-79f0a",
+    "storage_bucket": "habit-flow-79f0a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579306392370:android:abe8e5cb81a72f4c68252b",
+        "android_client_info": {
+          "package_name": "com.example.habit_flow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPHa_36JeA_qyBG6oK63XmhVS8CUZ7ma8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.habitFlow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579306392370:android:b9cbfc5ab9f7451868252b",
+        "android_client_info": {
+          "package_name": "com.ilhaaam24.habitflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPHa_36JeA_qyBG6oK63XmhVS8CUZ7ma8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.habitFlow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
