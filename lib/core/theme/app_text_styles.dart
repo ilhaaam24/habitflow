@@ -1,40 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
   AppTextStyles._();
 
-  static const TextStyle headingLarge = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    letterSpacing: 0.15,
-  );
+  static TextStyle get headingLarge => GoogleFonts.spaceGrotesk(
+        fontSize: 32,
+        fontWeight: FontWeight.w900,
+        letterSpacing: -0.5,
+      );
 
-  static const TextStyle headingMedium = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w600,
-    letterSpacing: 0.15,
-  );
+  static TextStyle get headingMedium => GoogleFonts.spaceGrotesk(
+        fontSize: 24,
+        fontWeight: FontWeight.w800,
+        letterSpacing: -0.5,
+      );
 
-  static const TextStyle headingSmall = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-  );
+  static TextStyle get headingSmall => GoogleFonts.spaceGrotesk(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      );
 
-  static const TextStyle bodyLarge = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
-    letterSpacing: 0.5,
-  );
+  static TextStyle get bodyLarge => GoogleFonts.spaceGrotesk(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      );
 
-  static const TextStyle bodyMedium = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
-    letterSpacing: 0.25,
-  );
+  static TextStyle get bodyMedium => GoogleFonts.spaceGrotesk(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      );
 
-  static const TextStyle caption = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.normal,
-    letterSpacing: 0.4,
-  );
+  static TextStyle get caption => GoogleFonts.spaceGrotesk(
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.5,
+      );
 }

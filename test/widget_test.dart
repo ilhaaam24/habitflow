@@ -7,6 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:habit_flow/core/di/injection.dart';
 import 'package:habit_flow/main.dart';
 
 void main() {
@@ -14,9 +15,10 @@ void main() {
     // Mock SharedPreferences
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
+    await initDependencyInjection(prefs);
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(prefs: prefs));
+    await tester.pumpWidget(const MyApp());
 
     // Verify that Splash screen is displayed.
     expect(find.text('HabitFlow AI'), findsOneWidget);
