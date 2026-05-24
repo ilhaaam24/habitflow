@@ -418,7 +418,7 @@ text
 ```
 TASK-004 | Setup GoRouter
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 2 jam
 
