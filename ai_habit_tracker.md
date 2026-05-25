@@ -472,7 +472,7 @@ text
 ```
 TASK-006 | Buat AuthRepository
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 2 jam
 
