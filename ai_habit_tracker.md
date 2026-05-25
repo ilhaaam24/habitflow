@@ -514,7 +514,7 @@ text
 ```
 TASK-008 | Buat SplashScreen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 2 jam
 

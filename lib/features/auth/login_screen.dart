@@ -235,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox.square(dimension: 32),
                 Text(
-                  'WELLCOME \nBACK',
+                  'WELCOME \nBACK',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Syne',

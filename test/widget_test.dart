@@ -7,8 +7,27 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habit_flow/features/auth/splash_screen.dart';
+import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
+import 'package:habit_flow/features/auth/onboarding_second_screen.dart';
+import 'package:habit_flow/shared/models/user_model.dart';
+
+class FakeAuthRepository implements AuthRepository {
+  @override
+  Stream<UserModel?> get authStateChanges => Stream.value(null);
+
+  @override
+  UserModel? getCurrentUser() => null;
+
+  @override
+  Future<UserModel> signInWithGoogle() async => throw UnimplementedError();
+
+  @override
+  Future<void> signOut() async {}
+}
 
 void main() {
   setUpAll(() {
@@ -16,11 +35,25 @@ void main() {
   });
 
   testWidgets('App splash screen smoke test', (WidgetTester tester) async {
+    final authRepository = FakeAuthRepository();
+    final authBloc = AuthBloc(authRepository: authRepository);
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp(home: SplashScreen()));
+    await tester.pumpWidget(
+      BlocProvider<AuthBloc>(
+        create: (context) => authBloc,
+        child: const MaterialApp(home: SplashScreen()),
+      ),
+    );
 
     // Verify that Splash screen is displayed.
     expect(find.text('HABIT'), findsOneWidget);
     expect(find.text('FLOW'), findsNWidgets(2));
+  });
+
+  testWidgets('OnboardingSecondScreen layout smoke test', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(home: OnboardingSecondScreen()),
+    );
   });
 }
