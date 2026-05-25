@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pattern_box/pattern_box.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
@@ -65,7 +66,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       );
     } else if (index == 1) {
-      return Container(
+      return // Illustration Card
+      Container(
         height: MediaQuery.sizeOf(context).height * 0.32,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -79,94 +81,143 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
+
         child: PatternBoxWidget(
           pattern: StripePattern(
-            gap: 16,
-            thickness: 8,
-            color: AppColors.black.withOpacity(0.15),
+            gap: 8,
+            thickness: 0.5,
+            color: AppColors.darkText,
           ),
           backgroundColor: AppColors.accentRed,
-          child: Center(
-            child: Container(
-              height: 120,
-              width: 120,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.black, width: 3),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.black,
-                    offset: Offset(4, 4),
-                    blurRadius: 0,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SvgPicture.asset(
-                    'assets/icons/flash.svg',
-                    colorFilter: const ColorFilter.mode(
-                      AppColors.black,
-                      BlendMode.srcIn,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 24,
+                right: 40,
+                child: Transform.rotate(
+                  angle: 0.2,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    alignment: Alignment.topLeft,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+
+                      boxShadow: const [
+                        BoxShadow(
+                          color: AppColors.black,
+                          offset: Offset(6, 6),
+                          blurRadius: 0,
+                        ),
+                      ],
                     ),
-                    fit: BoxFit.contain,
+                    child: const Text(
+                      '7',
+                      style: TextStyle(
+                        fontFamily: 'Syne',
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.black,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/fire.json',
+                      height: MediaQuery.sizeOf(context).height * 0.15,
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox.square(dimension: 16),
+                    SvgPicture.asset(
+                      'assets/icons/onboarding_3.svg',
+                      fit: BoxFit.contain,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       );
     } else {
-      return Container(
-        height: MediaQuery.sizeOf(context).height * 0.32,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.accentPurple,
-          border: Border.all(width: 4, color: AppColors.black),
-          boxShadow: const [
-            BoxShadow(
-              color: AppColors.black,
-              offset: Offset(8, 8),
-              blurRadius: 0,
-            ),
-          ],
-        ),
-        child: PatternBoxWidget(
-          pattern: StripePattern(
-            gap: 16,
-            thickness: 8,
-            color: AppColors.black.withOpacity(0.15),
-          ),
-          backgroundColor: AppColors.accentPurple,
-          child: Center(
-            child: Container(
-              height: 120,
-              width: 120,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.black, width: 3),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.black,
-                    offset: Offset(4, 4),
-                    blurRadius: 0,
-                  ),
-                ],
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.psychology,
-                  size: 72,
+      return Stack(
+        children: [
+          Container(
+            height: MediaQuery.sizeOf(context).height * 0.32,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.accentYellow,
+              border: Border.all(width: 4, color: AppColors.black),
+              boxShadow: const [
+                BoxShadow(
                   color: AppColors.black,
+                  offset: Offset(8, 8),
+                  blurRadius: 0,
+                ),
+              ],
+            ),
+
+            child: PatternBoxWidget(
+              pattern: StripePattern(
+                gap: 8,
+                thickness: 0.5,
+                color: AppColors.darkText,
+              ),
+              backgroundColor: AppColors.accentPurple,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+
+                  // child: SvgPicture.asset(
+                  //   'assets/icons/onboarding_2.svg',
+                  //   fit: BoxFit.contain,
+                  // ),
+                  child: Image.asset('assets/icons/onboarding_2.png'),
                 ),
               ),
             ),
           ),
-        ),
+          Positioned(
+            top: 88,
+            left: 40,
+            child: Text(
+              '✦',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: AppColors.black,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 40,
+            right: 56,
+            child: Text(
+              '✦',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: AppColors.black,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 56,
+            right: 80,
+            child: Text(
+              '✦',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: AppColors.black,
+              ),
+            ),
+          ),
+        ],
       );
     }
   }
@@ -195,9 +246,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 left: -2,
                 right: -2,
                 top: 14,
-                child: Container(
-                  color: AppColors.accentYellow,
-                ),
+                child: Container(color: AppColors.accentYellow),
               ),
               const Text(
                 'HABITS.',
@@ -225,10 +274,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       );
     } else if (index == 1) {
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
-            "DON'T BREAK THE",
+            "DON'T\nBREAK THE",
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Syne',
               fontSize: 32,
@@ -242,13 +292,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             clipBehavior: Clip.none,
             children: [
               Positioned(
-                bottom: 2,
-                left: -2,
-                right: -2,
-                top: 14,
-                child: Container(
-                  color: AppColors.accentRed,
-                ),
+                bottom: -10,
+                left: 0,
+                right: 0,
+                child: SvgPicture.asset('assets/icons/wave.svg', height: 20),
               ),
               const Text(
                 'CHAIN.',
@@ -264,6 +311,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 16),
           const Text(
             "Habit formation is a game of momentum. Every day you show up is a link in your chain. Missing one day is a mistake; missing two is the start of a new habit.",
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'SpaceGrotesk',
               fontSize: 16,
@@ -276,10 +324,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       );
     } else {
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
             'YOUR AI COACH.',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Syne',
               fontSize: 32,
@@ -289,32 +338,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                bottom: 2,
-                left: -2,
-                right: -2,
-                top: 14,
-                child: Container(
-                  color: AppColors.accentPurple,
-                ),
-              ),
-              const Text(
-                'ALWAYS ON.',
-                style: TextStyle(
-                  color: AppColors.black,
-                  fontFamily: 'Syne',
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ],
+          const Text(
+            'ALWAYS ON.',
+            style: TextStyle(
+              color: AppColors.black,
+              fontFamily: 'Syne',
+              fontSize: 32,
+              fontWeight: FontWeight.w900,
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
             "Connect your Gemini keys to unlock real-time behavioral insights. HabitFlow doesn't just track—it evolves with your unique discipline patterns.",
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'SpaceGrotesk',
               fontSize: 16,
@@ -333,8 +369,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final Color color = index == 0
         ? AppColors.accentYellow
         : index == 1
-            ? AppColors.accentRed
-            : AppColors.accentPurple;
+        ? AppColors.accentRed
+        : AppColors.accentPurple;
     final Color textColor = index == 0 ? AppColors.black : AppColors.white;
 
     return Container(
@@ -367,8 +403,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final themeColor = _currentPage == 0
         ? AppColors.accentYellow
         : _currentPage == 1
-            ? AppColors.accentRed
-            : AppColors.accentPurple;
+        ? AppColors.accentRed
+        : AppColors.accentPurple;
 
     final btnTextColor = _currentPage == 0 ? AppColors.black : AppColors.white;
 
@@ -446,7 +482,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         vertical: 32,
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: index == 0
+                            ? CrossAxisAlignment.start
+                            : CrossAxisAlignment.center,
                         children: [
                           // Page Indicator Dots
                           Row(
@@ -454,17 +492,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             children: List.generate(3, (dotIndex) {
                               final isCurrent = index == dotIndex;
                               final dotColor = isCurrent
-                                  ? AppColors.black
-                                  : const Color(0x33000000);
+                                  ? AppColors.accentYellow
+                                  : AppColors.white;
                               return AnimatedContainer(
                                 duration: const Duration(milliseconds: 250),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ),
                                 height: 8,
-                                width: isCurrent ? 64.0 : 8.0,
+                                width: isCurrent ? 64.0 : 32.0,
                                 decoration: BoxDecoration(
                                   color: dotColor,
-                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: AppColors.black,
+                                    width: 2,
+                                  ),
                                 ),
                               );
                             }),
@@ -481,7 +523,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               return Transform.scale(
                                 scale: 0.8 + (value * 0.2),
                                 child: Opacity(
-                                  opacity: value,
+                                  opacity: value.clamp(0.0, 1.0),
                                   child: child,
                                 ),
                               );
@@ -504,7 +546,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               return Transform.translate(
                                 offset: Offset(0, 24 * (1 - value)),
                                 child: Opacity(
-                                  opacity: value,
+                                  opacity: value.clamp(0.0, 1.0),
                                   child: child,
                                 ),
                               );
@@ -555,11 +597,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           color: btnTextColor,
                         ),
                       ),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: btnTextColor,
-                        size: 24,
-                      ),
+                      Icon(Icons.arrow_forward, color: btnTextColor, size: 24),
                     ],
                   ),
                 ),

@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:habit_flow/features/auth/splash_screen.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
-import 'package:habit_flow/features/auth/onboarding_second_screen.dart';
+import 'package:habit_flow/features/auth/onboarding_screen.dart';
 import 'package:habit_flow/shared/models/user_model.dart';
 
 class FakeAuthRepository implements AuthRepository {
@@ -51,9 +51,33 @@ void main() {
     expect(find.text('FLOW'), findsNWidgets(2));
   });
 
-  testWidgets('OnboardingSecondScreen layout smoke test', (WidgetTester tester) async {
+  testWidgets('OnboardingScreen PageView layout and navigation test', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(home: OnboardingSecondScreen()),
+      const MaterialApp(home: OnboardingScreen()),
     );
+
+    // Verify Page 1 elements are displayed
+    expect(find.text('TRACK YOUR'), findsOneWidget);
+    expect(find.text('HABITS.'), findsOneWidget);
+    expect(find.text('01 / 03'), findsOneWidget);
+
+    // Tap NEXT to transition to Page 2
+    await tester.tap(find.text('NEXT'));
+    await tester.pumpAndSettle();
+
+    // Verify Page 2 elements are displayed
+    expect(find.text("DON'T BREAK THE"), findsOneWidget);
+    expect(find.text('CHAIN.'), findsOneWidget);
+    expect(find.text('02 / 03'), findsOneWidget);
+
+    // Tap NEXT to transition to Page 3
+    await tester.tap(find.text('NEXT'));
+    await tester.pumpAndSettle();
+
+    // Verify Page 3 elements are displayed
+    expect(find.text('YOUR AI COACH.'), findsOneWidget);
+    expect(find.text('ALWAYS ON.'), findsOneWidget);
+    expect(find.text('03 / 03'), findsOneWidget);
+    expect(find.text('GET STARTED'), findsOneWidget);
   });
 }

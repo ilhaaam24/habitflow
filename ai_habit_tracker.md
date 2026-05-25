@@ -557,7 +557,7 @@ text
 ```
 TASK-010 | Buat OnboardingScreen (3 halaman)
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 4 jam
 
