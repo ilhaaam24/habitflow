@@ -10,8 +10,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   StreamSubscription<UserModel?>? _authStateSubscription;
 
   AuthBloc({required AuthRepository authRepository})
-      : _authRepository = authRepository,
-        super(AuthInitial()) {
+    : _authRepository = authRepository,
+      super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthStatusChanged>(_onAuthStatusChanged);
     on<GoogleSignInRequested>(_onGoogleSignInRequested);
@@ -19,15 +19,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onAuthCheckRequested(
-      AuthCheckRequested event, Emitter<AuthState> emit) {
+    AuthCheckRequested event,
+    Emitter<AuthState> emit,
+  ) {
     _authStateSubscription?.cancel();
     _authStateSubscription = _authRepository.authStateChanges.listen((user) {
       add(AuthStatusChanged(user));
     });
   }
 
-  void _onAuthStatusChanged(
-      AuthStatusChanged event, Emitter<AuthState> emit) {
+  void _onAuthStatusChanged(AuthStatusChanged event, Emitter<AuthState> emit) {
     if (event.user != null) {
       emit(AuthAuthenticated(event.user!));
     } else {
@@ -36,7 +37,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onGoogleSignInRequested(
-      GoogleSignInRequested event, Emitter<AuthState> emit) async {
+    GoogleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
     try {
       final user = await _authRepository.signInWithGoogle();
@@ -47,7 +50,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSignOutRequested(
-      SignOutRequested event, Emitter<AuthState> emit) async {
+    SignOutRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
     try {
       await _authRepository.signOut();

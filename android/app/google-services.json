@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "579306392370-gah5q76p8o391drj76bnu39q7ideuhc5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.habit_flow",
+            "certificate_hash": "bbbf5492f535e841c56d0bf20f76f574eb6ff0f9"
+          }
+        },
+        {
           "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -49,6 +57,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "579306392370-bav1o63ojoqhmj5fuc6uq1oh500km02f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ilhaaam24.habitflow",
+            "certificate_hash": "bbbf5492f535e841c56d0bf20f76f574eb6ff0f9"
+          }
+        },
         {
           "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
           "client_type": 3

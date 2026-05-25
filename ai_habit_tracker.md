@@ -535,7 +535,7 @@ text
 ```
 TASK-009 | Buat LoginScreen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 3 jam
 

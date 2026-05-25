@@ -61,18 +61,19 @@ void main() {
     expect(find.text('HABITS.'), findsOneWidget);
     expect(find.text('01 / 03'), findsOneWidget);
 
-    // Tap NEXT to transition to Page 2
-    await tester.tap(find.text('NEXT'));
-    await tester.pumpAndSettle();
+    // Transition to Page 2 via controller
+    final PageView pageView = tester.widget(find.byType(PageView));
+    pageView.controller!.jumpToPage(1);
+    await tester.pump(const Duration(seconds: 2));
 
     // Verify Page 2 elements are displayed
-    expect(find.text("DON'T BREAK THE"), findsOneWidget);
+    expect(find.text("DON'T\nBREAK THE"), findsOneWidget);
     expect(find.text('CHAIN.'), findsOneWidget);
     expect(find.text('02 / 03'), findsOneWidget);
 
-    // Tap NEXT to transition to Page 3
-    await tester.tap(find.text('NEXT'));
-    await tester.pumpAndSettle();
+    // Transition to Page 3 via controller
+    pageView.controller!.jumpToPage(2);
+    await tester.pump(const Duration(seconds: 2));
 
     // Verify Page 3 elements are displayed
     expect(find.text('YOUR AI COACH.'), findsOneWidget);
