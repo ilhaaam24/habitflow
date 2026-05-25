@@ -490,7 +490,7 @@ text
 ```
 TASK-007 | Buat AuthBloc / AuthCubit
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 2 jam
 
@@ -525,8 +525,7 @@ Logic:
 - Kalau pernah login tapi logout → /login
 
 UI:
-- Logo + animasi Lottie
-- Background gradient
+ - UI tidak perlu karena sudah saya buat
 
 DoD: Redirect benar sesuai kondisi
 ```

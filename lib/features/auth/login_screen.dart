@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
 
 class LoginScreen extends StatefulWidget {

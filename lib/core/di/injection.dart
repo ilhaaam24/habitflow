@@ -6,6 +6,8 @@ import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+
 final GetIt sl = GetIt.instance;
 
 Future<void> initDependencyInjection(
@@ -26,4 +28,7 @@ Future<void> initDependencyInjection(
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
+
+  // Blocs
+  sl.registerFactory(() => AuthBloc(authRepository: sl()));
 }
