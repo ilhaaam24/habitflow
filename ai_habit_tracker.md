@@ -619,7 +619,7 @@ text
 ```
 TASK-012 | Buat HabitLogModel
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 1 jam
 
