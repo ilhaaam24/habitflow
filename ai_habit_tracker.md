@@ -777,7 +777,7 @@ text
 ```
 TASK-018 | Buat HabitDetailScreen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 4 jam
 

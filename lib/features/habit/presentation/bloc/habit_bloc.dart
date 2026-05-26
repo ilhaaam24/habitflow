@@ -4,6 +4,8 @@ import 'package:uuid/uuid.dart';
 import '../../domain/repositories/habit_repository.dart';
 import '../../../../shared/models/habit_model.dart';
 import '../../../../shared/models/habit_log_model.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../core/services/notification_service.dart';
 import 'habit_event.dart';
 import 'habit_state.dart';
 
@@ -48,6 +50,13 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
     Emitter<HabitState> emit,
   ) async {
     _currentHabits = event.habits;
+
+    try {
+      if (sl.isRegistered<NotificationService>()) {
+        sl<NotificationService>().rescheduleAll(event.habits);
+      }
+    } catch (_) {}
+
     if (_userId == null || _selectedDate == null) return;
 
     try {

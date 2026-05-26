@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../services/notification_service.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -21,6 +22,11 @@ final GetIt sl = GetIt.instance;
 Future<void> initDependencyInjection(
   SharedPreferences sharedPreferences,
 ) async {
+  // Services
+  final notificationService = NotificationService();
+  await notificationService.initialize();
+  sl.registerSingleton<NotificationService>(notificationService);
+
   // Core & External
   await Hive.initFlutter();
   final habitsBox = await Hive.openBox('habits');

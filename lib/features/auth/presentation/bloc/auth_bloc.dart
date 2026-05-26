@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../shared/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../core/services/notification_service.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -56,6 +58,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authRepository.signOut();
+      try {
+        if (sl.isRegistered<NotificationService>()) {
+          await sl<NotificationService>().cancelAllReminders();
+        }
+      } catch (_) {}
       emit(AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(e.toString()));
