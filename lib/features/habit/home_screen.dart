@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habit_flow/core/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
@@ -118,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     decoration: const BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Colors.black, width: 3),
+                        bottom: BorderSide(color: Colors.black, width: 2),
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -143,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              'GOOD MORNING, ${displayName.split(" ").first} 👋'
+                              'GOOD MORNING\n${displayName.split(" ").first} 👋'
                                   .toUpperCase(),
                               style: const TextStyle(
                                 fontFamily: 'Syne',
@@ -274,7 +275,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: isToday
                                         ? const Color(0xFFFFD93D)
                                         : Colors.white,
-                                    borderRadius: BorderRadius.circular(4),
                                     boxShadow: isToday
                                         ? const [
                                             BoxShadow(
@@ -729,14 +729,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 72,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(color: Colors.black, width: 3),
-                    ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 22,
+                    vertical: 6,
                   ),
+                  height: 72,
+                  decoration: BoxDecoration(color: AppColors.bottomAppbar),
                   child: Row(
+                    spacing: 4,
                     children: [
                       _buildNavItem(
                         index: 0,
@@ -935,20 +935,23 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           height: double.infinity,
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFFFD93D) : Colors.white,
-            border: isSelected
-                ? const Border(
-                    left: BorderSide(color: Colors.black, width: 1),
-                    right: BorderSide(color: Colors.black, width: 1),
-                  )
+            boxShadow: isSelected
+                ? const [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(4, 4),
+                      blurRadius: 0,
+                    ),
+                  ]
                 : null,
+            color: isSelected ? AppColors.accentYellow : Colors.transparent,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 icon,
-                color: isSelected ? Colors.black : Colors.black38,
+                color: isSelected ? Colors.black : AppColors.accentBrown,
                 size: 24,
               ),
               const SizedBox(height: 2),
@@ -957,9 +960,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
                   fontWeight: FontWeight.w900,
-                  fontSize: 9,
+                  fontSize: 14,
                   letterSpacing: 1,
-                  color: isSelected ? Colors.black : Colors.black38,
+                  color: isSelected ? Colors.black : AppColors.accentBrown,
                 ),
               ),
             ],
@@ -1002,8 +1005,6 @@ class _NeobrutalistFabState extends State<NeobrutalistFab> {
             height: 64,
             decoration: BoxDecoration(
               color: const Color(0xFFFFD93D),
-              border: Border.all(color: Colors.black, width: 3),
-              borderRadius: BorderRadius.circular(12),
               boxShadow: _isPressed
                   ? const []
                   : const [
@@ -1042,11 +1043,7 @@ class _NeobrutalistFabState extends State<NeobrutalistFab> {
               child: RotationTransition(
                 turns: const AlwaysStoppedAnimation(15 / 360),
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF6B6B),
-                    border: Border.all(color: Colors.black, width: 2),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  decoration: BoxDecoration(color: const Color(0xFFFF6B6B)),
                   padding: const EdgeInsets.symmetric(
                     vertical: 2,
                     horizontal: 6,

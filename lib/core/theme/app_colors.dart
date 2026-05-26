@@ -17,6 +17,8 @@ class AppColors {
   static const Color accentBlue = Color(0xFF4D96FF); // Bold Blue (Accent 4)
   static const Color accentPink = Color(0xFFFF6FC8); // Hot Pink (Accent 5)
   static const Color accentPurple = Color(0xFFC77DFF); // Bold Purple (Accent 6)
+  static const Color bottomAppbar = Color(0xFFFBFAEC); // Bold Purple (Accent 6)
+  static const Color accentBrown = Color(0xFF4C4546); // Bold Purple (Accent 6)
 
   // Cards
   static const Color cardWhite = Color(0xFFFFFFFF);
