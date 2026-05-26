@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:habit_flow/features/stats/stats_screen.dart';
 import 'package:habit_flow/features/habit/domain/repositories/habit_repository.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_bloc.dart';
@@ -169,13 +170,39 @@ void main() {
     expect(find.text('Health'), findsOneWidget);
     expect(find.text('Learning'), findsOneWidget);
     // Grid line labels
-    expect(find.text('10'), findsOneWidget);
-    expect(find.text('5'), findsOneWidget);
-    expect(find.text('0'), findsOneWidget);
+    expect(find.text('10'), findsAtLeast(1));
+    expect(find.text('5'), findsAtLeast(1));
+    expect(find.text('0'), findsAtLeast(1));
     // Weekday labels
     for (var day in ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]) {
       expect(find.text(day), findsOneWidget);
     }
+    expect(find.byType(BarChart), findsOneWidget);
+
+    // Verify Completion Trend Line Chart section
+    expect(find.text('COMPLETION TREND (4 WEEKS)'), findsOneWidget);
+    for (var week in ["W1", "W2", "W3", "W4"]) {
+      expect(find.text(week), findsOneWidget);
+    }
+    expect(find.text('0%'), findsOneWidget);
+    expect(find.text('20%'), findsOneWidget);
+    expect(find.text('40%'), findsOneWidget);
+    expect(find.text('60%'), findsOneWidget);
+    expect(find.text('80%'), findsOneWidget);
+    expect(find.text('100%'), findsOneWidget);
+    expect(find.byType(LineChart), findsOneWidget);
+
+    // Verify Category Donut Chart section
+    expect(find.text('CATEGORY BREAKDOWN'), findsOneWidget);
+    expect(find.byType(PieChart), findsOneWidget);
+    // Legend items
+    expect(find.textContaining('FITNESS'), findsAtLeast(1));
+    expect(find.textContaining('HEALTH'), findsAtLeast(1));
+    expect(find.textContaining('LEARNING'), findsAtLeast(1));
+    expect(find.textContaining('MIND'), findsAtLeast(1));
+    // Badges
+    expect(find.text('MOST CONSISTENT'), findsOneWidget);
+    expect(find.text('NEEDS ATTENTION'), findsOneWidget);
 
     // Verify Habit Rankings Table
     expect(find.text('HABIT RANKINGS'), findsOneWidget);

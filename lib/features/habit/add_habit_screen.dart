@@ -106,7 +106,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
       _selectedColorValue = habit.colorValue;
       _activeDays.clear();
       _activeDays.addAll(habit.activeDays);
-      
+
       final parts = habit.reminderTime.split(':');
       if (parts.length == 2) {
         final h = int.tryParse(parts[0]) ?? 8;
@@ -211,9 +211,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                     surface: bg,
                     onSurface: Colors.black,
                   ),
-            dialogTheme: DialogThemeData(
-              backgroundColor: bg,
-            ),
+            dialogTheme: DialogThemeData(backgroundColor: bg),
           ),
           child: child!,
         );
@@ -276,7 +274,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
       DateTime createdAt = DateTime.now();
       bool isActive = true;
       if (state is HabitLoaded) {
-        final original = state.habits.where((h) => h.id == widget.habitId).firstOrNull;
+        final original = state.habits
+            .where((h) => h.id == widget.habitId)
+            .firstOrNull;
         if (original != null) {
           createdAt = original.createdAt;
           isActive = original.isActive;

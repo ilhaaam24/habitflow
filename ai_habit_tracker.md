@@ -936,7 +936,7 @@ text
 ```
 TASK-025 | Buat Completion Rate Calculator
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 3 jam
 
@@ -961,7 +961,7 @@ text
 ```
 TASK-026 | Buat Weekly Progress Chart
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 3 jam
 
@@ -982,7 +982,7 @@ text
 ```
 TASK-027 | Buat Category Analytics
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 3 jam
 
