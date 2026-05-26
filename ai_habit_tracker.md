@@ -663,7 +663,7 @@ text
 ```
 TASK-014 | Buat HabitBloc
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 3 jam
 

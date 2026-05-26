@@ -14,6 +14,7 @@ import '../../features/habit/data/datasources/habit_local_data_source.dart';
 import '../../features/habit/data/datasources/habit_remote_data_source.dart';
 import '../../features/habit/domain/repositories/habit_repository.dart';
 import '../../features/habit/data/repositories/habit_repository_impl.dart';
+import '../../features/habit/presentation/bloc/habit_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -71,4 +72,7 @@ Future<void> initDependencyInjection(
       remoteDataSource: sl(),
     ),
   );
+
+  // Blocs
+  sl.registerFactory(() => HabitBloc(habitRepository: sl()));
 }

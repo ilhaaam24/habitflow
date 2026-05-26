@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:habit_flow/features/habit/presentation/bloc/habit_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ThemeCubit(sl<SharedPreferences>())),
         BlocProvider(create: (context) => AuthBloc(authRepository: sl())),
+        BlocProvider(create: (context) => HabitBloc(habitRepository: sl())),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
