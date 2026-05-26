@@ -10,6 +10,7 @@ import 'package:habit_flow/features/habit/presentation/bloc/habit_event.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_state.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -167,7 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Colors.black,
                                   width: 3,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
                                 boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black,
@@ -177,7 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
                                 child: photoUrl != null
                                     ? Image.network(photoUrl, fit: BoxFit.cover)
                                     : Center(
@@ -370,12 +369,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               Container(
                                 margin: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFFFD93D),
+                                  color: AppColors.accentYellow,
                                   border: Border.all(
                                     color: Colors.black,
                                     width: 3,
                                   ),
-                                  borderRadius: BorderRadius.circular(8),
                                   boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black,
@@ -537,9 +535,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.black,
                                               width: 3,
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
+
                                             boxShadow: const [
                                               BoxShadow(
                                                 color: Colors.black,
@@ -553,12 +549,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              const Text(
-                                                '🔥',
-                                                style: TextStyle(
-                                                  fontSize: 26,
-                                                  height: 1.0,
-                                                ),
+                                              Lottie.asset(
+                                                'assets/animations/fire.json',
+                                                width: 32,
+                                                height: 32,
                                               ),
                                               Text(
                                                 maxStreak.toString(),
@@ -791,7 +785,6 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.black, width: 3),
-        borderRadius: BorderRadius.circular(8),
         boxShadow: const [
           BoxShadow(color: Colors.black, offset: Offset(5, 5), blurRadius: 0),
         ],
@@ -811,7 +804,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: BoxDecoration(
                       color: Color(colorVal),
                       border: Border.all(color: Colors.black, width: 3),
-                      borderRadius: BorderRadius.circular(8),
                       boxShadow: const [
                         BoxShadow(
                           color: Colors.black,
@@ -846,10 +838,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 22,
                               decoration: BoxDecoration(
                                 color: const Color(0xFFFFD93D),
-                                border: Border.all(color: Colors.black, width: 2),
-                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
                               alignment: Alignment.center,
                               child: Text(
                                 '🔥 $streak DAYS',
@@ -865,11 +861,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             Container(
                               height: 22,
                               decoration: BoxDecoration(
-                                color: isDone ? const Color(0xFF6BCB77) : Colors.white,
-                                border: Border.all(color: Colors.black, width: 2),
-                                borderRadius: BorderRadius.circular(4),
+                                color: isDone
+                                    ? const Color(0xFF6BCB77)
+                                    : Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
                               alignment: Alignment.center,
                               child: Text(
                                 isDone ? 'DONE ✓' : category.toUpperCase(),
@@ -900,7 +902,6 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                 color: isDone ? const Color(0xFF6BCB77) : Colors.white,
                 border: Border.all(color: Colors.black, width: 3),
-                borderRadius: BorderRadius.circular(6),
                 boxShadow: isDone
                     ? null
                     : const [

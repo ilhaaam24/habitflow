@@ -758,7 +758,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         ),
                       ),
                     ),
-                    _buildAppBarIcon(Icons.edit_outlined, () {}),
+                    _buildAppBarIcon(Icons.edit_outlined, () {
+                      context.push('/habit/edit/${_habit!.id}');
+                    }),
                     const SizedBox(width: 8),
                     _buildAppBarIcon(Icons.more_horiz, () {}),
                   ],

@@ -6,11 +6,13 @@ import 'package:uuid/uuid.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_bloc.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_event.dart';
+import 'package:habit_flow/features/habit/presentation/bloc/habit_state.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 
 class AddHabitScreen extends StatefulWidget {
-  const AddHabitScreen({super.key});
+  final String? habitId;
+  const AddHabitScreen({super.key, this.habitId});
 
   @override
   State<AddHabitScreen> createState() => _AddHabitScreenState();
@@ -36,6 +38,83 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
 
   TimeOfDay _reminderTime = const TimeOfDay(hour: 7, minute: 0);
   bool _isReminderEnabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.habitId != null) {
+      _loadHabitData();
+    }
+  }
+
+  void _loadHabitData() {
+    final state = context.read<HabitBloc>().state;
+    HabitModel? habit;
+
+    if (widget.habitId!.startsWith('dummy_')) {
+      final List<Map<String, dynamic>> dummyHabits = [
+        {
+          'id': 'dummy_1',
+          'title': 'MORNING MEDITATION',
+          'category': '🧘 MIND',
+          'emoji': '🧘',
+          'color': 0xFFC77DFF,
+          'reminderTime': '07:00',
+        },
+        {
+          'id': 'dummy_2',
+          'title': 'EVENING RUN',
+          'category': '🏃 FITNESS',
+          'emoji': '🏃',
+          'color': 0xFFFF6B6B,
+          'reminderTime': '19:00',
+        },
+        {
+          'id': 'dummy_3',
+          'title': 'READ BOOK',
+          'category': '📚 LEARNING',
+          'emoji': '📚',
+          'color': 0xFF4D96FF,
+          'reminderTime': '21:00',
+        },
+      ];
+      final dummyData = dummyHabits.firstWhere(
+        (h) => h['id'] == widget.habitId,
+        orElse: () => dummyHabits[1],
+      );
+      habit = HabitModel(
+        id: dummyData['id'] as String,
+        userId: 'dummy_user',
+        title: dummyData['title'] as String,
+        description: 'Mock habit description',
+        category: dummyData['category'] as String,
+        icon: dummyData['emoji'] as String,
+        colorValue: dummyData['color'] as int,
+        reminderTime: dummyData['reminderTime'] as String,
+        activeDays: const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+        createdAt: DateTime.now().subtract(const Duration(days: 29)),
+        isActive: true,
+      );
+    } else if (state is HabitLoaded) {
+      habit = state.habits.where((h) => h.id == widget.habitId).firstOrNull;
+    }
+
+    if (habit != null) {
+      _nameController.text = habit.title;
+      _selectedIcon = habit.icon;
+      _selectedCategory = habit.category;
+      _selectedColorValue = habit.colorValue;
+      _activeDays.clear();
+      _activeDays.addAll(habit.activeDays);
+      
+      final parts = habit.reminderTime.split(':');
+      if (parts.length == 2) {
+        final h = int.tryParse(parts[0]) ?? 8;
+        final m = int.tryParse(parts[1]) ?? 0;
+        _reminderTime = TimeOfDay(hour: h, minute: m);
+      }
+    }
+  }
 
   final List<Map<String, dynamic>> _categories = [
     {'name': 'FITNESS', 'emoji': '🏃', 'color': 0xFFFFD93D},
@@ -183,21 +262,47 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     final reminderStr =
         '${_reminderTime.hour.toString().padLeft(2, '0')}:${_reminderTime.minute.toString().padLeft(2, '0')}';
 
-    final newHabit = HabitModel(
-      id: const Uuid().v4(),
-      userId: userId,
-      title: _nameController.text.trim(),
-      description: '',
-      category: _selectedCategory,
-      icon: _selectedIcon,
-      colorValue: _selectedColorValue,
-      reminderTime: reminderStr,
-      activeDays: _activeDays.toList(),
-      createdAt: DateTime.now(),
-      isActive: true,
-    );
-
-    context.read<HabitBloc>().add(AddHabitRequested(newHabit));
+    if (widget.habitId != null && !widget.habitId!.startsWith('dummy_')) {
+      final state = context.read<HabitBloc>().state;
+      DateTime createdAt = DateTime.now();
+      bool isActive = true;
+      if (state is HabitLoaded) {
+        final original = state.habits.where((h) => h.id == widget.habitId).firstOrNull;
+        if (original != null) {
+          createdAt = original.createdAt;
+          isActive = original.isActive;
+        }
+      }
+      final updatedHabit = HabitModel(
+        id: widget.habitId!,
+        userId: userId,
+        title: _nameController.text.trim(),
+        description: '',
+        category: _selectedCategory,
+        icon: _selectedIcon,
+        colorValue: _selectedColorValue,
+        reminderTime: reminderStr,
+        activeDays: _activeDays.toList(),
+        createdAt: createdAt,
+        isActive: isActive,
+      );
+      context.read<HabitBloc>().add(UpdateHabitRequested(updatedHabit));
+    } else {
+      final newHabit = HabitModel(
+        id: widget.habitId != null ? widget.habitId! : const Uuid().v4(),
+        userId: userId,
+        title: _nameController.text.trim(),
+        description: '',
+        category: _selectedCategory,
+        icon: _selectedIcon,
+        colorValue: _selectedColorValue,
+        reminderTime: reminderStr,
+        activeDays: _activeDays.toList(),
+        createdAt: DateTime.now(),
+        isActive: true,
+      );
+      context.read<HabitBloc>().add(AddHabitRequested(newHabit));
+    }
     context.pop();
   }
 
@@ -279,11 +384,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Center(
                         child: Text(
-                          'NEW HABIT',
-                          style: TextStyle(
+                          widget.habitId != null ? 'EDIT HABIT' : 'NEW HABIT',
+                          style: const TextStyle(
                             fontFamily: 'Syne',
                             fontWeight: FontWeight.w900,
                             fontSize: 18,

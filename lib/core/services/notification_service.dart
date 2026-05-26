@@ -16,14 +16,20 @@ class NotificationService {
     // Initialize timezone database
     tz.initializeTimeZones();
 
-    final TimezoneInfo currentTimeZone =
-        await FlutterTimezone.getLocalTimezone();
-    final String timeZoneName = currentTimeZone.identifier;
+    String timeZoneName = 'UTC';
+    try {
+      final tzInfo = await FlutterTimezone.getLocalTimezone();
+      timeZoneName = tzInfo.identifier;
+    } catch (_) {
+      timeZoneName = 'Asia/Jakarta';
+    }
 
     try {
       tz.setLocalLocation(tz.getLocation(timeZoneName));
     } catch (_) {
-      tz.setLocalLocation(tz.getLocation('UTC'));
+      try {
+        tz.setLocalLocation(tz.getLocation('UTC'));
+      } catch (_) {}
     }
 
     // Android Settings

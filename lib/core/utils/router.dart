@@ -24,6 +24,13 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const AddHabitScreen(),
     ),
     GoRoute(
+      path: '/habit/edit/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id'] ?? '';
+        return AddHabitScreen(habitId: id);
+      },
+    ),
+    GoRoute(
       path: '/habit/detail/:id',
       builder: (context, state) {
         final id = state.pathParameters['id'] ?? '';
