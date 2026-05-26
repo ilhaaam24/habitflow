@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_it/get_it.dart';
 import 'package:habit_flow/features/settings/settings_screen.dart';
 import 'package:habit_flow/core/theme/theme_cubit.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
@@ -35,8 +36,20 @@ void main() {
     GoogleFonts.config.allowRuntimeFetching = false;
   });
 
-  testWidgets('SettingsScreen UI elements exist and render correctly in Neobrutalist style', (WidgetTester tester) async {
+  setUp(() async {
     SharedPreferences.setMockInitialValues({});
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final sl = GetIt.instance;
+    if (sl.isRegistered<SharedPreferences>()) {
+      await sl.unregister<SharedPreferences>();
+    }
+    sl.registerSingleton<SharedPreferences>(prefs);
+  });
+
+  testWidgets('SettingsScreen UI elements exist and render correctly in Neobrutalist style', (WidgetTester tester) async {
+    // Set a large viewport so all list elements are immediately built and visible
+    await tester.binding.setSurfaceSize(const Size(800, 1600));
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final themeCubit = ThemeCubit(prefs);
     final authBloc = FakeAuthBloc();
@@ -59,9 +72,9 @@ void main() {
     expect(find.text('SETTINGS'), findsOneWidget);
 
     // Verify sections are displayed
-    expect(find.text('01 — GENERAL'), findsOneWidget);
-    expect(find.text('02 — AI INTEGRATION'), findsOneWidget);
-    expect(find.text('03 — ABOUT'), findsOneWidget);
+    expect(find.text('PREFERENCES'), findsOneWidget);
+    expect(find.text('AI & DATA'), findsOneWidget);
+    expect(find.text('ABOUT'), findsOneWidget);
 
     // Verify user profile displays info
     expect(find.text('TEST USER'), findsOneWidget);
@@ -69,15 +82,19 @@ void main() {
 
     // Verify dark mode toggle switch is visible
     expect(find.text('DARK MODE'), findsOneWidget);
-    expect(find.byType(NeobrutalistSwitch), findsOneWidget);
+    expect(find.byType(NeobrutalistSwitch), findsAtLeastNWidgets(1));
 
     // Verify other cards exist
     expect(find.text('AI MOTIVATION SETTINGS'), findsOneWidget);
-    expect(find.text('BACK TO DASHBOARD'), findsOneWidget);
+    expect(find.text('SIGN OUT'), findsOneWidget);
+
+    // Reset surface size
+    await tester.binding.setSurfaceSize(null);
   });
 
   testWidgets('Tapping the dark mode switch toggles theme mode', (WidgetTester tester) async {
-    SharedPreferences.setMockInitialValues({});
+    await tester.binding.setSurfaceSize(const Size(800, 1600));
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final themeCubit = ThemeCubit(prefs);
     final authBloc = FakeAuthBloc();
@@ -99,11 +116,56 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Tap the switch
-    await tester.tap(find.byType(NeobrutalistSwitch));
+    // Tap the first switch (Dark Mode toggle switch)
+    await tester.tap(find.byType(NeobrutalistSwitch).first);
     await tester.pumpAndSettle();
 
     // Verify that the theme cubit state has toggled to light mode
     expect(themeCubit.state, ThemeMode.light);
+
+    await tester.binding.setSurfaceSize(null);
+  });
+
+  testWidgets('Tapping SIGN OUT button triggers Neobrutalist confirmation dialog', (WidgetTester tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1600));
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final themeCubit = ThemeCubit(prefs);
+    final authBloc = FakeAuthBloc();
+
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeCubit>(create: (_) => themeCubit),
+          BlocProvider<AuthBloc>(create: (_) => authBloc),
+        ],
+        child: const MaterialApp(
+          home: SettingsScreen(),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify dialog is NOT displayed yet
+    expect(find.text('REALLY SIGN OUT?'), findsNothing);
+
+    // Tap the SIGN OUT button
+    await tester.tap(find.text('SIGN OUT'));
+    await tester.pumpAndSettle();
+
+    // Verify dialog is displayed
+    expect(find.text('REALLY SIGN OUT?'), findsOneWidget);
+    expect(find.text('YES, LOG OUT'), findsOneWidget);
+    expect(find.text('CANCEL'), findsOneWidget);
+
+    // Tap CANCEL to close the dialog
+    await tester.tap(find.text('CANCEL'));
+    await tester.pumpAndSettle();
+
+    // Verify dialog is dismissed
+    expect(find.text('REALLY SIGN OUT?'), findsNothing);
+
+    await tester.binding.setSurfaceSize(null);
   });
 }

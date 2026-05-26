@@ -10,6 +10,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:habit_flow/core/helpers/completion_rate_calculator.dart';
+import '../../shared/widgets/neobrutalist_progress_bar.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -1520,19 +1521,10 @@ class _StatsScreenState extends State<StatsScreen> {
                         ),
                         const SizedBox(height: 6),
                         // Custom Neobrutalist Progress Bar
-                        Container(
+                        NeobrutalistProgressBar(
+                          value: rate / 100.0,
                           height: 8,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: surfaceColor,
-                            border: Border.all(color: onSurface, width: 1.5),
-                          ),
-                          alignment: Alignment.centerLeft,
-                          child: FractionallySizedBox(
-                            widthFactor: rate / 100.0,
-                            heightFactor: 1.0,
-                            child: Container(color: onSurface),
-                          ),
+                          showLoadingText: false,
                         ),
                       ],
                     ),

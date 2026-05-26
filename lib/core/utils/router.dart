@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/splash_screen.dart';
 import '../../features/auth/onboarding_screen.dart';
@@ -9,42 +10,114 @@ import '../../features/stats/stats_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/ai_settings_screen.dart';
 
+CustomTransitionPage<void> buildPageWithBrutalistTransition(
+  BuildContext context,
+  GoRouterState state,
+  Widget child,
+) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 200),
+    reverseTransitionDuration: const Duration(milliseconds: 200),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: animation.drive(
+          Tween<Offset>(
+            begin: const Offset(1.0, 0.0),
+            end: Offset.zero,
+          ).chain(CurveTween(curve: Curves.linear)),
+        ),
+        child: child,
+      );
+    },
+  );
+}
+
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const SplashScreen(),
+    ),
     GoRoute(
       path: '/onboarding',
-      builder: (context, state) => const OnboardingScreen(),
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const OnboardingScreen(),
+      ),
     ),
-    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+    GoRoute(
+      path: '/login',
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const LoginScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/home',
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const HomeScreen(),
+      ),
+    ),
     GoRoute(
       path: '/habit/add',
-      builder: (context, state) => const AddHabitScreen(),
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const AddHabitScreen(),
+      ),
     ),
     GoRoute(
       path: '/habit/edit/:id',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final id = state.pathParameters['id'] ?? '';
-        return AddHabitScreen(habitId: id);
+        return buildPageWithBrutalistTransition(
+          context,
+          state,
+          AddHabitScreen(habitId: id),
+        );
       },
     ),
     GoRoute(
       path: '/habit/detail/:id',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final id = state.pathParameters['id'] ?? '';
-        return HabitDetailScreen(id: id);
+        return buildPageWithBrutalistTransition(
+          context,
+          state,
+          HabitDetailScreen(id: id),
+        );
       },
     ),
-    GoRoute(path: '/stats', builder: (context, state) => const StatsScreen()),
+    GoRoute(
+      path: '/stats',
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const StatsScreen(),
+      ),
+    ),
     GoRoute(
       path: '/settings',
-      builder: (context, state) => const SettingsScreen(),
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const SettingsScreen(),
+      ),
     ),
     GoRoute(
       path: '/ai-settings',
-      builder: (context, state) => const AISettingsScreen(),
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const AISettingsScreen(),
+      ),
     ),
   ],
 );

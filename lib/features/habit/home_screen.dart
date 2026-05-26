@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habit_flow/core/helpers/greeting.dart';
@@ -12,6 +13,9 @@ import 'package:habit_flow/features/habit/presentation/bloc/habit_state.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:lottie/lottie.dart';
+import '../../shared/widgets/neobrutalist_progress_bar.dart';
+import '../../shared/widgets/neobrutalist_button.dart';
+import 'neobrutalist_habit_card_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -319,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           habitsList = state.habits;
                           todayLogs = state.todayLogs;
                           if (habitsList.isEmpty) {
-                            useDummy = true;
+                            return _buildEmptyHabitsState();
                           }
                         } else if (state is HabitLoading) {
                           return const Center(
@@ -460,41 +464,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   constraints.maxWidth - 55;
                                               return Row(
                                                 children: [
-                                                  Container(
+                                                  SizedBox(
                                                     width: maxWidth,
-                                                    height: 12,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                        color: Colors.black,
-                                                        width: 2,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            2,
-                                                          ),
+                                                    child: NeobrutalistProgressBar(
+                                                      value: progressPercent,
+                                                      height: 12,
+                                                      showLoadingText: true,
                                                     ),
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: progressPercent > 0
-                                                        ? AnimatedContainer(
-                                                            duration:
-                                                                const Duration(
-                                                                  milliseconds:
-                                                                      300,
-                                                                ),
-                                                            width:
-                                                                maxWidth *
-                                                                progressPercent,
-                                                            height:
-                                                                double.infinity,
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                          )
-                                                        : const SizedBox.shrink(),
                                                   ),
                                                   const SizedBox(width: 8),
                                                   Text(
@@ -662,7 +638,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   final String category =
                                       dummy['category'] as String;
 
-                                  return _buildHabitCard(
+                                  return NeobrutalistHabitCardItem(
                                     id: hId,
                                     title: title,
                                     emoji: emoji,
@@ -689,7 +665,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ? (state.streaks[habit.id] ?? 0)
                                       : 0;
 
-                                  return _buildHabitCard(
+                                  return NeobrutalistHabitCardItem(
                                     id: habit.id,
                                     title: habit.title.toUpperCase(),
                                     emoji: habit.icon,
@@ -773,168 +749,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHabitCard({
-    required String id,
-    required String title,
-    required String emoji,
-    required int colorVal,
-    required int streak,
-    required bool isDone,
-    required String category,
-    required VoidCallback onToggle,
-  }) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 3),
-        boxShadow: const [
-          BoxShadow(color: Colors.black, offset: Offset(5, 5), blurRadius: 0),
-        ],
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => context.push('/habit/detail/$id'),
-              child: Row(
-                children: [
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: Color(colorVal),
-                      border: Border.all(color: Colors.black, width: 3),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(3, 3),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(emoji, style: const TextStyle(fontSize: 24)),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontFamily: 'Syne',
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14,
-                            letterSpacing: 0.5,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Container(
-                              height: 22,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFFD93D),
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 2,
-                                ),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '🔥 $streak DAYS',
-                                style: const TextStyle(
-                                  fontFamily: 'SpaceGrotesk',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 11,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              height: 22,
-                              decoration: BoxDecoration(
-                                color: isDone
-                                    ? const Color(0xFF6BCB77)
-                                    : Colors.white,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 2,
-                                ),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                isDone ? 'DONE ✓' : category.toUpperCase(),
-                                style: const TextStyle(
-                                  fontFamily: 'SpaceGrotesk',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 11,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          GestureDetector(
-            onTap: onToggle,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: isDone ? const Color(0xFF6BCB77) : Colors.white,
-                border: Border.all(color: Colors.black, width: 3),
-                boxShadow: isDone
-                    ? null
-                    : const [
-                        BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(3, 3),
-                          blurRadius: 0,
-                        ),
-                      ],
-              ),
-              child: isDone
-                  ? const Center(
-                      child: Text(
-                        '✓',
-                        style: TextStyle(
-                          fontFamily: 'SpaceGrotesk',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black,
-                        ),
-                      ),
-                    )
-                  : null,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildNavItem({
     required int index,
     required IconData icon,
@@ -953,14 +767,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           height: double.infinity,
           decoration: BoxDecoration(
-            boxShadow: isSelected
-                ? const [
-                    BoxShadow(
-                      color: Colors.black,
-                      offset: Offset(4, 4),
-                      blurRadius: 0,
-                    ),
-                  ]
+            border: isSelected
+                ? Border.all(color: Colors.black, width: 2)
                 : null,
             color: isSelected ? AppColors.accentYellow : Colors.transparent,
           ),
@@ -989,6 +797,231 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Widget _buildEmptyHabitsState() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Decorative: Large "0" behind everything
+          Positioned(
+            child: IgnorePointer(
+              child: Center(
+                child: Text(
+                  '0',
+                  style: TextStyle(
+                    fontFamily: 'Syne',
+                    fontWeight: FontWeight.w900,
+                    fontSize: 200,
+                    color: Colors.black.withValues(alpha: 0.05),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 40),
+                // Large illustration container
+                Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFD93D),
+                    border: Border.all(color: Colors.black, width: 4),
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black,
+                        offset: Offset(8, 8),
+                        blurRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      // Positioned corners: small "+" marks
+                      const Positioned(
+                        top: 8,
+                        left: 8,
+                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                      const Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                      const Positioned(
+                        bottom: 8,
+                        left: 8,
+                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                      const Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                      Center(
+                        child: Text(
+                          '?',
+                          style: TextStyle(
+                            fontFamily: 'SpaceGrotesk',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 100,
+                            color: Colors.black.withValues(alpha: 0.3),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('📋', style: TextStyle(fontSize: 48)),
+                            SizedBox(height: 4),
+                            Text(
+                              'EMPTY!',
+                              style: TextStyle(
+                                fontFamily: 'SpaceGrotesk',
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18,
+                                letterSpacing: 2,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                // Info block
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black, width: 3),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: CustomPaint(
+                      painter: DashedBorderPainter(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            const Text(
+                              'NO HABITS YET.',
+                              style: TextStyle(
+                                fontFamily: 'Syne',
+                                fontWeight: FontWeight.w900,
+                                fontSize: 24,
+                                letterSpacing: -0.5,
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Start by adding your first habit.\nSmall steps, massive results.',
+                              style: TextStyle(
+                                fontFamily: 'SpaceGrotesk',
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                                color: Colors.black,
+                                height: 1.6,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20),
+                            // ADD FIRST HABIT button
+                            NeobrutalistButton(
+                              color: const Color(0xFFFFD93D),
+                              onTap: () => context.push('/habit/add'),
+                              padding: EdgeInsets.zero,
+                              child: Container(
+                                height: 60,
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      '+',
+                                      style: TextStyle(
+                                        fontFamily: 'SpaceGrotesk',
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 24,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'ADD FIRST HABIT',
+                                      style: TextStyle(
+                                        fontFamily: 'SpaceGrotesk',
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 16,
+                                        letterSpacing: 1,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashedBorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 3
+      ..style = PaintingStyle.stroke;
+    
+    final path = Path()
+      ..addRRect(RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        const Radius.circular(5),
+      ));
+
+    double dashWidth = 8.0;
+    double dashSpace = 4.0;
+    
+    Path dashedPath = Path();
+    for (PathMetric pathMetric in path.computeMetrics()) {
+      double distance = 0.0;
+      while (distance < pathMetric.length) {
+        dashedPath.addPath(
+          pathMetric.extractPath(distance, distance + dashWidth),
+          Offset.zero,
+        );
+        distance += dashWidth + dashSpace;
+      }
+    }
+    canvas.drawPath(dashedPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class NeobrutalistFab extends StatefulWidget {

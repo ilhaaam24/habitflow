@@ -20,7 +20,7 @@ class NeobrutalistButton extends StatefulWidget {
     this.borderColor = AppColors.black,
     this.shadowColor = AppColors.black,
     this.borderWidth = 3.0,
-    this.shadowOffset = 4.0,
+    this.shadowOffset = 5.0,
     this.borderRadius = 4.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
   });
@@ -34,8 +34,8 @@ class _NeobrutalistButtonState extends State<NeobrutalistButton> {
 
   @override
   Widget build(BuildContext context) {
-    final double currentOffset = _isPressed ? 1.0 : widget.shadowOffset;
-    final double translation = _isPressed ? widget.shadowOffset - 1.0 : 0.0;
+    final double currentOffset = _isPressed ? 0.0 : widget.shadowOffset;
+    final double translation = _isPressed ? widget.shadowOffset : 0.0;
 
     return GestureDetector(
       onTapDown: widget.onTap != null
@@ -49,7 +49,8 @@ class _NeobrutalistButtonState extends State<NeobrutalistButton> {
           : null,
       onTap: widget.onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 50),
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.linear,
         transform: Matrix4.translationValues(translation, translation, 0.0),
         padding: widget.padding,
         decoration: BoxDecoration(

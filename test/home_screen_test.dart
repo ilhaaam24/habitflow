@@ -64,7 +64,44 @@ class FakeHabitBloc extends HabitBloc {
 
   @override
   HabitState get state => HabitLoaded(
-        habits: const [],
+        habits: [
+          HabitModel(
+            id: 'dummy_1',
+            title: 'MORNING HYDRATION',
+            icon: '💧',
+            colorValue: 0xFF4D96FF,
+            category: '💧 HEALTH',
+            userId: 'u1',
+            description: '',
+            reminderTime: '08:00',
+            activeDays: const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+            createdAt: DateTime(2026, 1, 1),
+          ),
+          HabitModel(
+            id: 'dummy_2',
+            title: 'EVENING RUN',
+            icon: '🏃',
+            colorValue: 0xFFFF6B6B,
+            category: '🏃 FITNESS',
+            userId: 'u1',
+            description: '',
+            reminderTime: '18:00',
+            activeDays: const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+            createdAt: DateTime(2026, 1, 1),
+          ),
+          HabitModel(
+            id: 'dummy_3',
+            title: 'READ 20 PAGES',
+            icon: '📚',
+            colorValue: 0xFFC77DFF,
+            category: '📚 LEARNING',
+            userId: 'u1',
+            description: '',
+            reminderTime: '21:00',
+            activeDays: const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+            createdAt: DateTime(2026, 1, 1),
+          ),
+        ],
         todayLogs: const [],
         selectedDate: DateTime.now(),
       );
@@ -120,4 +157,40 @@ void main() {
     expect(find.text('+'), findsOneWidget);
     expect(find.text('NEW!'), findsOneWidget);
   });
+
+  testWidgets('HomeScreen renders NO HABITS YET empty state when habits list is empty', (WidgetTester tester) async {
+    final authBloc = FakeAuthBloc();
+    final habitBloc = FakeEmptyHabitBloc();
+
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(create: (_) => authBloc),
+          BlocProvider<HabitBloc>(create: (_) => habitBloc),
+        ],
+        child: const MaterialApp(home: HomeScreen()),
+      ),
+    );
+
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // Verify Empty State elements
+    expect(find.text('NO HABITS YET.'), findsOneWidget);
+    expect(find.text('ADD FIRST HABIT'), findsOneWidget);
+    expect(find.text('EMPTY!'), findsOneWidget);
+  });
+}
+
+class FakeEmptyHabitBloc extends HabitBloc {
+  FakeEmptyHabitBloc() : super(habitRepository: DummyHabitRepository());
+
+  @override
+  void add(HabitEvent event) {}
+
+  @override
+  HabitState get state => HabitLoaded(
+        habits: const [],
+        todayLogs: const [],
+        selectedDate: DateTime.now(),
+      );
 }

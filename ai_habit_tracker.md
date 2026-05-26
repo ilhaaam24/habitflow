@@ -1002,7 +1002,7 @@ text
 ```
 TASK-028 | UI Polish Sprint 3
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 4 jam
 
@@ -1023,7 +1023,7 @@ text
 ```
 TASK-029 | Buat SettingsScreen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 3 jam
 
