@@ -89,8 +89,8 @@ void main() {
       ),
     );
 
-    // Let initial frame load
-    await tester.pump();
+    // Let initial frame load and advance time to trigger FAB animation timer
+    await tester.pump(const Duration(milliseconds: 500));
 
     // Verify Top bar greeting text
     expect(find.textContaining('GOOD MORNING'), findsOneWidget);
