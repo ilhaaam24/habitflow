@@ -828,7 +828,7 @@ text
 ```
 TASK-020 | Buat EditHabitScreen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 3 jam
 
@@ -844,7 +844,7 @@ text
 ```
 TASK-021 | Implementasi Dark Mode Toggle
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 2 jam
 
@@ -861,7 +861,7 @@ text
 ```
 TASK-022 | Animasi & Polish UI Sprint 2
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 4 jam
 

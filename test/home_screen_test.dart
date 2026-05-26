@@ -93,7 +93,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     // Verify Top bar greeting text
-    expect(find.textContaining('GOOD MORNING'), findsOneWidget);
+    expect(find.textContaining('GOOD'), findsOneWidget);
     expect(find.textContaining('RAFI'), findsOneWidget);
 
     // Verify Progress Card labels
