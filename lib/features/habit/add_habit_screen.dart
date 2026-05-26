@@ -194,16 +194,25 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
       context: context,
       initialTime: _reminderTime,
       builder: (context, child) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final bg = Theme.of(context).scaffoldBackgroundColor;
         return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.black,
-              onPrimary: Colors.white,
-              surface: Color(0xFFFFFEF0),
-              onSurface: Colors.black,
-            ),
-            dialogTheme: const DialogThemeData(
-              backgroundColor: Color(0xFFFFFEF0),
+          data: Theme.of(context).copyWith(
+            colorScheme: isDark
+                ? ColorScheme.dark(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                    surface: bg,
+                    onSurface: Colors.white,
+                  )
+                : ColorScheme.light(
+                    primary: Colors.black,
+                    onPrimary: Colors.white,
+                    surface: bg,
+                    onSurface: Colors.black,
+                  ),
+            dialogTheme: DialogThemeData(
+              backgroundColor: bg,
             ),
           ),
           child: child!,
@@ -338,7 +347,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
         : '';
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFEF0),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Form(
           key: _formKey,

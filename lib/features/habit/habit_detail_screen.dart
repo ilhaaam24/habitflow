@@ -516,7 +516,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor: const Color(0xFFFFFEF0),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           shape: RoundedRectangleBorder(
             side: const BorderSide(color: Colors.black, width: 3),
             borderRadius: BorderRadius.circular(8),
@@ -701,9 +701,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading || _habit == null) {
-      return const Scaffold(
-        backgroundColor: Color(0xFFFFFEF0),
-        body: Center(child: CircularProgressIndicator(color: Colors.black)),
+      return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: const Center(child: CircularProgressIndicator(color: Colors.black)),
       );
     }
 
@@ -725,7 +725,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFFEF0),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Column(
             children: [
