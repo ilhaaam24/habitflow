@@ -640,7 +640,7 @@ text
 ```
 TASK-013 | Buat HabitRepository
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 3 jam
 
