@@ -799,87 +799,98 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: Color(colorVal),
-              border: Border.all(color: Colors.black, width: 3),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(3, 3),
-                  blurRadius: 0,
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(emoji, style: const TextStyle(fontSize: 24)),
+          Expanded(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => context.push('/habit/detail/$id'),
+              child: Row(
+                children: [
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: Color(colorVal),
+                      border: Border.all(color: Colors.black, width: 3),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black,
+                          offset: Offset(3, 3),
+                          blurRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(emoji, style: const TextStyle(fontSize: 24)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontFamily: 'Syne',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Container(
+                              height: 22,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFD93D),
+                                border: Border.all(color: Colors.black, width: 2),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              alignment: Alignment.center,
+                              child: Text(
+                                '🔥 $streak DAYS',
+                                style: const TextStyle(
+                                  fontFamily: 'SpaceGrotesk',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              height: 22,
+                              decoration: BoxDecoration(
+                                color: isDone ? const Color(0xFF6BCB77) : Colors.white,
+                                border: Border.all(color: Colors.black, width: 2),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              alignment: Alignment.center,
+                              child: Text(
+                                isDone ? 'DONE ✓' : category.toUpperCase(),
+                                style: const TextStyle(
+                                  fontFamily: 'SpaceGrotesk',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontFamily: 'Syne',
-                    fontWeight: FontWeight.w900,
-                    fontSize: 14,
-                    letterSpacing: 0.5,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Container(
-                      height: 22,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFD93D),
-                        border: Border.all(color: Colors.black, width: 2),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '🔥 $streak DAYS',
-                        style: const TextStyle(
-                          fontFamily: 'SpaceGrotesk',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      height: 22,
-                      decoration: BoxDecoration(
-                        color: isDone ? const Color(0xFF6BCB77) : Colors.white,
-                        border: Border.all(color: Colors.black, width: 2),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      alignment: Alignment.center,
-                      child: Text(
-                        isDone ? 'DONE ✓' : category.toUpperCase(),
-                        style: const TextStyle(
-                          fontFamily: 'SpaceGrotesk',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
           GestureDetector(
             onTap: onToggle,
             child: AnimatedContainer(
