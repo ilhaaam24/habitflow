@@ -1,5 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habit_flow/core/di/injection.dart';
+import 'package:habit_flow/features/habit/domain/repositories/habit_repository.dart';
+import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
+import 'package:habit_flow/shared/models/habit_model.dart';
+import 'package:habit_flow/shared/models/habit_log_model.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -11,6 +19,13 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen> {
   // 0: WEEK, 1: MONTH, 2: ALL TIME
   int _selectedPeriodIndex = 0;
+
+  final HabitRepository _habitRepository = sl<HabitRepository>();
+  StreamSubscription<List<HabitModel>>? _habitsSubscription;
+  List<HabitModel> _habits = [];
+  final Map<String, List<HabitLogModel>> _habitLogs = {};
+  final Map<String, int> _longestStreaks = {};
+  bool _isLoading = true;
 
   // Consistency & Streak data based on selected period
   final List<Map<String, dynamic>> _periodMetrics = [
@@ -32,7 +47,7 @@ class _StatsScreenState extends State<StatsScreen> {
   // Daily heights for weekly bar chart (Fitness, Health, Learning)
   // Max count is 10, so proportional height out of 160px: count * 16px
   final List<List<double>> _weeklyData = [
-    [5, 2.5, 7.5], // Mon
+    [5.0, 2.5, 7.5], // Mon
     [6.25, 3.75, 5.625], // Tue
     [3.125, 6.875, 4.375], // Wed
     [7.5, 1.875, 6.875], // Thu
@@ -79,6 +94,323 @@ class _StatsScreenState extends State<StatsScreen> {
       'rate': 31,
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _initDataStream();
+  }
+
+  void _initDataStream() {
+    final authState = context.read<AuthBloc>().state;
+    final String? userId = authState is AuthAuthenticated
+        ? authState.user.uid
+        : null;
+
+    if (userId != null && userId.isNotEmpty) {
+      _habitsSubscription = _habitRepository.getHabits(userId).listen((
+        habitsList,
+      ) async {
+        final tempLogs = <String, List<HabitLogModel>>{};
+        final tempStreaks = <String, int>{};
+
+        for (final habit in habitsList) {
+          final logs = await _habitRepository.getLogsForHabit(habit.id);
+          final bestStreak = await _habitRepository.getLongestStreak(habit.id);
+          tempLogs[habit.id] = logs;
+          tempStreaks[habit.id] = bestStreak;
+        }
+
+        if (mounted) {
+          setState(() {
+            _habits = habitsList;
+            _habitLogs.clear();
+            _habitLogs.addAll(tempLogs);
+            _longestStreaks.clear();
+            _longestStreaks.addAll(tempStreaks);
+            _isLoading = false;
+            _calculateStats();
+          });
+        }
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+        _calculateStats();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _habitsSubscription?.cancel();
+    super.dispose();
+  }
+
+  DateTime _stripTime(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
+  String _toDateKey(DateTime date) {
+    return '${date.year}-${date.month}-${date.day}';
+  }
+
+  bool _isDayActive(HabitModel habit, DateTime date) {
+    final weekdayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+    final weekdayStr = weekdayNames[date.weekday - 1];
+    return habit.activeDays.contains(weekdayStr);
+  }
+
+  void _calculateStats() {
+    if (_habits.isEmpty) {
+      // Fallback to mock/dummy data
+      _periodMetrics[0] = {
+        'consistency': '92',
+        'total': '100',
+        'badge': 'TOP 8% 🏆',
+        'streak': '7',
+      };
+      _periodMetrics[1] = {
+        'consistency': '88',
+        'total': '100',
+        'badge': 'TOP 12% 🏆',
+        'streak': '23',
+      };
+      _periodMetrics[2] = {
+        'consistency': '84',
+        'total': '100',
+        'badge': 'TOP 15% 🏆',
+        'streak': '45',
+      };
+
+      _weeklyData[0] = [5.0, 2.5, 7.5];
+      _weeklyData[1] = [6.25, 3.75, 5.625];
+      _weeklyData[2] = [3.125, 6.875, 4.375];
+      _weeklyData[3] = [7.5, 1.875, 6.875];
+      _weeklyData[4] = [5.625, 4.375, 8.125];
+      _weeklyData[5] = [8.75, 7.5, 3.75];
+      _weeklyData[6] = [6.875, 8.125, 8.75];
+
+      _rankingData.clear();
+      _rankingData.addAll([
+        {
+          'rank': '01',
+          'title': 'MORNING HYDRATION',
+          'emoji': '💧',
+          'color': 0xFF4D96FF,
+          'rate': 95,
+        },
+        {
+          'rank': '02',
+          'title': 'MEDITATION',
+          'emoji': '🧘',
+          'color': 0xFFFF6FC8,
+          'rate': 87,
+        },
+        {
+          'rank': '03',
+          'title': 'EVENING RUN',
+          'emoji': '🏃',
+          'color': 0xFFFF6B6B,
+          'rate': 72,
+        },
+        {
+          'rank': '04',
+          'title': 'READING',
+          'emoji': '📚',
+          'color': 0xFFC77DFF,
+          'rate': 58,
+        },
+        {
+          'rank': '05',
+          'title': 'VITAMINS',
+          'emoji': '💊',
+          'color': 0xFFFFD93D,
+          'rate': 31,
+        },
+      ]);
+      return;
+    }
+
+    // 1. Calculate stats based on period selector
+    // _selectedPeriodIndex: 0: WEEK (7 days), 1: MONTH (30 days), 2: ALL TIME
+    final today = _stripTime(DateTime.now());
+    DateTime startDate;
+    if (_selectedPeriodIndex == 0) {
+      startDate = today.subtract(const Duration(days: 6));
+    } else if (_selectedPeriodIndex == 1) {
+      startDate = today.subtract(const Duration(days: 29));
+    } else {
+      // Find oldest habit creation date
+      DateTime oldest = today;
+      for (final h in _habits) {
+        if (h.createdAt.isBefore(oldest)) {
+          oldest = h.createdAt;
+        }
+      }
+      startDate = _stripTime(oldest);
+    }
+
+    int totalActiveDays = 0;
+    int totalCompletedLogs = 0;
+
+    for (final habit in _habits) {
+      final logs = _habitLogs[habit.id] ?? [];
+      final completionMap = <String, bool>{};
+      for (final log in logs) {
+        if (log.isCompleted) {
+          completionMap[_toDateKey(log.date)] = true;
+        }
+      }
+
+      // Range starts at max(startDate, habit.createdAt)
+      final habitStart = _stripTime(habit.createdAt);
+      final rangeStart = habitStart.isAfter(startDate) ? habitStart : startDate;
+
+      DateTime current = rangeStart;
+      int activeDaysCount = 0;
+      int completedCount = 0;
+
+      while (current.isBefore(today) || current.isAtSameMomentAs(today)) {
+        if (_isDayActive(habit, current)) {
+          activeDaysCount++;
+          if (completionMap[_toDateKey(current)] ?? false) {
+            completedCount++;
+          }
+        }
+        current = current.add(const Duration(days: 1));
+      }
+
+      totalActiveDays += activeDaysCount;
+      totalCompletedLogs += completedCount;
+    }
+
+    final consistencyRate = totalActiveDays > 0
+        ? (totalCompletedLogs / totalActiveDays * 100).round()
+        : 100;
+
+    // Badge text based on consistency
+    String badge;
+    if (consistencyRate >= 90) {
+      badge = 'TOP 5% 🏆';
+    } else if (consistencyRate >= 80) {
+      badge = 'TOP 10% 🏆';
+    } else if (consistencyRate >= 60) {
+      badge = 'TOP 25% 👍';
+    } else {
+      badge = 'KEEP IT UP 💪';
+    }
+
+    // Best streak is the maximum of the longest streak across all habits
+    int maxLongestStreak = 0;
+    for (final habit in _habits) {
+      final streak = _longestStreaks[habit.id] ?? 0;
+      if (streak > maxLongestStreak) {
+        maxLongestStreak = streak;
+      }
+    }
+
+    // Update _periodMetrics for the selected index
+    _periodMetrics[_selectedPeriodIndex] = {
+      'consistency': consistencyRate.toString(),
+      'total': '100',
+      'badge': badge,
+      'streak': maxLongestStreak.toString(),
+    };
+
+    // 2. Weekly Bar Chart Data
+    // Monday to Sunday of the current week
+    final daysToSubtract = today.weekday - 1;
+    final monday = today.subtract(Duration(days: daysToSubtract));
+
+    for (int i = 0; i < 7; i++) {
+      final date = monday.add(Duration(days: i));
+      final dateKey = _toDateKey(date);
+
+      int fitnessCompleted = 0;
+      int healthCompleted = 0;
+      int learningCompleted = 0;
+
+      for (final habit in _habits) {
+        final logs = _habitLogs[habit.id] ?? [];
+        final isCompleted = logs.any(
+          (l) => l.isCompleted && _toDateKey(l.date) == dateKey,
+        );
+
+        if (isCompleted) {
+          final cat = habit.category.toUpperCase();
+          if (cat.contains('FITNESS') || cat.contains('FIT')) {
+            fitnessCompleted++;
+          } else if (cat.contains('HEALTH') || cat.contains('HEA')) {
+            healthCompleted++;
+          } else if (cat.contains('LEARNING') ||
+              cat.contains('LEA') ||
+              cat.contains('LEARN')) {
+            learningCompleted++;
+          }
+        }
+      }
+
+      _weeklyData[i] = [
+        fitnessCompleted.toDouble(),
+        healthCompleted.toDouble(),
+        learningCompleted.toDouble(),
+      ];
+    }
+
+    // 3. Habit Rankings Data
+    final List<Map<String, dynamic>> tempRanking = [];
+    for (final habit in _habits) {
+      final logs = _habitLogs[habit.id] ?? [];
+      final completionMap = <String, bool>{};
+      for (final log in logs) {
+        if (log.isCompleted) {
+          completionMap[_toDateKey(log.date)] = true;
+        }
+      }
+
+      final habitStart = _stripTime(habit.createdAt);
+      DateTime current = habitStart;
+      int activeDaysCount = 0;
+      int completedCount = 0;
+
+      while (current.isBefore(today) || current.isAtSameMomentAs(today)) {
+        if (_isDayActive(habit, current)) {
+          activeDaysCount++;
+          if (completionMap[_toDateKey(current)] ?? false) {
+            completedCount++;
+          }
+        }
+        current = current.add(const Duration(days: 1));
+      }
+
+      final rate = activeDaysCount > 0
+          ? (completedCount / activeDaysCount * 100).round().clamp(0, 100)
+          : 100;
+
+      tempRanking.add({
+        'title': habit.title.toUpperCase(),
+        'emoji': habit.icon.isNotEmpty ? habit.icon : '✨',
+        'color': habit.colorValue,
+        'rate': rate,
+      });
+    }
+
+    // Sort by rate descending
+    tempRanking.sort((a, b) => (b['rate'] as int).compareTo(a['rate'] as int));
+
+    _rankingData.clear();
+    for (int i = 0; i < tempRanking.length && i < 5; i++) {
+      final r = tempRanking[i];
+      _rankingData.add({
+        'rank': '0${i + 1}',
+        'title': r['title'],
+        'emoji': r['emoji'],
+        'color': r['color'],
+        'rate': r['rate'],
+      });
+    }
+  }
 
   Widget _buildHeader() {
     final onSurface = Theme.of(context).colorScheme.onSurface;
@@ -220,6 +552,7 @@ class _StatsScreenState extends State<StatsScreen> {
         onTap: () {
           setState(() {
             _selectedPeriodIndex = index;
+            _calculateStats();
           });
         },
         child: Container(
@@ -828,13 +1161,41 @@ class _StatsScreenState extends State<StatsScreen> {
     Color onSurface,
     Color surfaceColor,
   ) {
-    final int hash =
-        (colIndex * 3 + rowIndex * 7 + _selectedPeriodIndex * 13) % 11;
-    if (hash < 4) {
+    if (_habits.isEmpty) {
+      final int hash =
+          (colIndex * 3 + rowIndex * 7 + _selectedPeriodIndex * 13) % 11;
+      if (hash < 4) {
+        return surfaceColor;
+      } else if (hash < 7) {
+        return const Color(0xFFFFD93D).withValues(alpha: 0.3);
+      } else if (hash < 10) {
+        return const Color(0xFFFFD93D).withValues(alpha: 0.7);
+      } else {
+        return onSurface;
+      }
+    }
+
+    final today = _stripTime(DateTime.now());
+    final startDate = today.subtract(const Duration(days: 363));
+    final date = startDate.add(Duration(days: colIndex * 7 + rowIndex));
+    final dateKey = _toDateKey(date);
+
+    int completedCount = 0;
+    for (final habit in _habits) {
+      final logs = _habitLogs[habit.id] ?? [];
+      final isCompleted = logs.any(
+        (l) => l.isCompleted && _toDateKey(l.date) == dateKey,
+      );
+      if (isCompleted) {
+        completedCount++;
+      }
+    }
+
+    if (completedCount == 0) {
       return surfaceColor;
-    } else if (hash < 7) {
+    } else if (completedCount == 1) {
       return const Color(0xFFFFD93D).withValues(alpha: 0.3);
-    } else if (hash < 10) {
+    } else if (completedCount == 2) {
       return const Color(0xFFFFD93D).withValues(alpha: 0.7);
     } else {
       return onSurface;
@@ -850,19 +1211,25 @@ class _StatsScreenState extends State<StatsScreen> {
           children: [
             _buildHeader(),
             Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 24),
-                child: Column(
-                  children: [
-                    _buildPeriodSelector(),
-                    _buildBigNumbersRow(),
-                    _buildWeeklyBarChart(),
-                    _buildHabitRankingTable(),
-                    _buildStreakGrid(),
-                  ],
-                ),
-              ),
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: Column(
+                        children: [
+                          _buildPeriodSelector(),
+                          _buildBigNumbersRow(),
+                          _buildWeeklyBarChart(),
+                          _buildHabitRankingTable(),
+                          _buildStreakGrid(),
+                        ],
+                      ),
+                    ),
             ),
           ],
         ),

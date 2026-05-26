@@ -43,7 +43,7 @@ class MockHabitRepository implements HabitRepository {
   @override
   Future<void> deleteHabit(String id) async {}
   @override
-  Stream<List<HabitModel>> getHabits(String userId) => const Stream.empty();
+  Stream<List<HabitModel>> getHabits(String userId) => Stream.value([]);
   @override
   Future<void> logHabit(HabitLogModel log) async {}
   @override
@@ -70,6 +70,37 @@ class FakeHabitBloc extends HabitBloc {
   );
 }
 
+class DynamicMockHabitRepository implements HabitRepository {
+  final List<HabitModel> habitsList;
+  final Map<String, List<HabitLogModel>> logsMap;
+  final Map<String, int> longestStreaksMap;
+
+  DynamicMockHabitRepository({
+    required this.habitsList,
+    required this.logsMap,
+    required this.longestStreaksMap,
+  });
+
+  @override
+  Future<void> addHabit(HabitModel habit) async {}
+  @override
+  Future<void> updateHabit(HabitModel habit) async {}
+  @override
+  Future<void> deleteHabit(String id) async {}
+  @override
+  Stream<List<HabitModel>> getHabits(String userId) => Stream.value(habitsList);
+  @override
+  Future<void> logHabit(HabitLogModel log) async {}
+  @override
+  Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date) async => [];
+  @override
+  Future<List<HabitLogModel>> getLogsForHabit(String habitId) async => logsMap[habitId] ?? [];
+  @override
+  Future<int> calculateStreak(String habitId) async => 0;
+  @override
+  Future<int> getLongestStreak(String habitId) async => longestStreaksMap[habitId] ?? 0;
+}
+
 void main() {
   final sl = GetIt.instance;
 
@@ -90,6 +121,9 @@ void main() {
 
     final authBloc = FakeAuthBloc();
     final habitBloc = FakeHabitBloc();
+
+    // Register MockHabitRepository
+    sl.registerSingleton<HabitRepository>(MockHabitRepository());
 
     await tester.pumpWidget(
       MultiBlocProvider(
@@ -173,6 +207,9 @@ void main() {
     final authBloc = FakeAuthBloc();
     final habitBloc = FakeHabitBloc();
 
+    // Register MockHabitRepository
+    sl.registerSingleton<HabitRepository>(MockHabitRepository());
+
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
@@ -219,5 +256,84 @@ void main() {
     expect(find.text('92'), findsOneWidget);
     expect(find.text('TOP 8% 🏆'), findsOneWidget);
     expect(find.text('7'), findsOneWidget);
+  });
+
+  testWidgets('StatsScreen computes dynamic statistics using database data', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(800, 2000);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    final authBloc = FakeAuthBloc();
+    final habitBloc = FakeHabitBloc();
+
+    final today = DateTime.now();
+    // Monday this week
+    final daysToSubtract = today.weekday - 1;
+    final monday = today.subtract(Duration(days: daysToSubtract));
+
+    final realHabit = HabitModel(
+      id: 'real_h1',
+      userId: 'u1',
+      title: 'REAL FITNESS HABIT',
+      description: 'Test description',
+      category: '🏃 FITNESS',
+      icon: '💪',
+      colorValue: 0xFF4D96FF,
+      activeDays: const ['mon', 'wed', 'fri'],
+      reminderTime: '08:00',
+      createdAt: today.subtract(const Duration(days: 10)),
+    );
+
+    final List<HabitLogModel> logsList = [];
+    for (int i = 0; i < 7; i++) {
+      logsList.add(
+        HabitLogModel(
+          id: 'log_$i',
+          habitId: 'real_h1',
+          date: today.subtract(Duration(days: i)),
+          isCompleted: true,
+        ),
+      );
+    }
+
+    final dynamicRepo = DynamicMockHabitRepository(
+      habitsList: [realHabit],
+      logsMap: {
+        'real_h1': logsList,
+      },
+      longestStreaksMap: {
+        'real_h1': 8,
+      },
+    );
+
+    // Re-register the dynamic repository in GetIt
+    sl.registerSingleton<HabitRepository>(dynamicRepo);
+
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(create: (_) => authBloc),
+          BlocProvider<HabitBloc>(create: (_) => habitBloc),
+        ],
+        child: const MaterialApp(
+          home: StatsScreen(),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify dynamic statistics are displayed
+    // Best streak should be 8 (from longestStreaksMap)
+    expect(find.text('8'), findsOneWidget);
+
+    // Consistency rate should be 100%
+    expect(find.text('100'), findsOneWidget);
+
+    // Verify habit title from rankings table
+    expect(find.text('REAL FITNESS HABIT'), findsOneWidget);
   });
 }

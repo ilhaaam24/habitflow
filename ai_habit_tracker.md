@@ -882,7 +882,7 @@ text
 ```
 TASK-023 | Buat Calendar View
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 4 jam
 
