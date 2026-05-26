@@ -67,10 +67,7 @@ Future<void> initDependencyInjection(
 
   // Repositories
   sl.registerLazySingleton<HabitRepository>(
-    () => HabitRepositoryImpl(
-      localDataSource: sl(),
-      remoteDataSource: sl(),
-    ),
+    () => HabitRepositoryImpl(localDataSource: sl(), remoteDataSource: sl()),
   );
 
   // Blocs

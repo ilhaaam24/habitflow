@@ -688,7 +688,7 @@ text
 ```
 TASK-015 | Buat AddHabitScreen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 5 jam
 
@@ -713,7 +713,7 @@ text
 ```
 TASK-016 | Buat HomeScreen (Daily View)
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 6 jam
 

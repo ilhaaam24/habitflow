@@ -80,7 +80,10 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
-  Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date) async {
+  Future<List<HabitLogModel>> getLogsForDate(
+    String userId,
+    DateTime date,
+  ) async {
     _syncRemoteLogs(userId, date);
     return localDataSource.getCachedLogsForDate(userId, date);
   }

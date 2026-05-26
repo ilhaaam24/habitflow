@@ -40,7 +40,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   Future<void> _syncUserProfile(User user) async {
     try {
-      developer.log('Syncing user profile for ${user.uid} to Firestore...', name: 'AuthRemoteDataSource');
+      developer.log(
+        'Syncing user profile for ${user.uid} to Firestore...',
+        name: 'AuthRemoteDataSource',
+      );
       final userRef = firestore.collection('users').doc(user.uid);
       await userRef.set({
         'uid': user.uid,
@@ -49,9 +52,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'photoUrl': user.photoURL,
         'lastSeen': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
-      developer.log('Successfully synced user profile for ${user.uid} to Firestore.', name: 'AuthRemoteDataSource');
+      developer.log(
+        'Successfully synced user profile for ${user.uid} to Firestore.',
+        name: 'AuthRemoteDataSource',
+      );
     } catch (e) {
-      developer.log('Error syncing user profile to Firestore', error: e, name: 'AuthRemoteDataSource');
+      developer.log(
+        'Error syncing user profile to Firestore',
+        error: e,
+        name: 'AuthRemoteDataSource',
+      );
       rethrow;
     }
   }

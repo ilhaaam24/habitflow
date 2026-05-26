@@ -69,16 +69,29 @@ class HabitRemoteDataSourceImpl implements HabitRemoteDataSource {
         .collection('habits')
         .get();
 
-    return snapshot.docs
-        .map((doc) => HabitModel.fromJson(doc.data()))
-        .toList();
+    return snapshot.docs.map((doc) => HabitModel.fromJson(doc.data())).toList();
   }
 
   @override
-  Future<List<HabitLogModel>> fetchLogsForDate(String userId, DateTime date) async {
+  Future<List<HabitLogModel>> fetchLogsForDate(
+    String userId,
+    DateTime date,
+  ) async {
     // Format date string to match our ISO format start and end of day
-    final startOfDay = DateTime(date.year, date.month, date.day).toIso8601String();
-    final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999).toIso8601String();
+    final startOfDay = DateTime(
+      date.year,
+      date.month,
+      date.day,
+    ).toIso8601String();
+    final endOfDay = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      23,
+      59,
+      59,
+      999,
+    ).toIso8601String();
 
     final snapshot = await firestore
         .collection('users')

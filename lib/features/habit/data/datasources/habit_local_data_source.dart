@@ -17,10 +17,7 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
   final Box habitsBox;
   final Box logsBox;
 
-  HabitLocalDataSourceImpl({
-    required this.habitsBox,
-    required this.logsBox,
-  });
+  HabitLocalDataSourceImpl({required this.habitsBox, required this.logsBox});
 
   @override
   Future<void> cacheHabit(HabitModel habit) async {
@@ -37,7 +34,7 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
   @override
   Future<void> deleteHabit(String id) async {
     await habitsBox.delete(id);
-    
+
     // Clean up associated logs from local storage
     final logKeysToDelete = <dynamic>[];
     for (final key in logsBox.keys) {
