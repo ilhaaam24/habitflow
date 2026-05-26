@@ -592,7 +592,7 @@ text
 ```
 TASK-011 | Buat HabitModel
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 1 jam
 

@@ -308,90 +308,93 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox.square(dimension: 40),
 
-                    NeobrutalistButton(
-                      color: Colors.white,
-                      borderRadius: 0,
-                      borderWidth: 3,
-                      shadowOffset: 6,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      onTap: isLoading
-                          ? null
-                          : () {
-                              context.read<AuthBloc>().add(
-                                GoogleSignInRequested(),
-                              );
-                            },
-                      child: Row(
-                        spacing: 16,
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 2,
-                                color: AppColors.black,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: NeobrutalistButton(
+                        color: Colors.white,
+                        borderRadius: 0,
+                        borderWidth: 3,
+                        shadowOffset: 6,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        onTap: isLoading
+                            ? null
+                            : () {
+                                context.read<AuthBloc>().add(
+                                  GoogleSignInRequested(),
+                                );
+                              },
+                        child: Row(
+                          spacing: 16,
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: AppColors.black,
+                                ),
+                              ),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'assets/icons/google.svg',
+                                  height: 24,
+                                  width: 24,
+                                ),
                               ),
                             ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                'assets/icons/google.svg',
-                                height: 24,
-                                width: 24,
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'SIGN IN WITH GOOGLE',
+                                    style: TextStyle(
+                                      fontFamily: 'SpaceGrotesk',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Quick, free, no password needed',
+                                    style: TextStyle(
+                                      fontFamily: 'SpaceGrotesk',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w300,
+                                      color: AppColors.darkCard,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'SIGN IN WITH GOOGLE',
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: AppColors.black,
+                                ),
+                                color: AppColors.accentYellow,
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '\u2192',
                                   style: TextStyle(
                                     fontFamily: 'SpaceGrotesk',
-                                    fontSize: 16,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.w800,
                                     color: AppColors.black,
                                   ),
                                 ),
-                                Text(
-                                  'Quick, free, no password needed',
-                                  style: TextStyle(
-                                    fontFamily: 'SpaceGrotesk',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w300,
-                                    color: AppColors.darkCard,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 2,
-                                color: AppColors.black,
-                              ),
-                              color: AppColors.accentYellow,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '\u2192',
-                                style: TextStyle(
-                                  fontFamily: 'SpaceGrotesk',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppColors.black,
-                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
 
