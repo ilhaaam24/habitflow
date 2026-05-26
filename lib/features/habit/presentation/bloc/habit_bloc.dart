@@ -55,11 +55,16 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
         _userId!,
         _selectedDate!,
       );
+      final streaks = <String, int>{};
+      for (final habit in _currentHabits) {
+        streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
+      }
       emit(
         HabitLoaded(
           habits: _currentHabits,
           todayLogs: logs,
           selectedDate: _selectedDate!,
+          streaks: streaks,
         ),
       );
     } catch (e) {
@@ -142,11 +147,16 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
         _userId!,
         _selectedDate!,
       );
+      final streaks = <String, int>{};
+      for (final habit in _currentHabits) {
+        streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
+      }
       emit(
         HabitLoaded(
           habits: _currentHabits,
           todayLogs: updatedLogs,
           selectedDate: _selectedDate!,
+          streaks: streaks,
         ),
       );
     } catch (e) {

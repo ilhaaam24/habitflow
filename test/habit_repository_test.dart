@@ -194,5 +194,135 @@ void main() {
       expect(logs.first.id, testLog.id);
       expect(logs.first.isCompleted, isTrue);
     });
+
+    test('should calculate current and longest streaks correctly', () async {
+      // Habit created 5 days ago
+      final now = DateTime.now();
+      final habitCreatedDate = now.subtract(const Duration(days: 5));
+      
+      // Active every day
+      final streakHabit = HabitModel(
+        id: 'streak_habit_1',
+        userId: 'user_123',
+        title: 'Streak Workout',
+        description: 'Testing streaks',
+        category: 'fitness',
+        icon: '💪',
+        colorValue: 0xFFFF0000,
+        reminderTime: '07:00',
+        activeDays: const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+        createdAt: habitCreatedDate,
+      );
+
+      await repository.addHabit(streakHabit);
+
+      // Initially no logs -> streak is 0
+      expect(await repository.calculateStreak('streak_habit_1'), 0);
+      expect(await repository.getLongestStreak('streak_habit_1'), 0);
+
+      // Log completion for today
+      final logToday = HabitLogModel(
+        id: 'l_today',
+        habitId: 'streak_habit_1',
+        date: now,
+        isCompleted: true,
+      );
+      await repository.logHabit(logToday);
+
+      // Now streak should be 1
+      expect(await repository.calculateStreak('streak_habit_1'), 1);
+      expect(await repository.getLongestStreak('streak_habit_1'), 1);
+
+      // Log completion for yesterday
+      final logYesterday = HabitLogModel(
+        id: 'l_yest',
+        habitId: 'streak_habit_1',
+        date: now.subtract(const Duration(days: 1)),
+        isCompleted: true,
+      );
+      await repository.logHabit(logYesterday);
+
+      // Streak should be 2
+      expect(await repository.calculateStreak('streak_habit_1'), 2);
+      expect(await repository.getLongestStreak('streak_habit_1'), 2);
+
+      // Skip 2 days ago (which makes it NOT completed).
+      // Log completion for 3 days ago
+      final logThreeDaysAgo = HabitLogModel(
+        id: 'l_3days',
+        habitId: 'streak_habit_1',
+        date: now.subtract(const Duration(days: 3)),
+        isCompleted: true,
+      );
+      await repository.logHabit(logThreeDaysAgo);
+
+      // Current streak should still be 2 (since 2 days ago was skipped, current run is today and yesterday)
+      expect(await repository.calculateStreak('streak_habit_1'), 2);
+      // Longest streak should be 2 (since the runs are size 2 and size 1)
+      expect(await repository.getLongestStreak('streak_habit_1'), 2);
+
+      // Now log completion for 2 days ago (completing the chain)
+      final logTwoDaysAgo = HabitLogModel(
+        id: 'l_2days',
+        habitId: 'streak_habit_1',
+        date: now.subtract(const Duration(days: 2)),
+        isCompleted: true,
+      );
+      await repository.logHabit(logTwoDaysAgo);
+
+      // Current streak should be 4 (today, yesterday, 2 days ago, 3 days ago)
+      expect(await repository.calculateStreak('streak_habit_1'), 4);
+      expect(await repository.getLongestStreak('streak_habit_1'), 4);
+    });
+
+    test('should calculate streak taking activeDays schedule into account', () async {
+      final weekdayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+      final today = DateTime.now();
+      final twoDaysAgo = today.subtract(const Duration(days: 2));
+
+      // Habit is active only on today's weekday and 2 days ago's weekday
+      final activeDays = [
+        weekdayNames[today.weekday - 1],
+        weekdayNames[twoDaysAgo.weekday - 1],
+      ];
+
+      final scheduledHabit = HabitModel(
+        id: 'sched_habit_1',
+        userId: 'user_123',
+        title: 'Scheduled Habit',
+        description: 'Testing scheduled streaks',
+        category: 'fitness',
+        icon: '🏃',
+        colorValue: 0xFF0000FF,
+        reminderTime: '08:00',
+        activeDays: activeDays,
+        createdAt: today.subtract(const Duration(days: 7)),
+      );
+
+      await repository.addHabit(scheduledHabit);
+
+      // Log today (active)
+      await repository.logHabit(HabitLogModel(
+        id: 'ls_today',
+        habitId: 'sched_habit_1',
+        date: today,
+        isCompleted: true,
+      ));
+
+      // Current streak = 1
+      expect(await repository.calculateStreak('sched_habit_1'), 1);
+
+      // Log 2 days ago (active)
+      await repository.logHabit(HabitLogModel(
+        id: 'ls_2days',
+        habitId: 'sched_habit_1',
+        date: twoDaysAgo,
+        isCompleted: true,
+      ));
+
+      // Yesterday was NOT active, so it shouldn't break the streak!
+      // Current streak should be 2 (today + 2 days ago, ignoring yesterday)
+      expect(await repository.calculateStreak('sched_habit_1'), 2);
+    });
   });
 }

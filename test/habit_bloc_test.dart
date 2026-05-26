@@ -63,6 +63,12 @@ class MockHabitRepository implements HabitRepository {
     return logs.where((l) => l.habitId == habitId).toList();
   }
 
+  @override
+  Future<int> calculateStreak(String habitId) async => 0;
+
+  @override
+  Future<int> getLongestStreak(String habitId) async => 0;
+
   void dispose() {
     _habitsController.close();
   }

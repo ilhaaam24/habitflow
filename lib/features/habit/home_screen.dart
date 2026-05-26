@@ -688,13 +688,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                         log.isCompleted,
                                   );
 
+                                  final streak = state is HabitLoaded
+                                      ? (state.streaks[habit.id] ?? 0)
+                                      : 0;
+
                                   return _buildHabitCard(
                                     id: habit.id,
                                     title: habit.title.toUpperCase(),
                                     emoji: habit.icon,
                                     colorVal: habit.colorValue,
-                                    streak:
-                                        12, // fallback simple streak display
+                                    streak: streak,
                                     isDone: isDone,
                                     category: habit.category,
                                     onToggle: () {

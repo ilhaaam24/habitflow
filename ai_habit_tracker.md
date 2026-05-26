@@ -752,7 +752,7 @@ text
 ```
 TASK-017 | Implementasi Streak System
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 4 jam
 

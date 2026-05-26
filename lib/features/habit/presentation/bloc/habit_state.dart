@@ -11,11 +11,13 @@ class HabitLoaded extends HabitState {
   final List<HabitModel> habits;
   final List<HabitLogModel> todayLogs;
   final DateTime selectedDate;
+  final Map<String, int> streaks;
 
   HabitLoaded({
     required this.habits,
     required this.todayLogs,
     required this.selectedDate,
+    this.streaks = const {},
   });
 }
 

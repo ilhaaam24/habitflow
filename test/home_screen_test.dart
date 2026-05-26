@@ -50,6 +50,10 @@ class DummyHabitRepository implements HabitRepository {
   Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date) async => [];
   @override
   Future<List<HabitLogModel>> getLogsForHabit(String habitId) async => [];
+  @override
+  Future<int> calculateStreak(String habitId) async => 0;
+  @override
+  Future<int> getLongestStreak(String habitId) async => 0;
 }
 
 class FakeHabitBloc extends HabitBloc {

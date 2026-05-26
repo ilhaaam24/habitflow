@@ -48,6 +48,10 @@ class DummyHabitRepository implements HabitRepository {
   Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date) async => [];
   @override
   Future<List<HabitLogModel>> getLogsForHabit(String habitId) async => [];
+  @override
+  Future<int> calculateStreak(String habitId) async => 0;
+  @override
+  Future<int> getLongestStreak(String habitId) async => 0;
 }
 
 class FakeHabitBloc extends HabitBloc {
@@ -83,7 +87,7 @@ void main() {
     expect(find.text('03 — COLOR'), findsOneWidget);
     expect(find.text('04 — SCHEDULE'), findsOneWidget);
     expect(find.text('HABIT NAME *'), findsOneWidget);
-    expect(find.text('TAP TO\nCHOOSE\nICON'), findsOneWidget);
+    expect(find.text('TAP TO CHOOSE ICON'), findsOneWidget);
     expect(find.text('CREATE HABIT'), findsOneWidget);
   });
 }

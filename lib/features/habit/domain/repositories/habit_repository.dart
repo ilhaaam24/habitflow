@@ -9,4 +9,6 @@ abstract class HabitRepository {
   Future<void> logHabit(HabitLogModel log);
   Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date);
   Future<List<HabitLogModel>> getLogsForHabit(String habitId);
+  Future<int> calculateStreak(String habitId);
+  Future<int> getLongestStreak(String habitId);
 }
