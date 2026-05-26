@@ -270,9 +270,6 @@ void main() {
     final habitBloc = FakeHabitBloc();
 
     final today = DateTime.now();
-    // Monday this week
-    final daysToSubtract = today.weekday - 1;
-    final monday = today.subtract(Duration(days: daysToSubtract));
 
     final realHabit = HabitModel(
       id: 'real_h1',

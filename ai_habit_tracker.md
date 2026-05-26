@@ -908,7 +908,7 @@ text
 ```
 TASK-024 | Buat StatsScreen (Overview)
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P1
 Estimate : 5 jam
 

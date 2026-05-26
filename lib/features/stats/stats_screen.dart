@@ -8,6 +8,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
+import 'package:habit_flow/core/helpers/completion_rate_calculator.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -155,12 +156,6 @@ class _StatsScreenState extends State<StatsScreen> {
     return '${date.year}-${date.month}-${date.day}';
   }
 
-  bool _isDayActive(HabitModel habit, DateTime date) {
-    final weekdayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-    final weekdayStr = weekdayNames[date.weekday - 1];
-    return habit.activeDays.contains(weekdayStr);
-  }
-
   void _calculateStats() {
     if (_habits.isEmpty) {
       // Fallback to mock/dummy data
@@ -232,62 +227,18 @@ class _StatsScreenState extends State<StatsScreen> {
       return;
     }
 
+    final today = _stripTime(DateTime.now());
+
     // 1. Calculate stats based on period selector
     // _selectedPeriodIndex: 0: WEEK (7 days), 1: MONTH (30 days), 2: ALL TIME
-    final today = _stripTime(DateTime.now());
-    DateTime startDate;
-    if (_selectedPeriodIndex == 0) {
-      startDate = today.subtract(const Duration(days: 6));
-    } else if (_selectedPeriodIndex == 1) {
-      startDate = today.subtract(const Duration(days: 29));
-    } else {
-      // Find oldest habit creation date
-      DateTime oldest = today;
-      for (final h in _habits) {
-        if (h.createdAt.isBefore(oldest)) {
-          oldest = h.createdAt;
-        }
-      }
-      startDate = _stripTime(oldest);
-    }
-
-    int totalActiveDays = 0;
-    int totalCompletedLogs = 0;
-
-    for (final habit in _habits) {
-      final logs = _habitLogs[habit.id] ?? [];
-      final completionMap = <String, bool>{};
-      for (final log in logs) {
-        if (log.isCompleted) {
-          completionMap[_toDateKey(log.date)] = true;
-        }
-      }
-
-      // Range starts at max(startDate, habit.createdAt)
-      final habitStart = _stripTime(habit.createdAt);
-      final rangeStart = habitStart.isAfter(startDate) ? habitStart : startDate;
-
-      DateTime current = rangeStart;
-      int activeDaysCount = 0;
-      int completedCount = 0;
-
-      while (current.isBefore(today) || current.isAtSameMomentAs(today)) {
-        if (_isDayActive(habit, current)) {
-          activeDaysCount++;
-          if (completionMap[_toDateKey(current)] ?? false) {
-            completedCount++;
-          }
-        }
-        current = current.add(const Duration(days: 1));
-      }
-
-      totalActiveDays += activeDaysCount;
-      totalCompletedLogs += completedCount;
-    }
-
-    final consistencyRate = totalActiveDays > 0
-        ? (totalCompletedLogs / totalActiveDays * 100).round()
-        : 100;
+    final days = _selectedPeriodIndex == 0
+        ? 7
+        : (_selectedPeriodIndex == 1 ? 30 : null);
+    final consistencyRate = CompletionRateCalculator.calculateMultiple(
+      habits: _habits,
+      habitsLogs: _habitLogs,
+      days: days,
+    );
 
     // Badge text based on consistency
     String badge;
@@ -362,31 +313,11 @@ class _StatsScreenState extends State<StatsScreen> {
     final List<Map<String, dynamic>> tempRanking = [];
     for (final habit in _habits) {
       final logs = _habitLogs[habit.id] ?? [];
-      final completionMap = <String, bool>{};
-      for (final log in logs) {
-        if (log.isCompleted) {
-          completionMap[_toDateKey(log.date)] = true;
-        }
-      }
-
-      final habitStart = _stripTime(habit.createdAt);
-      DateTime current = habitStart;
-      int activeDaysCount = 0;
-      int completedCount = 0;
-
-      while (current.isBefore(today) || current.isAtSameMomentAs(today)) {
-        if (_isDayActive(habit, current)) {
-          activeDaysCount++;
-          if (completionMap[_toDateKey(current)] ?? false) {
-            completedCount++;
-          }
-        }
-        current = current.add(const Duration(days: 1));
-      }
-
-      final rate = activeDaysCount > 0
-          ? (completedCount / activeDaysCount * 100).round().clamp(0, 100)
-          : 100;
+      final rate = CompletionRateCalculator.calculate(
+        habit: habit,
+        logs: logs,
+        days: null,
+      );
 
       tempRanking.add({
         'title': habit.title.toUpperCase(),
@@ -978,9 +909,9 @@ class _StatsScreenState extends State<StatsScreen> {
 
             // Determine badge background color
             Color badgeBg;
-            if (rate > 80) {
+            if (rate > 70) {
               badgeBg = const Color(0xFF6BCB77);
-            } else if (rate > 50) {
+            } else if (rate >= 40) {
               badgeBg = const Color(0xFFFFD93D);
             } else {
               badgeBg = const Color(0xFFFF6B6B);
