@@ -4,12 +4,54 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:habit_flow/features/settings/settings_screen.dart';
 import 'package:habit_flow/core/theme/theme_cubit.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
 import 'package:habit_flow/shared/models/user_model.dart';
+
+class FakeBadgesBox extends Fake implements Box {
+  final Map<dynamic, dynamic> _data = {};
+
+  @override
+  dynamic get(dynamic key, {dynamic defaultValue}) => _data[key] ?? defaultValue;
+
+  @override
+  Future<void> put(dynamic key, dynamic value) async {
+    _data[key] = value;
+  }
+
+  @override
+  Future<void> delete(dynamic key) async {
+    _data.remove(key);
+  }
+
+  @override
+  Iterable get keys => _data.keys;
+
+  @override
+  int get length => _data.length;
+
+  @override
+  bool get isOpen => true;
+
+  @override
+  bool get isEmpty => _data.isEmpty;
+
+  @override
+  bool get isNotEmpty => _data.isNotEmpty;
+
+  @override
+  Stream<BoxEvent> watch({dynamic key}) => const Stream.empty();
+
+  @override
+  Map<dynamic, dynamic> toMap() => Map.unmodifiable(_data);
+
+  @override
+  bool containsKey(dynamic key) => _data.containsKey(key);
+}
 
 class DummyAuthRepository implements AuthRepository {
   @override
@@ -43,7 +85,11 @@ void main() {
     if (sl.isRegistered<SharedPreferences>()) {
       await sl.unregister<SharedPreferences>();
     }
+    if (sl.isRegistered<Box>(instanceName: 'badgesBox')) {
+      await sl.unregister<Box>(instanceName: 'badgesBox');
+    }
     sl.registerSingleton<SharedPreferences>(prefs);
+    sl.registerSingleton<Box>(FakeBadgesBox(), instanceName: 'badgesBox');
   });
 
   testWidgets('SettingsScreen UI elements exist and render correctly in Neobrutalist style', (WidgetTester tester) async {

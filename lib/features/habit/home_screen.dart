@@ -16,6 +16,9 @@ import 'package:lottie/lottie.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
 import '../../shared/widgets/neobrutalist_button.dart';
 import 'neobrutalist_habit_card_item.dart';
+import '../../core/di/injection.dart';
+import '../../core/services/badge_service.dart';
+import '../../shared/widgets/badge_unlock_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -110,12 +113,36 @@ class _HomeScreenState extends State<HomeScreen> {
       'EEEE, MMM d',
     ).format(DateTime.now()).toUpperCase();
 
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthUnauthenticated) {
-          context.go('/login');
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthUnauthenticated) {
+              context.go('/login');
+            }
+          },
+        ),
+        BlocListener<HabitBloc, HabitState>(
+          listener: (context, state) async {
+            if (state is HabitLoaded) {
+              final authState = context.read<AuthBloc>().state;
+              if (authState is AuthAuthenticated) {
+                final newlyUnlocked = await sl<BadgeService>()
+                    .checkAndUnlockBadges(authState.user.uid);
+                if (newlyUnlocked.isNotEmpty && context.mounted) {
+                  for (final badge in newlyUnlocked) {
+                    await showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => BadgeUnlockDialog(badge: badge),
+                    );
+                  }
+                }
+              }
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
@@ -730,7 +757,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         index: 2,
                         icon: Icons.psychology,
                         label: 'AI',
-                        route: '/ai-settings',
+                        route: '/ai-insights',
                       ),
                       _buildNavItem(
                         index: 3,

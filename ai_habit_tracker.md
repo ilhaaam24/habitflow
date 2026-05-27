@@ -1050,7 +1050,7 @@ text
 ```
 TASK-030 | Buat AISettingsScreen (BYOK)
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P2
 Estimate : 4 jam
 
@@ -1075,7 +1075,7 @@ text
 ```
 TASK-031 | Buat GeminiService
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P2
 Estimate : 4 jam
 
@@ -1142,7 +1142,7 @@ text
 ```
 TASK-033 | Buat AIScreen / AI Insight Screen
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P2
 Estimate : 5 jam
 
@@ -1175,7 +1175,7 @@ text
 ```
 TASK-034 | Buat Smart Insight (Tanpa AI)
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P2
 Estimate : 3 jam
 
@@ -1204,7 +1204,7 @@ text
 ```
 TASK-035 | Buat Achievement Badge System
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P2
 Estimate : 4 jam
 

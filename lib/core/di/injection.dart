@@ -4,8 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:dio/dio.dart';
 
 import '../services/notification_service.dart';
+import '../services/gemini_service.dart';
+import '../services/badge_service.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -27,10 +30,33 @@ Future<void> initDependencyInjection(
   await notificationService.initialize();
   sl.registerSingleton<NotificationService>(notificationService);
 
+  final dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 8),
+    receiveTimeout: const Duration(seconds: 8),
+  ));
+  sl.registerSingleton<Dio>(dio);
+
+  sl.registerLazySingleton<GeminiService>(
+    () => GeminiService(
+      sharedPreferences: sl(),
+      dio: sl(),
+      habitRepository: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<BadgeService>(
+    () => BadgeService(
+      badgesBox: sl(instanceName: 'badgesBox'),
+      habitRepository: sl(),
+      sharedPreferences: sl(),
+    ),
+  );
+
   // Core & External
   await Hive.initFlutter();
   final habitsBox = await Hive.openBox('habits');
   final logsBox = await Hive.openBox('habit_logs');
+  final badgesBox = await Hive.openBox('badges');
 
   sl.registerSingleton<SharedPreferences>(sharedPreferences);
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
@@ -39,6 +65,7 @@ Future<void> initDependencyInjection(
 
   sl.registerSingleton<Box>(habitsBox, instanceName: 'habitsBox');
   sl.registerSingleton<Box>(logsBox, instanceName: 'logsBox');
+  sl.registerSingleton<Box>(badgesBox, instanceName: 'badgesBox');
 
   // Features - Auth
   // Data Sources

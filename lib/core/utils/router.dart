@@ -9,6 +9,7 @@ import '../../features/habit/habit_detail_screen.dart';
 import '../../features/stats/stats_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/ai_settings_screen.dart';
+import '../../features/ai/ai_insights_screen.dart';
 
 CustomTransitionPage<void> buildPageWithBrutalistTransition(
   BuildContext context,
@@ -37,10 +38,7 @@ CustomTransitionPage<void> buildPageWithBrutalistTransition(
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const SplashScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
     GoRoute(
       path: '/onboarding',
       pageBuilder: (context, state) => buildPageWithBrutalistTransition(
@@ -51,19 +49,13 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
-        context,
-        state,
-        const LoginScreen(),
-      ),
+      pageBuilder: (context, state) =>
+          buildPageWithBrutalistTransition(context, state, const LoginScreen()),
     ),
     GoRoute(
       path: '/home',
-      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
-        context,
-        state,
-        const HomeScreen(),
-      ),
+      pageBuilder: (context, state) =>
+          buildPageWithBrutalistTransition(context, state, const HomeScreen()),
     ),
     GoRoute(
       path: '/habit/add',
@@ -97,11 +89,8 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/stats',
-      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
-        context,
-        state,
-        const StatsScreen(),
-      ),
+      pageBuilder: (context, state) =>
+          buildPageWithBrutalistTransition(context, state, const StatsScreen()),
     ),
     GoRoute(
       path: '/settings',
@@ -117,6 +106,14 @@ final GoRouter appRouter = GoRouter(
         context,
         state,
         const AISettingsScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/ai-insights',
+      pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+        context,
+        state,
+        const AIInsightsScreen(),
       ),
     ),
   ],
