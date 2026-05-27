@@ -1230,7 +1230,7 @@ text
 ```
 TASK-036 | Play Store Asset Preparation
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0 (untuk launch)
 Estimate : 6 jam
 
