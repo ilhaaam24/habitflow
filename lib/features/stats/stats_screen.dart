@@ -11,6 +11,7 @@ import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:habit_flow/core/helpers/completion_rate_calculator.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
+import '../../core/theme/app_colors.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -235,10 +236,34 @@ class _StatsScreenState extends State<StatsScreen> {
       _fourWeeksData[3] = 92.0;
       _categoryData.clear();
       _categoryData.addAll([
-        {'name': 'FITNESS', 'emoji': '🏃', 'color': 0xFFFFD93D, 'count': 5, 'rate': 88},
-        {'name': 'HEALTH', 'emoji': '💧', 'color': 0xFF6BEBFF, 'count': 3, 'rate': 72},
-        {'name': 'LEARNING', 'emoji': '📚', 'color': 0xFFC77DFF, 'count': 2, 'rate': 45},
-        {'name': 'MIND', 'emoji': '🧘', 'color': 0xFFFF6B6B, 'count': 1, 'rate': 91},
+        {
+          'name': 'FITNESS',
+          'emoji': '🏃',
+          'color': 0xFFFFD93D,
+          'count': 5,
+          'rate': 88,
+        },
+        {
+          'name': 'HEALTH',
+          'emoji': '💧',
+          'color': 0xFF6BEBFF,
+          'count': 3,
+          'rate': 72,
+        },
+        {
+          'name': 'LEARNING',
+          'emoji': '📚',
+          'color': 0xFFC77DFF,
+          'count': 2,
+          'rate': 45,
+        },
+        {
+          'name': 'MIND',
+          'emoji': '🧘',
+          'color': 0xFFFF6B6B,
+          'count': 1,
+          'rate': 91,
+        },
       ]);
       return;
     }
@@ -411,7 +436,9 @@ class _StatsScreenState extends State<StatsScreen> {
       });
     }
     // Sort by count descending
-    _categoryData.sort((a, b) => (b['count'] as int).compareTo(a['count'] as int));
+    _categoryData.sort(
+      (a, b) => (b['count'] as int).compareTo(a['count'] as int),
+    );
   }
 
   Widget _buildHeader() {
@@ -426,36 +453,6 @@ class _StatsScreenState extends State<StatsScreen> {
       child: Row(
         children: [
           // Back button
-          GestureDetector(
-            onTap: () => context.pop(),
-            child: Container(
-              width: 40,
-              height: 40,
-              margin: const EdgeInsets.only(right: 12),
-              decoration: BoxDecoration(
-                color: surfaceColor,
-                border: Border.all(color: onSurface, width: 3),
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [
-                  BoxShadow(
-                    color: onSurface,
-                    offset: const Offset(3, 3),
-                    blurRadius: 0,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  '←',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: onSurface,
-                  ),
-                ),
-              ),
-            ),
-          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -822,7 +819,10 @@ class _StatsScreenState extends State<StatsScreen> {
                     touchTooltipData: BarTouchTooltipData(
                       getTooltipColor: (_) => Colors.black,
                       tooltipBorder: BorderSide(color: onSurface, width: 2),
-                      tooltipPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      tooltipPadding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
                         final category = rodIndex == 0
                             ? "Fitness"
@@ -844,7 +844,15 @@ class _StatsScreenState extends State<StatsScreen> {
                       sideTitles: SideTitles(
                         showTitles: true,
                         getTitlesWidget: (double value, TitleMeta meta) {
-                          const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+                          const days = [
+                            "MON",
+                            "TUE",
+                            "WED",
+                            "THU",
+                            "FRI",
+                            "SAT",
+                            "SUN",
+                          ];
                           if (value >= 0 && value < 7) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 6),
@@ -882,8 +890,12 @@ class _StatsScreenState extends State<StatsScreen> {
                         reservedSize: 20,
                       ),
                     ),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
                   gridData: FlGridData(
                     show: true,
@@ -1017,7 +1029,10 @@ class _StatsScreenState extends State<StatsScreen> {
                     touchTooltipData: LineTouchTooltipData(
                       getTooltipColor: (_) => Colors.black,
                       tooltipBorder: BorderSide(color: onSurface, width: 2),
-                      tooltipPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      tooltipPadding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((spot) {
                           return LineTooltipItem(
@@ -1077,8 +1092,12 @@ class _StatsScreenState extends State<StatsScreen> {
                         reservedSize: 32,
                       ),
                     ),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
                   gridData: FlGridData(
                     show: true,
@@ -1109,12 +1128,13 @@ class _StatsScreenState extends State<StatsScreen> {
                       isStrokeCapRound: true,
                       dotData: FlDotData(
                         show: true,
-                        getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
-                          radius: 5,
-                          color: const Color(0xFFFFD93D),
-                          strokeWidth: 2,
-                          strokeColor: onSurface,
-                        ),
+                        getDotPainter: (spot, percent, barData, index) =>
+                            FlDotCirclePainter(
+                              radius: 5,
+                              color: const Color(0xFFFFD93D),
+                              strokeWidth: 2,
+                              strokeColor: onSurface,
+                            ),
                       ),
                       belowBarData: BarAreaData(
                         show: true,
@@ -1150,10 +1170,12 @@ class _StatsScreenState extends State<StatsScreen> {
     Map<String, dynamic>? mostConsistent;
     Map<String, dynamic>? leastConsistent;
     for (final cat in _categoryData) {
-      if (mostConsistent == null || (cat['rate'] as int) > (mostConsistent['rate'] as int)) {
+      if (mostConsistent == null ||
+          (cat['rate'] as int) > (mostConsistent['rate'] as int)) {
         mostConsistent = cat;
       }
-      if (leastConsistent == null || (cat['rate'] as int) < (leastConsistent['rate'] as int)) {
+      if (leastConsistent == null ||
+          (cat['rate'] as int) < (leastConsistent['rate'] as int)) {
         leastConsistent = cat;
       }
     }
@@ -1203,18 +1225,20 @@ class _StatsScreenState extends State<StatsScreen> {
                     child: PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
-                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                _touchedCategoryIndex = -1;
-                                return;
-                              }
-                              _touchedCategoryIndex =
-                                  pieTouchResponse.touchedSection!.touchedSectionIndex;
-                            });
-                          },
+                          touchCallback:
+                              (FlTouchEvent event, pieTouchResponse) {
+                                setState(() {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    _touchedCategoryIndex = -1;
+                                    return;
+                                  }
+                                  _touchedCategoryIndex = pieTouchResponse
+                                      .touchedSection!
+                                      .touchedSectionIndex;
+                                });
+                              },
                         ),
                         borderData: FlBorderData(show: false),
                         sectionsSpace: 3,
@@ -1241,10 +1265,7 @@ class _StatsScreenState extends State<StatsScreen> {
                               fontSize: isTouched ? 11 : 10,
                               color: Colors.black,
                             ),
-                            borderSide: BorderSide(
-                              color: onSurface,
-                              width: 2,
-                            ),
+                            borderSide: BorderSide(color: onSurface, width: 2),
                           );
                         }),
                       ),
@@ -1276,7 +1297,10 @@ class _StatsScreenState extends State<StatsScreen> {
                               height: 12,
                               decoration: BoxDecoration(
                                 color: color,
-                                border: Border.all(color: onSurface, width: 1.5),
+                                border: Border.all(
+                                  color: onSurface,
+                                  width: 1.5,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 6),
@@ -1311,7 +1335,9 @@ class _StatsScreenState extends State<StatsScreen> {
             ),
           ),
           // Badges: Most Consistent + Needs Attention
-          if (mostConsistent != null && leastConsistent != null && _categoryData.length > 1)
+          if (mostConsistent != null &&
+              leastConsistent != null &&
+              _categoryData.length > 1)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
               child: Row(
@@ -1319,7 +1345,10 @@ class _StatsScreenState extends State<StatsScreen> {
                   // Most Consistent
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF6BCB77),
                         border: Border.all(color: onSurface, width: 2),
@@ -1363,7 +1392,10 @@ class _StatsScreenState extends State<StatsScreen> {
                   // Needs Attention
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFF6B6B),
                         border: Border.all(color: onSurface, width: 2),
@@ -1690,7 +1722,7 @@ class _StatsScreenState extends State<StatsScreen> {
                     )
                   : SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.only(bottom: 24),
+                      padding: const EdgeInsets.only(bottom: 96),
                       child: Column(
                         children: [
                           _buildPeriodSelector(),

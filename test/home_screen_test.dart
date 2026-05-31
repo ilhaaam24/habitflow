@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habit_flow/features/habit/home_screen.dart';
+import 'package:habit_flow/shared/widgets/main_layout.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_bloc.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_state.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_event.dart';
@@ -122,7 +123,12 @@ void main() {
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
-        child: const MaterialApp(home: HomeScreen()),
+        child: const MaterialApp(
+          home: MainLayout(
+            location: '/home',
+            child: HomeScreen(),
+          ),
+        ),
       ),
     );
 

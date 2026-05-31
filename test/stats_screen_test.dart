@@ -144,7 +144,6 @@ void main() {
     // Verify Sticky AppBar / Header elements
     expect(find.text('ANALYTICS'), findsOneWidget);
     expect(find.text('YOUR HABIT REPORT'), findsOneWidget);
-    expect(find.text('←'), findsOneWidget);
     expect(find.text('📅'), findsOneWidget);
     expect(find.text('NOV'), findsOneWidget);
 

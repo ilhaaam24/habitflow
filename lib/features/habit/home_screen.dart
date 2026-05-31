@@ -29,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _selectedDate = DateTime.now();
-  int _currentNavIndex = 0; // 0: Home, 1: Stats, 2: AI, 3: Settings
 
   // Local helper for dummy data when no habits exist
   final List<Map<String, dynamic>> _dummyHabits = [
@@ -725,50 +724,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 right: 16,
                 child: NeobrutalistFab(onTap: () => context.push('/habit/add')),
               ),
-
-              // BOTTOM NAVIGATION BAR
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 6,
-                  ),
-                  height: 72,
-                  decoration: BoxDecoration(color: AppColors.bottomAppbar),
-                  child: Row(
-                    spacing: 4,
-                    children: [
-                      _buildNavItem(
-                        index: 0,
-                        icon: Icons.home,
-                        label: 'HOME',
-                        route: '/home',
-                      ),
-                      _buildNavItem(
-                        index: 1,
-                        icon: Icons.bar_chart,
-                        label: 'STATS',
-                        route: '/stats',
-                      ),
-                      _buildNavItem(
-                        index: 2,
-                        icon: Icons.psychology,
-                        label: 'AI',
-                        route: '/ai-insights',
-                      ),
-                      _buildNavItem(
-                        index: 3,
-                        icon: Icons.settings,
-                        label: 'SETTINGS',
-                        route: '/settings',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -776,54 +731,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildNavItem({
-    required int index,
-    required IconData icon,
-    required String label,
-    required String route,
-  }) {
-    final isSelected = _currentNavIndex == index;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _currentNavIndex = index;
-          });
-          context.push(route);
-        },
-        child: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-            border: isSelected
-                ? Border.all(color: Colors.black, width: 2)
-                : null,
-            color: isSelected ? AppColors.accentYellow : Colors.transparent,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: isSelected ? Colors.black : AppColors.accentBrown,
-                size: 24,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: 'SpaceGrotesk',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 14,
-                  letterSpacing: 1,
-                  color: isSelected ? Colors.black : AppColors.accentBrown,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildEmptyHabitsState() {
     return SingleChildScrollView(

@@ -10,6 +10,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_event.dart';
 import 'package:habit_flow/core/services/badge_service.dart';
 import 'package:habit_flow/shared/models/badge_model.dart';
+import '../../core/theme/app_colors.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -956,28 +957,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ],
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => context.pop(),
-                          child: Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "←",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -986,6 +965,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Expanded(
                     child: ListView(
                       physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 96),
                       children: [
                         // PROFILE CARD
                         Container(

@@ -86,7 +86,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     }
 
     // 1. Calculate Weekday Completion
-    final weekdayCompletion = _calculateWeekdayCompletionRates(habits, habitsLogs);
+    final weekdayCompletion = _calculateWeekdayCompletionRates(
+      habits,
+      habitsLogs,
+    );
     String topDay = "MONDAY";
     double topRate = -1.0;
     weekdayCompletion.forEach((day, rate) {
@@ -101,7 +104,11 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     int maxRate = -1;
     for (final habit in habits) {
       final logs = habitsLogs[habit.id] ?? [];
-      final rate = CompletionRateCalculator.calculate(habit: habit, logs: logs, days: 30);
+      final rate = CompletionRateCalculator.calculate(
+        habit: habit,
+        logs: logs,
+        days: 30,
+      );
       if (rate > maxRate) {
         maxRate = rate;
         strongest = habit;
@@ -113,7 +120,11 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     int minRate = 101;
     for (final habit in habits) {
       final logs = habitsLogs[habit.id] ?? [];
-      final rate = CompletionRateCalculator.calculate(habit: habit, logs: logs, days: 30);
+      final rate = CompletionRateCalculator.calculate(
+        habit: habit,
+        logs: logs,
+        days: 30,
+      );
       if (rate < minRate) {
         minRate = rate;
         weakest = habit;
@@ -157,7 +168,15 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     List<HabitModel> habits,
     Map<String, List<HabitLogModel>> habitsLogs,
   ) {
-    final weekdayNames = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+    final weekdayNames = [
+      'MONDAY',
+      'TUESDAY',
+      'WEDNESDAY',
+      'THURSDAY',
+      'FRIDAY',
+      'SATURDAY',
+      'SUNDAY',
+    ];
     final Map<int, int> scheduledCount = {};
     final Map<int, int> completedCount = {};
 
@@ -178,14 +197,30 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           .toSet();
 
       DateTime current = startDate;
-      while (current.isBefore(todayStripped) || current.isAtSameMomentAs(todayStripped)) {
-        if (habit.createdAt.isBefore(current) || habit.createdAt.isAtSameMomentAs(current)) {
-          final weekdayStr = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'][current.weekday - 1];
+      while (current.isBefore(todayStripped) ||
+          current.isAtSameMomentAs(todayStripped)) {
+        if (habit.createdAt.isBefore(current) ||
+            habit.createdAt.isAtSameMomentAs(current)) {
+          final weekdayStr = [
+            'mon',
+            'tue',
+            'wed',
+            'thu',
+            'fri',
+            'sat',
+            'sun',
+          ][current.weekday - 1];
           if (habit.activeDays.contains(weekdayStr)) {
-            scheduledCount[current.weekday] = (scheduledCount[current.weekday] ?? 0) + 1;
-            final currentStripped = DateTime(current.year, current.month, current.day);
+            scheduledCount[current.weekday] =
+                (scheduledCount[current.weekday] ?? 0) + 1;
+            final currentStripped = DateTime(
+              current.year,
+              current.month,
+              current.day,
+            );
             if (completedDates.contains(currentStripped)) {
-              completedCount[current.weekday] = (completedCount[current.weekday] ?? 0) + 1;
+              completedCount[current.weekday] =
+                  (completedCount[current.weekday] ?? 0) + 1;
             }
           }
         }
@@ -254,7 +289,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     await Future.delayed(const Duration(milliseconds: 1500));
 
     try {
-      final statsData = "Most productive: $_productiveDay ($_productiveSub), Strongest: $_strongestHabit ($_strongestSub), Needs Work: $_weakestHabit ($_strongestSub), Streak: $_bestRecord ($_bestRecordSub).";
+      final statsData =
+          "Most productive: $_productiveDay ($_productiveSub), Strongest: $_strongestHabit ($_strongestSub), Needs Work: $_weakestHabit ($_strongestSub), Streak: $_bestRecord ($_bestRecordSub).";
       final summary = await _geminiService.getInsight(statsData);
 
       if (mounted) {
@@ -267,7 +303,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _weeklySummaryText = "GAGAL GENERATE SUMMARY DARI GEMINI. SILAKAN CEK API KEY DAN KONEKSI INTERNET ANDA.";
+          _weeklySummaryText =
+              "GAGAL GENERATE SUMMARY DARI GEMINI. SILAKAN CEK API KEY DAN KONEKSI INTERNET ANDA.";
           _isGeneratingSummary = false;
           _hasGeneratedSummary = true;
         });
@@ -284,20 +321,14 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           border: Border.all(color: Colors.black, width: 4),
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(6, 6),
-            ),
+            BoxShadow(color: Colors.black, offset: Offset(6, 6)),
           ],
         ),
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "🤖",
-              style: TextStyle(fontSize: 48),
-            ),
+            const Text("🤖", style: TextStyle(fontSize: 48)),
             const SizedBox(height: 12),
             const Text(
               "API KEY REQUIRED",
@@ -422,49 +453,6 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 ),
               ],
             ),
-
-            // Bottom Navigation
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22,
-                  vertical: 6,
-                ),
-                height: 72,
-                decoration: BoxDecoration(color: AppColors.bottomAppbar),
-                child: Row(
-                  children: [
-                    _buildNavItem(
-                      index: 0,
-                      icon: Icons.home,
-                      label: 'HOME',
-                      route: '/home',
-                    ),
-                    _buildNavItem(
-                      index: 1,
-                      icon: Icons.bar_chart,
-                      label: 'STATS',
-                      route: '/stats',
-                    ),
-                    _buildNavItem(
-                      index: 2,
-                      icon: Icons.psychology,
-                      label: 'AI',
-                      route: '/ai-insights',
-                    ),
-                    _buildNavItem(
-                      index: 3,
-                      icon: Icons.settings,
-                      label: 'SETTINGS',
-                      route: '/settings',
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -474,9 +462,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
   Widget _buildHeader() {
     return Container(
       decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.black, width: 4),
-        ),
+        border: Border(bottom: BorderSide(color: Colors.black, width: 4)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: Row(
@@ -516,12 +502,11 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2),
                 borderRadius: BorderRadius.circular(6),
-                color: _isApiKeyActive ? const Color(0xFFC77DFF) : const Color(0xFFFF6B6B),
+                color: _isApiKeyActive
+                    ? const Color(0xFFC77DFF)
+                    : const Color(0xFFFF6B6B),
                 boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(3, 3),
-                  ),
+                  BoxShadow(color: Colors.black, offset: Offset(3, 3)),
                 ],
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -547,12 +532,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         color: const Color(0xFFFFD93D),
         border: Border.all(color: Colors.black, width: 4),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black,
-            offset: Offset(8, 8),
-          ),
-        ],
+        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(8, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -571,7 +551,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     border: Border.all(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   child: const Text(
                     "✦ TODAY'S MOTIVATION",
                     style: TextStyle(
@@ -657,7 +640,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     border: Border.all(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   child: Row(
                     children: const [
                       Text("✨", style: TextStyle(fontSize: 10)),
@@ -778,12 +764,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         color: color,
         border: Border.all(color: Colors.black, width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black,
-            offset: Offset(5, 5),
-          ),
-        ],
+        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(5, 5))],
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -800,10 +781,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
-                  child: Text(
-                    emoji,
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  child: Text(emoji, style: const TextStyle(fontSize: 16)),
                 ),
               ),
               const Spacer(),
@@ -863,12 +841,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         color: Colors.white,
         border: Border.all(color: Colors.black, width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black,
-            offset: Offset(5, 5),
-          ),
-        ],
+        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(5, 5))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -894,24 +867,29 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  "WEEKLY SUMMARY",
-                  style: TextStyle(
-                    fontFamily: 'Syne',
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16,
-                    letterSpacing: 0.5,
-                    color: Colors.black,
+                Expanded(
+                  child: const Text(
+                    "WEEKLY SUMMARY",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Syne',
+                      fontWeight: FontWeight.w900,
+                      fontSize: 14,
+                      letterSpacing: 0.5,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
-                const Spacer(),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black,
                     border: Border.all(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   child: const Text(
                     "NEW",
                     style: TextStyle(
@@ -952,69 +930,69 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     ],
                   )
                 : _hasGeneratedSummary
-                    ? Text(
-                        _weeklySummaryText,
-                        style: const TextStyle(
+                ? Text(
+                    _weeklySummaryText,
+                    style: const TextStyle(
+                      fontFamily: 'SpaceGrotesk',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      height: 1.5,
+                      color: Colors.black,
+                    ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "WANT YOUR WEEKLY REPORT?",
+                        style: TextStyle(
                           fontFamily: 'SpaceGrotesk',
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          height: 1.5,
+                          fontSize: 16,
                           color: Colors.black,
                         ),
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "WANT YOUR WEEKLY REPORT?",
-                            style: TextStyle(
-                              fontFamily: 'SpaceGrotesk',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            "Let AI analyze your entire week and give you a no-nonsense breakdown.",
-                            style: TextStyle(
-                              fontFamily: 'SpaceGrotesk',
-                              fontSize: 14,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          GestureDetector(
-                            onTap: _generateSummary,
-                            child: Container(
-                              height: 52,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFC77DFF),
-                                border: Border.all(color: Colors.black, width: 3),
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(4, 4),
-                                  ),
-                                ],
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "GENERATE REPORT ✦",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'SpaceGrotesk',
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 14,
-                                    letterSpacing: 1,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Let AI analyze your entire week and give you a no-nonsense breakdown.",
+                        style: TextStyle(
+                          fontFamily: 'SpaceGrotesk',
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      GestureDetector(
+                        onTap: _generateSummary,
+                        child: Container(
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFC77DFF),
+                            border: Border.all(color: Colors.black, width: 3),
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black,
+                                offset: Offset(4, 4),
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "GENERATE REPORT ✦",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'SpaceGrotesk',
+                                fontWeight: FontWeight.w900,
+                                fontSize: 14,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
           ),
         ],
       ),
@@ -1027,14 +1005,16 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         "color": const Color(0xFFFFD93D),
         "tag": "SCHEDULE",
         "title": "TRY EVENING RUN AT 6PM",
-        "desc": "Your completion drops 40% on late evenings. Shift it earlier for better results.",
+        "desc":
+            "Your completion drops 40% on late evenings. Shift it earlier for better results.",
       },
       {
         "color": const Color(0xFFC77DFF),
         "tag": "ROUTINE",
         "title": "STACK VITAMINS WITH BREAKFAST",
-        "desc": "You always complete Hydration in the morning but fail Vitamins. Take your vitamins immediately after drinking your morning water.",
-      }
+        "desc":
+            "You always complete Hydration in the morning but fail Vitamins. Take your vitamins immediately after drinking your morning water.",
+      },
     ];
 
     return Column(
@@ -1046,10 +1026,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             border: Border.all(color: Colors.black, width: 3),
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
-              BoxShadow(
-                color: Colors.black,
-                offset: Offset(4, 4),
-              ),
+              BoxShadow(color: Colors.black, offset: Offset(4, 4)),
             ],
           ),
           child: IntrinsicHeight(
@@ -1079,10 +1056,16 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                             Container(
                               decoration: BoxDecoration(
                                 color: const Color(0xFFFFD93D),
-                                border: Border.all(color: Colors.black, width: 2),
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               child: Text(
                                 rec['tag'] as String,
                                 style: const TextStyle(
@@ -1125,52 +1108,6 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           ),
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildNavItem({
-    required int index,
-    required IconData icon,
-    required String label,
-    required String route,
-  }) {
-    final isSelected = index == 2; // Fixed tab index for AI Insights
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          if (index != 2) {
-            context.push(route);
-          }
-        },
-        child: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-            border: isSelected ? Border.all(color: Colors.black, width: 2) : null,
-            color: isSelected ? AppColors.accentYellow : Colors.transparent,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: isSelected ? Colors.black : AppColors.accentBrown,
-                size: 24,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: 'SpaceGrotesk',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 14,
-                  letterSpacing: 1,
-                  color: isSelected ? Colors.black : AppColors.accentBrown,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

@@ -798,7 +798,7 @@ text
 ```
 TASK-019 | Implementasi Local Notification
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P0
 Estimate : 5 jam
 
@@ -1114,7 +1114,7 @@ text
 ```
 TASK-032 | Buat Prompt Engineering untuk Motivasi
 ─────────────────────────────────────────────────
-Status   : TODO
+Status   : DONE
 Priority : P2
 Estimate : 3 jam
 
