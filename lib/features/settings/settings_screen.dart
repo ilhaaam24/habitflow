@@ -10,7 +10,6 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_event.dart';
 import 'package:habit_flow/core/services/badge_service.dart';
 import 'package:habit_flow/shared/models/badge_model.dart';
-import '../../core/theme/app_colors.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

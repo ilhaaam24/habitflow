@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:habit_flow/core/di/injection.dart';
 import 'package:habit_flow/features/habit/domain/repositories/habit_repository.dart';
@@ -11,7 +10,6 @@ import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:habit_flow/core/helpers/completion_rate_calculator.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
-import '../../core/theme/app_colors.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -162,6 +160,84 @@ class _StatsScreenState extends State<StatsScreen> {
     return '${date.year}-${date.month}-${date.day}';
   }
 
+  int _calculateLongestOverallStreak() {
+    if (_habits.isEmpty) return 0;
+
+    final completionMap = <String, Set<String>>{};
+    DateTime earliestCreatedAt = DateTime.now();
+
+    for (final habit in _habits) {
+      if (habit.createdAt.isBefore(earliestCreatedAt)) {
+        earliestCreatedAt = habit.createdAt;
+      }
+      final logs = _habitLogs[habit.id] ?? [];
+      for (final log in logs) {
+        if (log.isCompleted) {
+          final dateKey = _toDateKey(log.date);
+          completionMap.putIfAbsent(dateKey, () => <String>{}).add(habit.id);
+        }
+      }
+    }
+
+    final today = _stripTime(DateTime.now());
+    final earliestStripped = _stripTime(earliestCreatedAt);
+
+    int longest = 0;
+    int currentRun = 0;
+
+    DateTime current = earliestStripped;
+
+    while (current.isBefore(today) || current.isAtSameMomentAs(today)) {
+      final activeHabitsOnDay = _getActiveHabitsOnDay(current);
+
+      if (activeHabitsOnDay.isEmpty) {
+        current = current.add(const Duration(days: 1));
+        continue;
+      }
+
+      final completedHabitIdsOnDay = completionMap[_toDateKey(current)] ?? {};
+
+      bool allCompleted = true;
+      for (final habit in activeHabitsOnDay) {
+        if (!completedHabitIdsOnDay.contains(habit.id)) {
+          allCompleted = false;
+          break;
+        }
+      }
+
+      if (allCompleted) {
+        currentRun++;
+        if (currentRun > longest) {
+          longest = currentRun;
+        }
+      } else {
+        if (current.isAtSameMomentAs(today)) {
+          // Today not completed yet doesn't break the longest streak run that has accumulated up to yesterday
+        } else {
+          currentRun = 0;
+        }
+      }
+
+      current = current.add(const Duration(days: 1));
+    }
+
+    return longest;
+  }
+
+  List<HabitModel> _getActiveHabitsOnDay(DateTime date) {
+    final weekdayNames = const [
+      'mon',
+      'tue',
+      'wed',
+      'thu',
+      'fri',
+      'sat',
+      'sun',
+    ];
+    final weekdayStr = weekdayNames[date.weekday - 1];
+    return _habits.where((h) => h.activeDays.contains(weekdayStr)).toList();
+  }
+
   void _calculateStats() {
     if (_habits.isEmpty) {
       // Fallback to mock/dummy data
@@ -293,21 +369,15 @@ class _StatsScreenState extends State<StatsScreen> {
       badge = 'KEEP IT UP 💪';
     }
 
-    // Best streak is the maximum of the longest streak across all habits
-    int maxLongestStreak = 0;
-    for (final habit in _habits) {
-      final streak = _longestStreaks[habit.id] ?? 0;
-      if (streak > maxLongestStreak) {
-        maxLongestStreak = streak;
-      }
-    }
+    // Best streak is the all-time longest overall daily completion streak
+    final bestOverallStreak = _calculateLongestOverallStreak();
 
     // Update _periodMetrics for the selected index
     _periodMetrics[_selectedPeriodIndex] = {
       'consistency': consistencyRate.toString(),
       'total': '100',
       'badge': badge,
-      'streak': maxLongestStreak.toString(),
+      'streak': bestOverallStreak.toString(),
     };
 
     // 2. Weekly Bar Chart Data
@@ -443,7 +513,6 @@ class _StatsScreenState extends State<StatsScreen> {
 
   Widget _buildHeader() {
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
 
     return Container(
       decoration: BoxDecoration(

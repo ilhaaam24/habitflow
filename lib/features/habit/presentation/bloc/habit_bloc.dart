@@ -68,12 +68,14 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       for (final habit in _currentHabits) {
         streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
       }
+      final overallStreak = await _calculateOverallStreak(_currentHabits);
       emit(
         HabitLoaded(
           habits: _currentHabits,
           todayLogs: logs,
           selectedDate: _selectedDate!,
           streaks: streaks,
+          overallStreak: overallStreak,
         ),
       );
     } catch (e) {
@@ -160,17 +162,92 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
       for (final habit in _currentHabits) {
         streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
       }
+      final overallStreak = await _calculateOverallStreak(_currentHabits);
       emit(
         HabitLoaded(
           habits: _currentHabits,
           todayLogs: updatedLogs,
           selectedDate: _selectedDate!,
           streaks: streaks,
+          overallStreak: overallStreak,
         ),
       );
     } catch (e) {
       emit(HabitError(e.toString()));
     }
+  }
+
+  Future<int> _calculateOverallStreak(List<HabitModel> habits) async {
+    if (habits.isEmpty) return 0;
+
+    final completionMap = <String, Set<String>>{};
+    DateTime earliestCreatedAt = DateTime.now();
+
+    for (final habit in habits) {
+      if (habit.createdAt.isBefore(earliestCreatedAt)) {
+        earliestCreatedAt = habit.createdAt;
+      }
+      final logs = await _habitRepository.getLogsForHabit(habit.id);
+      for (final log in logs) {
+        if (log.isCompleted) {
+          final dateKey = _toDateKey(log.date);
+          completionMap.putIfAbsent(dateKey, () => <String>{}).add(habit.id);
+        }
+      }
+    }
+
+    final today = _stripTime(DateTime.now());
+    final earliestStripped = _stripTime(earliestCreatedAt);
+
+    int streak = 0;
+    DateTime current = today;
+
+    while (current.isAfter(earliestStripped) || current.isAtSameMomentAs(earliestStripped)) {
+      final activeHabitsOnDay = habits.where((h) => _isDayActive(h, current)).toList();
+
+      if (activeHabitsOnDay.isEmpty) {
+        current = current.subtract(const Duration(days: 1));
+        continue;
+      }
+
+      final completedHabitIdsOnDay = completionMap[_toDateKey(current)] ?? {};
+
+      bool allCompleted = true;
+      for (final habit in activeHabitsOnDay) {
+        if (!completedHabitIdsOnDay.contains(habit.id)) {
+          allCompleted = false;
+          break;
+        }
+      }
+
+      if (allCompleted) {
+        streak++;
+      } else {
+        if (current.isAtSameMomentAs(today)) {
+          // Today not fully completed doesn't break the streak yet, as it's still ongoing
+        } else {
+          break;
+        }
+      }
+
+      current = current.subtract(const Duration(days: 1));
+    }
+
+    return streak;
+  }
+
+  String _toDateKey(DateTime date) {
+    return '${date.year}-${date.month}-${date.day}';
+  }
+
+  DateTime _stripTime(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
+  bool _isDayActive(HabitModel habit, DateTime date) {
+    final weekdayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+    final weekdayStr = weekdayNames[date.weekday - 1];
+    return habit.activeDays.contains(weekdayStr);
   }
 
   @override

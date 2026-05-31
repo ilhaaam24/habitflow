@@ -305,13 +305,13 @@ void main() {
       category: '🏃 FITNESS',
       icon: '💪',
       colorValue: 0xFF4D96FF,
-      activeDays: const ['mon', 'wed', 'fri'],
+      activeDays: const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
       reminderTime: '08:00',
       createdAt: today.subtract(const Duration(days: 10)),
     );
 
     final List<HabitLogModel> logsList = [];
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
       logsList.add(
         HabitLogModel(
           id: 'log_$i',

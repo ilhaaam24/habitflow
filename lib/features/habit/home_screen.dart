@@ -30,37 +30,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _selectedDate = DateTime.now();
 
-  // Local helper for dummy data when no habits exist
-  final List<Map<String, dynamic>> _dummyHabits = [
-    {
-      'id': 'dummy_1',
-      'title': 'MORNING HYDRATION',
-      'emoji': '💧',
-      'color': 0xFF4D96FF,
-      'streak': 12,
-      'isCompleted': true,
-      'category': '💧 HEALTH',
-    },
-    {
-      'id': 'dummy_2',
-      'title': 'EVENING RUN',
-      'emoji': '🏃',
-      'color': 0xFFFF6B6B,
-      'streak': 7,
-      'isCompleted': false,
-      'category': '🏃 FITNESS',
-    },
-    {
-      'id': 'dummy_3',
-      'title': 'READ 20 PAGES',
-      'emoji': '📚',
-      'color': 0xFFC77DFF,
-      'streak': 3,
-      'isCompleted': false,
-      'category': '📚 LEARNING',
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -344,7 +313,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         List<HabitModel> habitsList = [];
                         List<HabitLogModel> todayLogs = [];
 
-                        bool useDummy = false;
                         if (state is HabitLoaded) {
                           habitsList = state.habits;
                           todayLogs = state.todayLogs;
@@ -357,39 +325,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.black,
                             ),
                           );
-                        } else {
-                          useDummy = true;
                         }
 
                         // Calculate scores
                         int completedCount = 0;
                         int totalCount = 0;
+                        int overallStreak = 0;
 
-                        if (useDummy) {
-                          totalCount = _dummyHabits.length;
-                          completedCount = _dummyHabits
-                              .where((h) => h['isCompleted'] as bool)
-                              .length;
-                        } else {
-                          totalCount = habitsList.length;
-                          completedCount = todayLogs
-                              .where((log) => log.isCompleted)
-                              .length;
-                        }
-
+                        totalCount = habitsList.length;
+                        completedCount = todayLogs
+                            .where((log) => log.isCompleted)
+                            .length;
                         final double progressPercent = totalCount > 0
                             ? (completedCount / totalCount)
                             : 0.0;
                         final String progressText =
                             '${(progressPercent * 100).toInt()}%';
 
-                        // Streak calculations: simple mock 23, or max of current habits
-                        int maxStreak = 0;
-                        if (useDummy) {
-                          maxStreak = 23; // Default dummy streak
-                        } else {
-                          // Simple fallback for streak calculation: mock or calculate from logs
-                          maxStreak = totalCount > 0 ? 15 : 0;
+                        if (state is HabitLoaded) {
+                          overallStreak = state.overallStreak;
                         }
 
                         return SingleChildScrollView(
@@ -492,11 +446,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 children: [
                                                   SizedBox(
                                                     width: maxWidth,
-                                                    child: NeobrutalistProgressBar(
-                                                      value: progressPercent,
-                                                      height: 12,
-                                                      showLoadingText: true,
-                                                    ),
+                                                    child:
+                                                        NeobrutalistProgressBar(
+                                                          value:
+                                                              progressPercent,
+                                                          height: 12,
+                                                          showLoadingText: true,
+                                                        ),
                                                   ),
                                                   const SizedBox(width: 8),
                                                   Text(
@@ -560,7 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 height: 32,
                                               ),
                                               Text(
-                                                maxStreak.toString(),
+                                                overallStreak.toString(),
                                                 style: const TextStyle(
                                                   fontFamily: 'SpaceGrotesk',
                                                   fontWeight: FontWeight.w900,
@@ -651,64 +607,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
 
-                              // HABITS LIST
-                              if (useDummy)
-                                ..._dummyHabits.map((dummy) {
-                                  final String hId = dummy['id'] as String;
-                                  final String title = dummy['title'] as String;
-                                  final String emoji = dummy['emoji'] as String;
-                                  final int colorVal = dummy['color'] as int;
-                                  final int streak = dummy['streak'] as int;
-                                  final bool isDone =
-                                      dummy['isCompleted'] as bool;
-                                  final String category =
-                                      dummy['category'] as String;
+                              ...habitsList.map((habit) {
+                                final isDone = todayLogs.any(
+                                  (log) =>
+                                      log.habitId == habit.id &&
+                                      log.isCompleted,
+                                );
 
-                                  return NeobrutalistHabitCardItem(
-                                    id: hId,
-                                    title: title,
-                                    emoji: emoji,
-                                    colorVal: colorVal,
-                                    streak: streak,
-                                    isDone: isDone,
-                                    category: category,
-                                    onToggle: () {
-                                      setState(() {
-                                        dummy['isCompleted'] = !isDone;
-                                      });
-                                    },
-                                  );
-                                })
-                              else
-                                ...habitsList.map((habit) {
-                                  final isDone = todayLogs.any(
-                                    (log) =>
-                                        log.habitId == habit.id &&
-                                        log.isCompleted,
-                                  );
+                                final streak = state is HabitLoaded
+                                    ? (state.streaks[habit.id] ?? 0)
+                                    : 0;
 
-                                  final streak = state is HabitLoaded
-                                      ? (state.streaks[habit.id] ?? 0)
-                                      : 0;
-
-                                  return NeobrutalistHabitCardItem(
-                                    id: habit.id,
-                                    title: habit.title.toUpperCase(),
-                                    emoji: habit.icon,
-                                    colorVal: habit.colorValue,
-                                    streak: streak,
-                                    isDone: isDone,
-                                    category: habit.category,
-                                    onToggle: () {
-                                      context.read<HabitBloc>().add(
-                                        ToggleHabitLogRequested(
-                                          habitId: habit.id,
-                                          date: _selectedDate,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }),
+                                return NeobrutalistHabitCardItem(
+                                  id: habit.id,
+                                  title: habit.title.toUpperCase(),
+                                  emoji: habit.icon,
+                                  colorVal: habit.colorValue,
+                                  streak: streak,
+                                  isDone: isDone,
+                                  category: habit.category,
+                                  onToggle: () {
+                                    context.read<HabitBloc>().add(
+                                      ToggleHabitLogRequested(
+                                        habitId: habit.id,
+                                        date: _selectedDate,
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
                             ],
                           ),
                         );
@@ -730,7 +657,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 
   Widget _buildEmptyHabitsState() {
     return SingleChildScrollView(
@@ -782,22 +708,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Positioned(
                         top: 8,
                         left: 8,
-                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        child: Text(
+                          '+',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                       const Positioned(
                         top: 8,
                         right: 8,
-                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        child: Text(
+                          '+',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                       const Positioned(
                         bottom: 8,
                         left: 8,
-                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        child: Text(
+                          '+',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                       const Positioned(
                         bottom: 8,
                         right: 8,
-                        child: Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        child: Text(
+                          '+',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                       Center(
                         child: Text(
@@ -930,16 +880,18 @@ class DashedBorderPainter extends CustomPainter {
       ..color = Colors.black
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke;
-    
+
     final path = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        const Radius.circular(5),
-      ));
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          const Radius.circular(5),
+        ),
+      );
 
     double dashWidth = 8.0;
     double dashSpace = 4.0;
-    
+
     Path dashedPath = Path();
     for (PathMetric pathMetric in path.computeMetrics()) {
       double distance = 0.0;
