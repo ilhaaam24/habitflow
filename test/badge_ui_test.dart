@@ -199,7 +199,11 @@ void main() {
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
-          BlocProvider<ThemeCubit>(create: (_) => ThemeCubit(GetIt.instance<SharedPreferences>())),
+          BlocProvider<ThemeCubit>(
+            create: (_) => ThemeCubit(
+              sharedPreferences: GetIt.instance<SharedPreferences>(),
+            ),
+          ),
           BlocProvider<AuthBloc>(create: (_) => FakeAuthBloc()),
         ],
         child: const MaterialApp(

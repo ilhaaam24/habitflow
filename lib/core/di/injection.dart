@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:habit_flow/core/theme/theme_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dio/dio.dart';
@@ -30,11 +31,17 @@ Future<void> initDependencyInjection(
   await notificationService.initialize();
   sl.registerSingleton<NotificationService>(notificationService);
 
-  final dio = Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 8),
-    receiveTimeout: const Duration(seconds: 8),
-  ));
+  final dio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 8),
+      receiveTimeout: const Duration(seconds: 8),
+    ),
+  );
   sl.registerSingleton<Dio>(dio);
+
+  sl.registerLazySingleton<ThemeCubit>(
+    () => ThemeCubit(sharedPreferences: sharedPreferences),
+  );
 
   sl.registerLazySingleton<GeminiService>(
     () => GeminiService(

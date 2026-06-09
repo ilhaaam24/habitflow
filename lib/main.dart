@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ThemeCubit(sl<SharedPreferences>())),
+        BlocProvider(
+          create: (context) =>
+              ThemeCubit(sharedPreferences: sl<SharedPreferences>()),
+        ),
         BlocProvider(create: (context) => AuthBloc(authRepository: sl())),
         BlocProvider(create: (context) => HabitBloc(habitRepository: sl())),
       ],

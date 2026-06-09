@@ -26,7 +26,8 @@ class NeobrutalistHabitCardItem extends StatefulWidget {
   });
 
   @override
-  State<NeobrutalistHabitCardItem> createState() => _NeobrutalistHabitCardItemState();
+  State<NeobrutalistHabitCardItem> createState() =>
+      _NeobrutalistHabitCardItemState();
 }
 
 class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
@@ -49,12 +50,30 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
     );
 
     _borderColorAnimation = TweenSequence<Color?>([
-      TweenSequenceItem(tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)), weight: 16.6),
-      TweenSequenceItem(tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black), weight: 16.6),
-      TweenSequenceItem(tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)), weight: 16.6),
-      TweenSequenceItem(tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black), weight: 16.6),
-      TweenSequenceItem(tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)), weight: 16.6),
-      TweenSequenceItem(tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black), weight: 16.6),
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black),
+        weight: 16.6,
+      ),
     ]).animate(_flashController);
 
     _slideController = AnimationController(
@@ -86,7 +105,9 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
     return AnimatedBuilder(
       animation: _borderColorAnimation,
       builder: (context, child) {
-        final borderColor = _isMilestone ? (_borderColorAnimation.value ?? Colors.black) : Colors.black;
+        final borderColor = _isMilestone
+            ? (_borderColorAnimation.value ?? Colors.black)
+            : Colors.black;
 
         return NeobrutalistCard(
           margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -114,7 +135,10 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                         ],
                       ),
                       child: Center(
-                        child: Text(widget.emoji, style: const TextStyle(fontSize: 24)),
+                        child: Text(
+                          widget.emoji,
+                          style: const TextStyle(fontSize: 24),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -175,7 +199,9 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  widget.isDone ? 'DONE ✓' : widget.category.toUpperCase(),
+                                  widget.isDone
+                                      ? 'DONE ✓'
+                                      : widget.category.toUpperCase(),
                                   style: const TextStyle(
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,

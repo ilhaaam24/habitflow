@@ -10,6 +10,8 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/shared/models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:habit_flow/core/theme/theme_cubit.dart';
 
 import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
 import 'package:habit_flow/features/habit/domain/repositories/habit_repository.dart';
@@ -109,17 +111,26 @@ class FakeHabitBloc extends HabitBloc {
 }
 
 void main() {
+  late SharedPreferences prefs;
+
   setUpAll(() {
     GoogleFonts.config.allowRuntimeFetching = false;
+  });
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    prefs = await SharedPreferences.getInstance();
   });
 
   testWidgets('HomeScreen UI elements render correctly in Neobrutalist style', (WidgetTester tester) async {
     final authBloc = FakeAuthBloc();
     final habitBloc = FakeHabitBloc();
+    final themeCubit = ThemeCubit(sharedPreferences: prefs);
 
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
+          BlocProvider<ThemeCubit>(create: (_) => themeCubit),
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
@@ -167,10 +178,12 @@ void main() {
   testWidgets('HomeScreen renders NO HABITS YET empty state when habits list is empty', (WidgetTester tester) async {
     final authBloc = FakeAuthBloc();
     final habitBloc = FakeEmptyHabitBloc();
+    final themeCubit = ThemeCubit(sharedPreferences: prefs);
 
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
+          BlocProvider<ThemeCubit>(create: (_) => themeCubit),
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],

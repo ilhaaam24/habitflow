@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habit_flow/core/helpers/greeting.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
+import 'package:habit_flow/core/theme/theme_cubit.dart';
 import 'package:intl/intl.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
@@ -111,549 +112,570 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ],
-      child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Column(
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: state == ThemeMode.light
+                ? AppColors.background
+                : AppColors.darkBackground,
+            body: SafeArea(
+              child: Stack(
                 children: [
-                  // TOP BAR
-                  Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.black, width: 2),
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              todayFormatted,
-                              style: const TextStyle(
-                                fontFamily: 'SpaceGrotesk',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
-                                letterSpacing: 2,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${getGreeting()}\n${displayName.split(" ").first} 👋'
-                                  .toUpperCase(),
-                              style: const TextStyle(
-                                fontFamily: 'Syne',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+                  Column(
+                    children: [
+                      // TOP BAR
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black, width: 2),
+                          ),
                         ),
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Container(
-                              width: 48,
-                              height: 48,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 3,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(3, 3),
-                                    blurRadius: 0,
-                                  ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                child: photoUrl != null
-                                    ? Image.network(photoUrl, fit: BoxFit.cover)
-                                    : Center(
-                                        child: Text(
-                                          displayName.isNotEmpty
-                                              ? displayName[0]
-                                              : 'U',
-                                          style: const TextStyle(
-                                            fontFamily: 'SpaceGrotesk',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                            ),
-                            Positioned(
-                              top: -4,
-                              right: -4,
-                              child: Container(
-                                width: 16,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF6BCB77),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '3',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 8,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
                         ),
-                      ],
-                    ),
-                  ),
-
-                  // DATE STRIP
-                  Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.black, width: 2),
-                      ),
-                    ),
-                    height: 80,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: 7,
-                      itemBuilder: (context, index) {
-                        final dayDate = weekDays[index];
-                        final dayLabel = DateFormat(
-                          'EEE',
-                        ).format(dayDate).toUpperCase();
-                        final isToday =
-                            dayDate.day == _selectedDate.day &&
-                            dayDate.month == _selectedDate.month &&
-                            dayDate.year == _selectedDate.year;
-
-                        return GestureDetector(
-                          onTap: () => _onDaySelected(dayDate, userId),
-                          child: Container(
-                            width: 60,
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  dayLabel,
+                                  todayFormatted,
                                   style: const TextStyle(
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                    letterSpacing: 1,
-                                    color: Colors.black,
+                                    fontSize: 11,
+                                    letterSpacing: 2,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                Container(
-                                  width: 36,
-                                  height: 36,
-                                  decoration: BoxDecoration(
-                                    color: isToday
-                                        ? const Color(0xFFFFD93D)
-                                        : Colors.white,
-                                    boxShadow: isToday
-                                        ? const [
-                                            BoxShadow(
-                                              color: Colors.black,
-                                              offset: Offset(3, 3),
-                                              blurRadius: 0,
-                                            ),
-                                          ]
-                                        : null,
+                                const SizedBox(height: 2),
+                                Text(
+                                  '${getGreeting()}\n${displayName.split(" ").first} 👋'
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    fontFamily: 'Syne',
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 20,
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      dayDate.day.toString(),
-                                      style: const TextStyle(
-                                        fontFamily: 'SpaceGrotesk',
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 15,
+                                ),
+                              ],
+                            ),
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 3,
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
                                         color: Colors.black,
+                                        offset: Offset(3, 3),
+                                        blurRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    child: photoUrl != null
+                                        ? Image.network(
+                                            photoUrl,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Center(
+                                            child: Text(
+                                              displayName.isNotEmpty
+                                                  ? displayName[0]
+                                                  : 'U',
+                                              style: const TextStyle(
+                                                fontFamily: 'SpaceGrotesk',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: -4,
+                                  right: -4,
+                                  child: Container(
+                                    width: 16,
+                                    height: 16,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF6BCB77),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        '3',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 8,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
+                          ],
+                        ),
+                      ),
+
+                      // DATE STRIP
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black, width: 2),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-
-                  // CONTENT BODY
-                  Expanded(
-                    child: BlocBuilder<HabitBloc, HabitState>(
-                      builder: (context, state) {
-                        List<HabitModel> habitsList = [];
-                        List<HabitLogModel> todayLogs = [];
-
-                        if (state is HabitLoaded) {
-                          habitsList = state.habits;
-                          todayLogs = state.todayLogs;
-                          if (habitsList.isEmpty) {
-                            return _buildEmptyHabitsState();
-                          }
-                        } else if (state is HabitLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                            ),
-                          );
-                        }
-
-                        // Calculate scores
-                        int completedCount = 0;
-                        int totalCount = 0;
-                        int overallStreak = 0;
-
-                        totalCount = habitsList.length;
-                        completedCount = todayLogs
-                            .where((log) => log.isCompleted)
-                            .length;
-                        final double progressPercent = totalCount > 0
-                            ? (completedCount / totalCount)
-                            : 0.0;
-                        final String progressText =
-                            '${(progressPercent * 100).toInt()}%';
-
-                        if (state is HabitLoaded) {
-                          overallStreak = state.overallStreak;
-                        }
-
-                        return SingleChildScrollView(
+                        ),
+                        height: 80,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.only(bottom: 100),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // PROGRESS CARD
-                              Container(
-                                margin: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: AppColors.accentYellow,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 3,
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black,
-                                      offset: Offset(6, 6),
-                                      blurRadius: 0,
-                                    ),
-                                  ],
-                                ),
-                                padding: const EdgeInsets.all(20),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "TODAY'S SCORE",
-                                            style: TextStyle(
-                                              fontFamily: 'SpaceGrotesk',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11,
-                                              letterSpacing: 2,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                completedCount.toString(),
-                                                style: const TextStyle(
-                                                  fontFamily: 'Syne',
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 64,
-                                                  height: 1.0,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    '/$totalCount',
-                                                    style: const TextStyle(
-                                                      fontFamily:
-                                                          'SpaceGrotesk',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 24,
-                                                      height: 1.0,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                  const Text(
-                                                    'done',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          'SpaceGrotesk',
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 14,
-                                                      height: 1.0,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 8),
-                                          LayoutBuilder(
-                                            builder: (context, constraints) {
-                                              final double maxWidth =
-                                                  constraints.maxWidth - 55;
-                                              return Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: maxWidth,
-                                                    child:
-                                                        NeobrutalistProgressBar(
-                                                          value:
-                                                              progressPercent,
-                                                          height: 12,
-                                                          showLoadingText: true,
-                                                        ),
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Text(
-                                                    progressText,
-                                                    style: const TextStyle(
-                                                      fontFamily:
-                                                          'SpaceGrotesk',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 13,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Column(
-                                      children: [
-                                        const Text(
-                                          'STREAK',
-                                          style: TextStyle(
-                                            fontFamily: 'SpaceGrotesk',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11,
-                                            letterSpacing: 2,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          width: 80,
-                                          height: 80,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.all(
-                                              color: Colors.black,
-                                              width: 3,
-                                            ),
+                          itemCount: 7,
+                          itemBuilder: (context, index) {
+                            final dayDate = weekDays[index];
+                            final dayLabel = DateFormat(
+                              'EEE',
+                            ).format(dayDate).toUpperCase();
+                            final isToday =
+                                dayDate.day == _selectedDate.day &&
+                                dayDate.month == _selectedDate.month &&
+                                dayDate.year == _selectedDate.year;
 
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Colors.black,
-                                                offset: Offset(4, 4),
-                                                blurRadius: 0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Lottie.asset(
-                                                'assets/animations/fire.json',
-                                                width: 32,
-                                                height: 32,
-                                              ),
-                                              Text(
-                                                overallStreak.toString(),
-                                                style: const TextStyle(
-                                                  fontFamily: 'SpaceGrotesk',
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 20,
-                                                  color: Colors.black,
-                                                  height: 1.0,
-                                                ),
-                                              ),
-                                              const Text(
-                                                'DAYS',
-                                                style: TextStyle(
-                                                  fontFamily: 'SpaceGrotesk',
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 10,
-                                                  letterSpacing: 1,
-                                                  color: Colors.black,
-                                                  height: 1.0,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              // SECTION HEADER
-                              Container(
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: Colors.black,
-                                      width: 2,
-                                    ),
-                                  ),
-                                ),
+                            return GestureDetector(
+                              onTap: () => _onDaySelected(dayDate, userId),
+                              child: Container(
+                                width: 60,
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
                                   vertical: 8,
                                 ),
-                                child: Row(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text(
-                                      'MY HABITS',
-                                      style: TextStyle(
-                                        fontFamily: 'Syne',
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 18,
+                                    Text(
+                                      dayLabel,
+                                      style: const TextStyle(
+                                        fontFamily: 'SpaceGrotesk',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10,
                                         letterSpacing: 1,
                                         color: Colors.black,
                                       ),
                                     ),
-                                    const Spacer(),
+                                    const SizedBox(height: 4),
                                     Container(
+                                      width: 36,
+                                      height: 36,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 2,
-                                        ),
-                                        borderRadius: BorderRadius.circular(4),
-                                        boxShadow: const [
-                                          BoxShadow(
+                                        color: isToday
+                                            ? const Color(0xFFFFD93D)
+                                            : Colors.white,
+                                        boxShadow: isToday
+                                            ? const [
+                                                BoxShadow(
+                                                  color: Colors.black,
+                                                  offset: Offset(3, 3),
+                                                  blurRadius: 0,
+                                                ),
+                                              ]
+                                            : null,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          dayDate.day.toString(),
+                                          style: const TextStyle(
+                                            fontFamily: 'SpaceGrotesk',
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 15,
                                             color: Colors.black,
-                                            offset: Offset(2, 2),
-                                            blurRadius: 0,
                                           ),
-                                        ],
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 6,
-                                        horizontal: 12,
-                                      ),
-                                      child: const Text(
-                                        'SEE ALL →',
-                                        style: TextStyle(
-                                          fontFamily: 'SpaceGrotesk',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11,
-                                          letterSpacing: 1,
-                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+                            );
+                          },
+                        ),
+                      ),
 
-                              ...habitsList.map((habit) {
-                                final isDone = todayLogs.any(
-                                  (log) =>
-                                      log.habitId == habit.id &&
-                                      log.isCompleted,
-                                );
+                      // CONTENT BODY
+                      Expanded(
+                        child: BlocBuilder<HabitBloc, HabitState>(
+                          builder: (context, state) {
+                            List<HabitModel> habitsList = [];
+                            List<HabitLogModel> todayLogs = [];
 
-                                final streak = state is HabitLoaded
-                                    ? (state.streaks[habit.id] ?? 0)
-                                    : 0;
+                            if (state is HabitLoaded) {
+                              habitsList = state.habits;
+                              todayLogs = state.todayLogs;
+                              if (habitsList.isEmpty) {
+                                return _buildEmptyHabitsState();
+                              }
+                            } else if (state is HabitLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                              );
+                            }
 
-                                return NeobrutalistHabitCardItem(
-                                  id: habit.id,
-                                  title: habit.title.toUpperCase(),
-                                  emoji: habit.icon,
-                                  colorVal: habit.colorValue,
-                                  streak: streak,
-                                  isDone: isDone,
-                                  category: habit.category,
-                                  onToggle: () {
-                                    context.read<HabitBloc>().add(
-                                      ToggleHabitLogRequested(
-                                        habitId: habit.id,
-                                        date: _selectedDate,
+                            // Calculate scores
+                            int completedCount = 0;
+                            int totalCount = 0;
+                            int overallStreak = 0;
+
+                            totalCount = habitsList.length;
+                            completedCount = todayLogs
+                                .where((log) => log.isCompleted)
+                                .length;
+                            final double progressPercent = totalCount > 0
+                                ? (completedCount / totalCount)
+                                : 0.0;
+                            final String progressText =
+                                '${(progressPercent * 100).toInt()}%';
+
+                            if (state is HabitLoaded) {
+                              overallStreak = state.overallStreak;
+                            }
+
+                            return SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(bottom: 100),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // PROGRESS CARD
+                                  Container(
+                                    margin: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.accentYellow,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 3,
                                       ),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black,
+                                          offset: Offset(6, 6),
+                                          blurRadius: 0,
+                                        ),
+                                      ],
+                                    ),
+                                    padding: const EdgeInsets.all(20),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                "TODAY'S SCORE",
+                                                style: TextStyle(
+                                                  fontFamily: 'SpaceGrotesk',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 11,
+                                                  letterSpacing: 2,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    completedCount.toString(),
+                                                    style: const TextStyle(
+                                                      fontFamily: 'Syne',
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontSize: 64,
+                                                      height: 1.0,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        '/$totalCount',
+                                                        style: const TextStyle(
+                                                          fontFamily:
+                                                              'SpaceGrotesk',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 24,
+                                                          height: 1.0,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                      const Text(
+                                                        'done',
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'SpaceGrotesk',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          fontSize: 14,
+                                                          height: 1.0,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 8),
+                                              LayoutBuilder(
+                                                builder: (context, constraints) {
+                                                  final double maxWidth =
+                                                      constraints.maxWidth - 55;
+                                                  return Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: maxWidth,
+                                                        child:
+                                                            NeobrutalistProgressBar(
+                                                              value:
+                                                                  progressPercent,
+                                                              height: 12,
+                                                              showLoadingText:
+                                                                  true,
+                                                            ),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Text(
+                                                        progressText,
+                                                        style: const TextStyle(
+                                                          fontFamily:
+                                                              'SpaceGrotesk',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 13,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 20),
+                                        Column(
+                                          children: [
+                                            const Text(
+                                              'STREAK',
+                                              style: TextStyle(
+                                                fontFamily: 'SpaceGrotesk',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11,
+                                                letterSpacing: 2,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Container(
+                                              width: 80,
+                                              height: 80,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.black,
+                                                  width: 3,
+                                                ),
+
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                    color: Colors.black,
+                                                    offset: Offset(4, 4),
+                                                    blurRadius: 0,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Lottie.asset(
+                                                    'assets/animations/fire.json',
+                                                    width: 32,
+                                                    height: 32,
+                                                  ),
+                                                  Text(
+                                                    overallStreak.toString(),
+                                                    style: const TextStyle(
+                                                      fontFamily:
+                                                          'SpaceGrotesk',
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontSize: 20,
+                                                      color: Colors.black,
+                                                      height: 1.0,
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    'DAYS',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'SpaceGrotesk',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 10,
+                                                      letterSpacing: 1,
+                                                      color: Colors.black,
+                                                      height: 1.0,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // SECTION HEADER
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 8,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Text(
+                                          'MY HABITS',
+                                          style: TextStyle(
+                                            fontFamily: 'Syne',
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 18,
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              color: Colors.black,
+                                              width: 2,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.black,
+                                                offset: Offset(2, 2),
+                                                blurRadius: 0,
+                                              ),
+                                            ],
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                            horizontal: 12,
+                                          ),
+                                          child: const Text(
+                                            'SEE ALL →',
+                                            style: TextStyle(
+                                              fontFamily: 'SpaceGrotesk',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11,
+                                              letterSpacing: 1,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  ...habitsList.map((habit) {
+                                    final isDone = todayLogs.any(
+                                      (log) =>
+                                          log.habitId == habit.id &&
+                                          log.isCompleted,
                                     );
-                                  },
-                                );
-                              }),
-                            ],
-                          ),
-                        );
-                      },
+
+                                    final streak = state is HabitLoaded
+                                        ? (state.streaks[habit.id] ?? 0)
+                                        : 0;
+
+                                    return NeobrutalistHabitCardItem(
+                                      id: habit.id,
+                                      title: habit.title.toUpperCase(),
+                                      emoji: habit.icon,
+                                      colorVal: habit.colorValue,
+                                      streak: streak,
+                                      isDone: isDone,
+                                      category: habit.category,
+                                      onToggle: () {
+                                        context.read<HabitBloc>().add(
+                                          ToggleHabitLogRequested(
+                                            habitId: habit.id,
+                                            date: _selectedDate,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // FAB Add button with NEW sticker
+                  Positioned(
+                    bottom: 88,
+                    right: 16,
+                    child: NeobrutalistFab(
+                      onTap: () => context.push('/habit/add'),
                     ),
                   ),
                 ],
               ),
-
-              // FAB Add button with NEW sticker
-              Positioned(
-                bottom: 88,
-                right: 16,
-                child: NeobrutalistFab(onTap: () => context.push('/habit/add')),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

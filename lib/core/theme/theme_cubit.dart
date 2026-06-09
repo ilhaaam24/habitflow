@@ -3,23 +3,42 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeMode> {
-  final SharedPreferences _prefs;
-  static const String _themeKey = 'theme_mode';
+  final SharedPreferences sharedPreferences;
+  static const String _key = 'theme_mode';
 
-  ThemeCubit(this._prefs) : super(_loadTheme(_prefs));
+  ThemeCubit({required this.sharedPreferences})
+      : super(_loadTheme(sharedPreferences));
 
   static ThemeMode _loadTheme(SharedPreferences prefs) {
-    final themeIndex = prefs.getInt(_themeKey);
-    if (themeIndex != null) {
-      return ThemeMode.values[themeIndex];
+    final Object? value = prefs.get(_key);
+    if (value is String) {
+      switch (value) {
+        case 'dark':
+          return ThemeMode.dark;
+        case 'light':
+          return ThemeMode.light;
+        default:
+          return ThemeMode.dark;
+      }
+    } else if (value is int) {
+      if (value >= 0 && value < ThemeMode.values.length) {
+        return ThemeMode.values[value];
+      }
     }
-    return ThemeMode
-        .dark; // Default to Dark Mode as per PRD "sleek dark modes" preference
+    return ThemeMode.dark;
   }
 
   void toggleTheme() {
     final newMode = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
-    _prefs.setInt(_themeKey, newMode.index);
-    emit(newMode);
+    _save(newMode);
+  }
+
+  void setTheme(ThemeMode mode) => _save(mode);
+
+  bool get isDark => state == ThemeMode.dark;
+
+  void _save(ThemeMode mode) {
+    emit(mode);
+    sharedPreferences.setString(_key, mode.name);
   }
 }

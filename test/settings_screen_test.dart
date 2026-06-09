@@ -101,7 +101,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(800, 1600));
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final themeCubit = ThemeCubit(prefs);
+      final themeCubit = ThemeCubit(sharedPreferences: prefs);
       final authBloc = FakeAuthBloc();
 
       await tester.pumpWidget(
@@ -111,10 +111,7 @@ void main() {
             BlocProvider<AuthBloc>(create: (_) => authBloc),
           ],
           child: const MaterialApp(
-            home: MainLayout(
-              location: '/settings',
-              child: SettingsScreen(),
-            ),
+            home: MainLayout(location: '/settings', child: SettingsScreen()),
           ),
         ),
       );
@@ -152,7 +149,7 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(800, 1600));
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final themeCubit = ThemeCubit(prefs);
+    final themeCubit = ThemeCubit(sharedPreferences: prefs);
     final authBloc = FakeAuthBloc();
 
     // Verify initial theme state (default is ThemeMode.dark)
@@ -186,7 +183,7 @@ void main() {
       await tester.binding.setSurfaceSize(const Size(800, 1600));
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final themeCubit = ThemeCubit(prefs);
+      final themeCubit = ThemeCubit(sharedPreferences: prefs);
       final authBloc = FakeAuthBloc();
 
       await tester.pumpWidget(

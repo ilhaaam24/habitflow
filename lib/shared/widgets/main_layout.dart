@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habit_flow/core/theme/theme_cubit.dart';
 import '../../core/theme/app_colors.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
   final String location;
 
-  const MainLayout({
-    super.key,
-    required this.child,
-    required this.location,
-  });
+  const MainLayout({super.key, required this.child, required this.location});
 
   int _getCurrentNavIndex() {
     if (location.startsWith('/home')) return 0;
@@ -23,67 +21,75 @@ class MainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentIndex = _getCurrentNavIndex();
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Main screen body
-          child,
-          // Bottom Navigation Bar
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(
-              top: false,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22,
-                  vertical: 6,
-                ),
-                height: 72,
-                decoration: const BoxDecoration(color: AppColors.bottomAppbar),
-                child: Row(
-                  spacing: 4,
-                  children: [
-                    _buildNavItem(
-                      context: context,
-                      index: 0,
-                      currentIndex: currentIndex,
-                      icon: Icons.home,
-                      label: 'HOME',
-                      route: '/home',
+    return BlocBuilder<ThemeCubit, ThemeMode>(
+      builder: (context, state) {
+        return Scaffold(
+          body: Stack(
+            children: [
+              // Main screen body
+              child,
+              // Bottom Navigation Bar
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: SafeArea(
+                  top: false,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 22,
+                      vertical: 6,
                     ),
-                    _buildNavItem(
-                      context: context,
-                      index: 1,
-                      currentIndex: currentIndex,
-                      icon: Icons.bar_chart,
-                      label: 'STATS',
-                      route: '/stats',
+                    height: 72,
+                    decoration: BoxDecoration(
+                      color: state == ThemeMode.dark
+                          ? AppColors.darkBottomAppbar
+                          : AppColors.bottomAppbar,
                     ),
-                    _buildNavItem(
-                      context: context,
-                      index: 2,
-                      currentIndex: currentIndex,
-                      icon: Icons.psychology,
-                      label: 'AI',
-                      route: '/ai-insights',
+                    child: Row(
+                      spacing: 4,
+                      children: [
+                        _buildNavItem(
+                          context: context,
+                          index: 0,
+                          currentIndex: currentIndex,
+                          icon: Icons.home,
+                          label: 'HOME',
+                          route: '/home',
+                        ),
+                        _buildNavItem(
+                          context: context,
+                          index: 1,
+                          currentIndex: currentIndex,
+                          icon: Icons.bar_chart,
+                          label: 'STATS',
+                          route: '/stats',
+                        ),
+                        _buildNavItem(
+                          context: context,
+                          index: 2,
+                          currentIndex: currentIndex,
+                          icon: Icons.psychology,
+                          label: 'AI',
+                          route: '/ai-insights',
+                        ),
+                        _buildNavItem(
+                          context: context,
+                          index: 3,
+                          currentIndex: currentIndex,
+                          icon: Icons.settings,
+                          label: 'SETTINGS',
+                          route: '/settings',
+                        ),
+                      ],
                     ),
-                    _buildNavItem(
-                      context: context,
-                      index: 3,
-                      currentIndex: currentIndex,
-                      icon: Icons.settings,
-                      label: 'SETTINGS',
-                      route: '/settings',
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

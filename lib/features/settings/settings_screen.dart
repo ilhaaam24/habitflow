@@ -894,7 +894,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFFEF0),
         body: SafeArea(
           child: Stack(
             children: [
@@ -939,7 +938,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 32,
                                   letterSpacing: -1,
-                                  color: Colors.black,
                                 ),
                               ),
                               SizedBox(height: 2),
@@ -950,7 +948,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 11,
                                   letterSpacing: 3,
-                                  color: Colors.black,
                                 ),
                               ),
                             ],
@@ -1501,7 +1498,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.w900,
                                 fontSize: 12,
                                 letterSpacing: 2,
-                                color: Colors.black,
                               ),
                             ),
                             SizedBox(height: 4),
@@ -1512,7 +1508,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
                                 letterSpacing: 1,
-                                color: Colors.black54,
                               ),
                             ),
                           ],

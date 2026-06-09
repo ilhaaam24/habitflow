@@ -86,12 +86,12 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      primaryColor: AppColors.accentYellow,
+      primaryColor: AppColors.darkAccentYellow,
       scaffoldBackgroundColor: AppColors.darkBackground,
       colorScheme: const ColorScheme.dark(
-        primary: AppColors.accentYellow,
-        secondary: AppColors.accentPink,
-        error: AppColors.accentRed,
+        primary: AppColors.darkAccentYellow,
+        secondary: AppColors.darkAccentPink,
+        error: AppColors.darkAccentRed,
         surface: AppColors.darkCard,
         onPrimary: AppColors.black,
         onSecondary: AppColors.black,
@@ -112,16 +112,16 @@ class AppTheme {
         color: AppColors.darkCard,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: AppColors.darkText, width: 3),
+          side: BorderSide(color: AppColors.darkBorder, width: 3),
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           foregroundColor: AppColors.black,
-          backgroundColor: AppColors.accentYellow,
+          backgroundColor: AppColors.darkAccentYellow,
           elevation: 0,
-          side: const BorderSide(color: AppColors.darkText, width: 3),
+          side: const BorderSide(color: AppColors.darkBorder, width: 3),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
@@ -132,15 +132,15 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.darkCard,
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.darkText, width: 3),
+          borderSide: BorderSide(color: AppColors.darkBorder, width: 3),
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.darkText, width: 3),
+          borderSide: BorderSide(color: AppColors.darkBorder, width: 3),
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.darkText, width: 4),
+          borderSide: BorderSide(color: AppColors.darkBorder, width: 4),
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         labelStyle: TextStyle(

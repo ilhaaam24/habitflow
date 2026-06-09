@@ -48,7 +48,10 @@ class _NeobrutalistCardState extends State<NeobrutalistCard> {
       decoration: BoxDecoration(
         color: widget.color,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border: Border.all(color: widget.borderColor, width: widget.borderWidth),
+        border: Border.all(
+          color: widget.borderColor,
+          width: widget.borderWidth,
+        ),
         boxShadow: [
           BoxShadow(
             color: widget.shadowColor,
@@ -73,9 +76,6 @@ class _NeobrutalistCardState extends State<NeobrutalistCard> {
       );
     }
 
-    return Container(
-      margin: widget.margin,
-      child: cardContent,
-    );
+    return Container(margin: widget.margin, child: cardContent);
   }
 }
