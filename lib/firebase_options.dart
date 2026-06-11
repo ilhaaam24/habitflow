@@ -60,24 +60,24 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCUsbGJL2fFjCT0MWHakMc717C31M9YcCY',
-    appId: '1:579306392370:ios:480eeeb8c379663968252b',
+    appId: '1:579306392370:ios:704bd43718e1439968252b',
     messagingSenderId: '579306392370',
     projectId: 'habit-flow-79f0a',
     storageBucket: 'habit-flow-79f0a.firebasestorage.app',
     iosClientId:
-        '579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com',
-    iosBundleId: 'com.example.habitFlow',
+        '579306392370-rlbab9fc3pu0drbssasrblfioaomfr0n.apps.googleusercontent.com',
+    iosBundleId: 'com.ilhaaam24.habitFlow',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCUsbGJL2fFjCT0MWHakMc717C31M9YcCY',
-    appId: '1:579306392370:ios:480eeeb8c379663968252b',
+    appId: '1:579306392370:ios:704bd43718e1439968252b',
     messagingSenderId: '579306392370',
     projectId: 'habit-flow-79f0a',
     storageBucket: 'habit-flow-79f0a.firebasestorage.app',
     iosClientId:
-        '579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com',
-    iosBundleId: 'com.example.habitFlow',
+        '579306392370-rlbab9fc3pu0drbssasrblfioaomfr0n.apps.googleusercontent.com',
+    iosBundleId: 'com.ilhaaam24.habitFlow',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
