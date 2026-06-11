@@ -29,12 +29,17 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late final AnimationController _controller;
   DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authState = context.read<AuthBloc>().state;
       if (authState is AuthAuthenticated) {
@@ -43,6 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void _onDaySelected(DateTime date, String userId) {
@@ -531,6 +542,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Lottie.asset(
+                                                    controller: _controller,
+                                                    onLoaded: (composition) {
+                                                      _controller.forward();
+                                                    },
                                                     'assets/animations/fire.json',
                                                     width: 32,
                                                     height: 32,
