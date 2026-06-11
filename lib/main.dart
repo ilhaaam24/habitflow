@@ -5,6 +5,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/habit/presentation/bloc/habit_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sizer/sizer.dart';
 import 'firebase_options.dart';
 import 'core/utils/router.dart';
 import 'core/theme/app_theme.dart';
@@ -36,13 +37,17 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            title: 'HabitFlow AI',
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: themeMode,
-            routerConfig: appRouter,
+          return Sizer(
+            builder: (context, orientation, deviceType) {
+              return MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                title: 'HabitFlow AI',
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: themeMode,
+                routerConfig: appRouter,
+              );
+            },
           );
         },
       ),

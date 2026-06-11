@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../core/services/gemini_service.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -321,7 +322,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           border: Border.all(color: AppColors.borderOf(context), width: 4),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            BoxShadow(color: AppColors.borderOf(context), offset: const Offset(6, 6)),
+            BoxShadow(
+              color: AppColors.borderOf(context),
+              offset: const Offset(6, 6),
+            ),
           ],
         ),
         padding: const EdgeInsets.all(24),
@@ -359,7 +363,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                       height: 44,
                       decoration: BoxDecoration(
                         color: AppColors.cardOf(context),
-                        border: Border.all(color: AppColors.borderOf(context), width: 2.5),
+                        border: Border.all(
+                          color: AppColors.borderOf(context),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Center(
@@ -387,7 +394,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                       height: 44,
                       decoration: BoxDecoration(
                         color: AppColors.accentYellowOf(context),
-                        border: Border.all(color: AppColors.borderOf(context), width: 2.5),
+                        border: Border.all(
+                          color: AppColors.borderOf(context),
+                          width: 2.5,
+                        ),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Center(
@@ -464,7 +474,9 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
   Widget _buildHeader() {
     return Container(
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: AppColors.borderOf(context), width: 4)),
+        border: Border(
+          bottom: BorderSide(color: AppColors.borderOf(context), width: 4),
+        ),
       ),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: Row(
@@ -478,7 +490,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 style: TextStyle(
                   fontFamily: 'Syne',
                   fontWeight: FontWeight.w900,
-                  fontSize: 32,
+                  fontSize: 15.sp,
                   letterSpacing: -1,
                   color: AppColors.textOf(context),
                 ),
@@ -489,7 +501,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
                   fontWeight: FontWeight.bold,
-                  fontSize: 11,
+                  fontSize: 12.sp,
                   letterSpacing: 2,
                   color: AppColors.textSecondaryOf(context),
                 ),
@@ -502,13 +514,19 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             },
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.borderOf(context), width: 2),
+                border: Border.all(
+                  color: AppColors.borderOf(context),
+                  width: 2,
+                ),
                 borderRadius: BorderRadius.circular(6),
                 color: _isApiKeyActive
                     ? AppColors.accentPurpleOf(context)
                     : AppColors.accentRedOf(context),
                 boxShadow: [
-                  BoxShadow(color: AppColors.borderOf(context), offset: const Offset(3, 3)),
+                  BoxShadow(
+                    color: AppColors.borderOf(context),
+                    offset: const Offset(3, 3),
+                  ),
                 ],
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -534,7 +552,12 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         color: AppColors.accentYellowOf(context),
         border: Border.all(color: AppColors.borderOf(context), width: 4),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: AppColors.borderOf(context), offset: const Offset(8, 8))],
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.borderOf(context),
+            offset: const Offset(8, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -543,14 +566,22 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppColors.borderOf(context), width: 3)),
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.borderOf(context),
+                  width: 3,
+                ),
+              ),
             ),
             child: Row(
               children: [
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.borderOf(context),
-                    border: Border.all(color: AppColors.borderOf(context), width: 2),
+                    border: Border.all(
+                      color: AppColors.borderOf(context),
+                      width: 2,
+                    ),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   padding: const EdgeInsets.symmetric(
@@ -575,7 +606,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     height: 32,
                     decoration: BoxDecoration(
                       color: AppColors.cardOf(context),
-                      border: Border.all(color: AppColors.borderOf(context), width: 2),
+                      border: Border.all(
+                        color: AppColors.borderOf(context),
+                        width: 2,
+                      ),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Center(
@@ -622,7 +656,9 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.borderOf(context), width: 2)),
+              border: Border(
+                top: BorderSide(color: AppColors.borderOf(context), width: 2),
+              ),
             ),
             child: Row(
               children: [
@@ -639,7 +675,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.cardOf(context),
-                    border: Border.all(color: AppColors.borderOf(context), width: 2),
+                    border: Border.all(
+                      color: AppColors.borderOf(context),
+                      width: 2,
+                    ),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   padding: const EdgeInsets.symmetric(
@@ -766,7 +805,12 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         color: color,
         border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: AppColors.borderOf(context), offset: const Offset(5, 5))],
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.borderOf(context),
+            offset: const Offset(5, 5),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -779,7 +823,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 height: 32,
                 decoration: BoxDecoration(
                   color: AppColors.cardOf(context),
-                  border: Border.all(color: AppColors.borderOf(context), width: 2),
+                  border: Border.all(
+                    color: AppColors.borderOf(context),
+                    width: 2,
+                  ),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
@@ -813,11 +860,11 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.black,
               fontFamily: 'Syne',
               fontWeight: FontWeight.w900,
-              fontSize: 22,
+              fontSize: 16.sp,
             ),
           ),
           Text(
@@ -843,7 +890,12 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         color: AppColors.cardOf(context),
         border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: AppColors.borderOf(context), offset: const Offset(5, 5))],
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.borderOf(context),
+            offset: const Offset(5, 5),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -852,7 +904,12 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: AppColors.borderOf(context), width: 2)),
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.borderOf(context),
+                  width: 2,
+                ),
+              ),
             ),
             child: Row(
               children: [
@@ -861,7 +918,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   height: 32,
                   decoration: BoxDecoration(
                     color: AppColors.cardOf(context),
-                    border: Border.all(color: AppColors.borderOf(context), width: 2),
+                    border: Border.all(
+                      color: AppColors.borderOf(context),
+                      width: 2,
+                    ),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Center(
@@ -876,7 +936,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     style: TextStyle(
                       fontFamily: 'Syne',
                       fontWeight: FontWeight.w900,
-                      fontSize: 14,
+                      fontSize: 15.sp,
                       letterSpacing: 0.5,
                       color: AppColors.textOf(context),
                     ),
@@ -885,7 +945,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.borderOf(context),
-                    border: Border.all(color: AppColors.borderOf(context), width: 2),
+                    border: Border.all(
+                      color: AppColors.borderOf(context),
+                      width: 2,
+                    ),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   padding: const EdgeInsets.symmetric(
@@ -970,7 +1033,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                           height: 52,
                           decoration: BoxDecoration(
                             color: AppColors.accentPurpleOf(context),
-                            border: Border.all(color: AppColors.borderOf(context), width: 3),
+                            border: Border.all(
+                              color: AppColors.borderOf(context),
+                              width: 3,
+                            ),
                             borderRadius: BorderRadius.circular(6),
                             boxShadow: [
                               BoxShadow(
@@ -1028,7 +1094,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             border: Border.all(color: AppColors.borderOf(context), width: 3),
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
-              BoxShadow(color: AppColors.borderOf(context), offset: const Offset(4, 4)),
+              BoxShadow(
+                color: AppColors.borderOf(context),
+                offset: const Offset(4, 4),
+              ),
             ],
           ),
           child: IntrinsicHeight(
@@ -1041,7 +1110,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   decoration: BoxDecoration(
                     color: rec['color'] as Color,
                     border: Border(
-                      right: BorderSide(color: AppColors.borderOf(context), width: 2),
+                      right: BorderSide(
+                        color: AppColors.borderOf(context),
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),

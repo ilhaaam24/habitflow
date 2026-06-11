@@ -10,6 +10,7 @@ import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:habit_flow/core/helpers/completion_rate_calculator.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
+import 'package:sizer/sizer.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -531,7 +532,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 style: TextStyle(
                   fontFamily: 'Syne',
                   fontWeight: FontWeight.w900,
-                  fontSize: 18,
+                  fontSize: 15.sp,
                   letterSpacing: -1,
                   color: onSurface,
                 ),
@@ -541,7 +542,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
                   fontWeight: FontWeight.bold,
-                  fontSize: 12,
+                  fontSize: 13.sp,
                   letterSpacing: 3,
                   color: onSurface,
                 ),
@@ -568,12 +569,12 @@ class _StatsScreenState extends State<StatsScreen> {
               children: [
                 const Text("📅", style: TextStyle(fontSize: 16)),
                 const SizedBox(width: 6),
-                const Text(
+                Text(
                   "NOV",
                   style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    fontSize: 14.sp,
                     color: Colors.black,
                   ),
                 ),
@@ -844,7 +845,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   style: TextStyle(
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
-                    fontSize: 16,
+                    fontSize: 15.sp,
                     letterSpacing: 1,
                     color: onSurface,
                   ),
@@ -1078,7 +1079,7 @@ class _StatsScreenState extends State<StatsScreen> {
               style: TextStyle(
                 fontFamily: 'Syne',
                 fontWeight: FontWeight.w900,
-                fontSize: 16,
+                fontSize: 15.sp,
                 letterSpacing: 1,
                 color: onSurface,
               ),
@@ -1208,7 +1209,9 @@ class _StatsScreenState extends State<StatsScreen> {
                       ),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: AppColors.accentYellowOf(context).withValues(alpha: 0.1),
+                        color: AppColors.accentYellowOf(
+                          context,
+                        ).withValues(alpha: 0.1),
                       ),
                     ),
                   ],
@@ -1275,7 +1278,7 @@ class _StatsScreenState extends State<StatsScreen> {
               style: TextStyle(
                 fontFamily: 'Syne',
                 fontWeight: FontWeight.w900,
-                fontSize: 16,
+                fontSize: 15.sp,
                 letterSpacing: 1,
                 color: onSurface,
               ),
@@ -1542,7 +1545,7 @@ class _StatsScreenState extends State<StatsScreen> {
               style: TextStyle(
                 fontFamily: 'Syne',
                 fontWeight: FontWeight.w900,
-                fontSize: 16,
+                fontSize: 15.sp,
                 letterSpacing: 1,
                 color: onSurface,
               ),
@@ -1689,7 +1692,7 @@ class _StatsScreenState extends State<StatsScreen> {
             style: TextStyle(
               fontFamily: 'Syne',
               fontWeight: FontWeight.w900,
-              fontSize: 16,
+              fontSize: 15.sp,
               letterSpacing: 1,
               color: onSurface,
             ),

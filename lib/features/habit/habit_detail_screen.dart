@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
 import 'package:habit_flow/core/di/injection.dart';
@@ -587,7 +588,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.cardOf(context),
-                          border: Border.all(color: AppColors.borderOf(context), width: 2),
+                          border: Border.all(
+                            color: AppColors.borderOf(context),
+                            width: 2,
+                          ),
                           borderRadius: BorderRadius.circular(4),
                           boxShadow: [
                             BoxShadow(
@@ -621,7 +625,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.accentRedOf(context),
-                          border: Border.all(color: AppColors.borderOf(context), width: 2),
+                          border: Border.all(
+                            color: AppColors.borderOf(context),
+                            width: 2,
+                          ),
                           borderRadius: BorderRadius.circular(4),
                           boxShadow: [
                             BoxShadow(
@@ -695,7 +702,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           border: Border.all(color: AppColors.borderOf(context), width: 3),
           borderRadius: BorderRadius.circular(6),
           boxShadow: [
-            BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(3, 3), blurRadius: 0),
+            BoxShadow(
+              color: AppColors.shadowOf(context),
+              offset: const Offset(3, 3),
+              blurRadius: 0,
+            ),
           ],
         ),
         child: Center(
@@ -723,10 +734,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           border: Border.all(color: AppColors.borderOf(context), width: 3),
           borderRadius: BorderRadius.circular(6),
           boxShadow: [
-            BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(3, 3), blurRadius: 0),
+            BoxShadow(
+              color: AppColors.shadowOf(context),
+              offset: const Offset(3, 3),
+              blurRadius: 0,
+            ),
           ],
         ),
-        child: Center(child: Icon(icon, color: AppColors.textOf(context), size: 20)),
+        child: Center(
+          child: Icon(icon, color: AppColors.textOf(context), size: 20),
+        ),
       ),
     );
   }
@@ -736,7 +753,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     if (_isLoading || _habit == null) {
       return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: Center(child: CircularProgressIndicator(color: AppColors.textOf(context))),
+        body: Center(
+          child: CircularProgressIndicator(color: AppColors.textOf(context)),
+        ),
       );
     }
 
@@ -767,7 +786,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.backgroundOf(context),
                   border: Border(
-                    bottom: BorderSide(color: AppColors.borderOf(context), width: 3),
+                    bottom: BorderSide(
+                      color: AppColors.borderOf(context),
+                      width: 3,
+                    ),
                   ),
                 ),
                 padding: const EdgeInsets.symmetric(
@@ -811,7 +833,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         decoration: BoxDecoration(
                           color: habitColor,
                           border: Border(
-                            bottom: BorderSide(color: AppColors.borderOf(context), width: 4),
+                            bottom: BorderSide(
+                              color: AppColors.borderOf(context),
+                              width: 4,
+                            ),
                           ),
                         ),
                         padding: const EdgeInsets.all(20),
@@ -864,14 +889,18 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                         text: _habit!.category.toUpperCase(),
                                         bgColor: AppColors.borderOf(context),
                                         textColor: AppColors.cardOf(context),
-                                        borderColor: AppColors.borderOf(context),
+                                        borderColor: AppColors.borderOf(
+                                          context,
+                                        ),
                                       ),
                                       const SizedBox(width: 8),
                                       _buildHeaderTag(
                                         text: 'ACTIVE ✓',
                                         bgColor: AppColors.cardOf(context),
                                         textColor: AppColors.borderOf(context),
-                                        borderColor: AppColors.borderOf(context),
+                                        borderColor: AppColors.borderOf(
+                                          context,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -899,7 +928,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     emoji: '🔥',
                                     bgColor: AppColors.accentYellowOf(context),
                                     textColor: Colors.black,
-                                    labelColor: Colors.black.withValues(alpha: 0.6),
+                                    labelColor: Colors.black.withValues(
+                                      alpha: 0.6,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -910,8 +941,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     subtitle: 'OF ACTIVE DAYS',
                                     emoji: '📈',
                                     bgColor: AppColors.accentBlueOf(context),
-                                    textColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
-                                    labelColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.white70,
+                                    textColor:
+                                        Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.black
+                                        : Colors.white,
+                                    labelColor:
+                                        Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.black54
+                                        : Colors.white70,
                                   ),
                                 ),
                               ],
@@ -927,7 +966,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     emoji: '✅',
                                     bgColor: AppColors.accentGreenOf(context),
                                     textColor: Colors.black,
-                                    labelColor: Colors.black.withValues(alpha: 0.6),
+                                    labelColor: Colors.black.withValues(
+                                      alpha: 0.6,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -939,7 +980,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     emoji: '🏆',
                                     bgColor: AppColors.accentPinkOf(context),
                                     textColor: Colors.black,
-                                    labelColor: Colors.black.withValues(alpha: 0.6),
+                                    labelColor: Colors.black.withValues(
+                                      alpha: 0.6,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -962,7 +1005,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Syne',
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 16,
+                                    fontSize: 15.sp,
                                     letterSpacing: 2,
                                     color: AppColors.textOf(context),
                                   ),
@@ -1040,7 +1083,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                       final isDone = _isDateCompleted(date);
                                       if (isDone) {
                                         height = 90;
-                                        color = AppColors.accentYellowOf(context);
+                                        color = AppColors.accentYellowOf(
+                                          context,
+                                        );
                                       } else {
                                         height = 20;
                                         color = AppColors.cardOf(context);
@@ -1157,7 +1202,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 11,
                                                     letterSpacing: 2,
-                                                    color: AppColors.textOf(context),
+                                                    color: AppColors.textOf(
+                                                      context,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -1166,7 +1213,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                         ).toList(),
                                   ),
                                   const SizedBox(height: 8),
-                                  Container(height: 2, color: AppColors.borderOf(context)),
+                                  Container(
+                                    height: 2,
+                                    color: AppColors.borderOf(context),
+                                  ),
                                   const SizedBox(height: 8),
                                   // Table Calendar
                                   TableCalendar(
@@ -1210,7 +1260,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                           color: AppColors.accentBlueOf(context),
-                          border: Border.all(color: AppColors.borderOf(context), width: 3),
+                          border: Border.all(
+                            color: AppColors.borderOf(context),
+                            width: 3,
+                          ),
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
@@ -1290,7 +1343,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           height: 56,
                           decoration: BoxDecoration(
                             color: AppColors.cardOf(context),
-                            border: Border.all(color: AppColors.borderOf(context), width: 3),
+                            border: Border.all(
+                              color: AppColors.borderOf(context),
+                              width: 3,
+                            ),
                             borderRadius: BorderRadius.circular(6),
                             boxShadow: [
                               BoxShadow(
@@ -1370,7 +1426,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
-          BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(5, 5), blurRadius: 0),
+          BoxShadow(
+            color: AppColors.shadowOf(context),
+            offset: const Offset(5, 5),
+            blurRadius: 0,
+          ),
         ],
       ),
       padding: const EdgeInsets.all(16),
@@ -1480,7 +1540,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           border: Border.all(color: AppColors.borderOf(context), width: 2),
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
-            BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(2, 2), blurRadius: 0),
+            BoxShadow(
+              color: AppColors.shadowOf(context),
+              offset: const Offset(2, 2),
+              blurRadius: 0,
+            ),
           ],
         ),
         child: Center(

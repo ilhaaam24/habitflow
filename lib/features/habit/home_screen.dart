@@ -14,6 +14,7 @@ import 'package:habit_flow/features/habit/presentation/bloc/habit_state.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sizer/sizer.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
 import '../../shared/widgets/neobrutalist_button.dart';
 import 'neobrutalist_habit_card_item.dart';
@@ -151,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 11,
+                                    fontSize: 13.sp,
                                     letterSpacing: 2,
                                     color: textColor,
                                   ),
@@ -163,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Syne',
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 20,
+                                    fontSize: 15.sp,
                                     color: textColor,
                                   ),
                                 ),
@@ -289,9 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 36,
                                       height: 36,
                                       decoration: BoxDecoration(
-                                        color: isToday
-                                            ? accentYellow
-                                            : cardBg,
+                                        color: isToday ? accentYellow : cardBg,
                                         boxShadow: isToday
                                             ? [
                                                 BoxShadow(
@@ -400,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 style: TextStyle(
                                                   fontFamily: 'SpaceGrotesk',
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 11,
+                                                  fontSize: 13.sp,
                                                   letterSpacing: 2,
                                                   color: textColor,
                                                 ),
@@ -416,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       fontFamily: 'Syne',
                                                       fontWeight:
                                                           FontWeight.w900,
-                                                      fontSize: 64,
+                                                      fontSize: 32.sp,
                                                       height: 1.0,
                                                       color: textColor,
                                                     ),
@@ -436,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               'SpaceGrotesk',
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 24,
+                                                          fontSize: 20.sp,
                                                           height: 1.0,
                                                           color: textColor,
                                                         ),
@@ -448,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               'SpaceGrotesk',
                                                           fontWeight:
                                                               FontWeight.normal,
-                                                          fontSize: 14,
+                                                          fontSize: 14.sp,
                                                           height: 1.0,
                                                           color: textColor,
                                                         ),
@@ -591,7 +590,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           style: TextStyle(
                                             fontFamily: 'Syne',
                                             fontWeight: FontWeight.w900,
-                                            fontSize: 18,
+                                            fontSize: 15.sp,
                                             letterSpacing: 1,
                                             color: textColor,
                                           ),
@@ -1011,7 +1010,9 @@ class _NeobrutalistFabState extends State<NeobrutalistFab> {
               child: RotationTransition(
                 turns: const AlwaysStoppedAnimation(15 / 360),
                 child: Container(
-                  decoration: BoxDecoration(color: AppColors.accentRedOf(context)),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentRedOf(context),
+                  ),
                   padding: const EdgeInsets.symmetric(
                     vertical: 2,
                     horizontal: 6,

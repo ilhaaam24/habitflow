@@ -11,6 +11,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_event.dart';
 import 'package:habit_flow/core/services/badge_service.dart';
 import 'package:habit_flow/shared/models/badge_model.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
+import 'package:sizer/sizer.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -500,7 +501,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       height: 6,
                       decoration: BoxDecoration(
                         color: borderColor,
-                        borderRadius: const BorderRadius.all(Radius.circular(3)),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(3),
+                        ),
                       ),
                     ),
                   ),
@@ -723,7 +726,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: BoxDecoration(
                     color: isUnlocked
                         ? Color(badge.colorValue)
-                        : isDark ? Colors.grey[700] : Colors.grey[300],
+                        : isDark
+                        ? Colors.grey[700]
+                        : Colors.grey[300],
                     border: Border.all(color: borderColor, width: 3),
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
@@ -793,7 +798,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       border: Border.all(color: borderColor, width: 2.5),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [
-                        BoxShadow(color: borderColor, offset: const Offset(3, 3)),
+                        BoxShadow(
+                          color: borderColor,
+                          offset: const Offset(3, 3),
+                        ),
                       ],
                     ),
                     child: Center(
@@ -961,7 +969,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       "⚙",
                       style: TextStyle(
                         fontSize: 200,
-                        color: AppColors.textOf(context).withValues(alpha: 0.05),
+                        color: AppColors.textOf(
+                          context,
+                        ).withValues(alpha: 0.05),
                       ),
                     ),
                   ),
@@ -974,7 +984,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: AppColors.borderOf(context), width: 4),
+                        bottom: BorderSide(
+                          color: AppColors.borderOf(context),
+                          width: 4,
+                        ),
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -992,7 +1005,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 style: TextStyle(
                                   fontFamily: 'Syne',
                                   fontWeight: FontWeight.w900,
-                                  fontSize: 32,
+                                  fontSize: 16.sp,
                                   letterSpacing: -1,
                                   color: AppColors.textOf(context),
                                 ),
@@ -1003,7 +1016,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 style: TextStyle(
                                   fontFamily: 'SpaceGrotesk',
                                   fontWeight: FontWeight.w900,
-                                  fontSize: 11,
+                                  fontSize: 14.sp,
                                   letterSpacing: 3,
                                   color: AppColors.textMutedOf(context),
                                 ),
