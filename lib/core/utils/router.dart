@@ -53,39 +53,54 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) =>
           buildPageWithBrutalistTransition(context, state, const LoginScreen()),
     ),
-    ShellRoute(
-      builder: (context, state, child) {
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
         return MainLayout(
-          location: state.matchedLocation,
-          child: child,
+          navigationShell: navigationShell,
         );
       },
-      routes: [
-        GoRoute(
-          path: '/home',
-          pageBuilder: (context, state) =>
-              buildPageWithBrutalistTransition(context, state, const HomeScreen()),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              pageBuilder: (context, state) =>
+                  buildPageWithBrutalistTransition(context, state, const HomeScreen()),
+            ),
+          ],
         ),
-        GoRoute(
-          path: '/stats',
-          pageBuilder: (context, state) =>
-              buildPageWithBrutalistTransition(context, state, const StatsScreen()),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/stats',
+              pageBuilder: (context, state) =>
+                  buildPageWithBrutalistTransition(context, state, const StatsScreen()),
+            ),
+          ],
         ),
-        GoRoute(
-          path: '/settings',
-          pageBuilder: (context, state) => buildPageWithBrutalistTransition(
-            context,
-            state,
-            const SettingsScreen(),
-          ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/ai-insights',
+              pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+                context,
+                state,
+                const AIInsightsScreen(),
+              ),
+            ),
+          ],
         ),
-        GoRoute(
-          path: '/ai-insights',
-          pageBuilder: (context, state) => buildPageWithBrutalistTransition(
-            context,
-            state,
-            const AIInsightsScreen(),
-          ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/settings',
+              pageBuilder: (context, state) => buildPageWithBrutalistTransition(
+                context,
+                state,
+                const SettingsScreen(),
+              ),
+            ),
+          ],
         ),
       ],
     ),

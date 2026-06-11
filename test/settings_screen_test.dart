@@ -12,6 +12,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
 import 'package:habit_flow/shared/models/user_model.dart';
+import 'package:sizer/sizer.dart';
 
 class FakeBadgesBox extends Fake implements Box {
   final Map<dynamic, dynamic> _data = {};
@@ -110,8 +111,10 @@ void main() {
             BlocProvider<ThemeCubit>(create: (_) => themeCubit),
             BlocProvider<AuthBloc>(create: (_) => authBloc),
           ],
-          child: const MaterialApp(
-            home: MainLayout(location: '/settings', child: SettingsScreen()),
+          child: Sizer(
+            builder: (context, orientation, deviceType) => const MaterialApp(
+              home: MainLayout(location: '/settings', child: SettingsScreen()),
+            ),
           ),
         ),
       );
@@ -161,7 +164,10 @@ void main() {
           BlocProvider<ThemeCubit>(create: (_) => themeCubit),
           BlocProvider<AuthBloc>(create: (_) => authBloc),
         ],
-        child: const MaterialApp(home: SettingsScreen()),
+        child: Sizer(
+          builder: (context, orientation, deviceType) =>
+              const MaterialApp(home: SettingsScreen()),
+        ),
       ),
     );
 
@@ -192,7 +198,10 @@ void main() {
             BlocProvider<ThemeCubit>(create: (_) => themeCubit),
             BlocProvider<AuthBloc>(create: (_) => authBloc),
           ],
-          child: const MaterialApp(home: SettingsScreen()),
+          child: Sizer(
+            builder: (context, orientation, deviceType) =>
+                const MaterialApp(home: SettingsScreen()),
+          ),
         ),
       );
 

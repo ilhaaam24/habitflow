@@ -2,32 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habit_flow/core/theme/theme_cubit.dart';
+import 'package:habit_flow/core/navigation/navigation_cubit.dart';
 import '../../core/theme/app_colors.dart';
 
 class MainLayout extends StatelessWidget {
-  final Widget child;
-  final String location;
+  final Widget? child;
+  final String? location;
+  final StatefulNavigationShell? navigationShell;
 
-  const MainLayout({super.key, required this.child, required this.location});
+  const MainLayout({
+    super.key,
+    this.child,
+    this.location,
+    this.navigationShell,
+  }) : assert(navigationShell != null || (child != null && location != null));
 
-  int _getCurrentNavIndex() {
-    if (location.startsWith('/home')) return 0;
-    if (location.startsWith('/stats')) return 1;
-    if (location.startsWith('/ai-insights')) return 2;
-    if (location.startsWith('/settings')) return 3;
+  NavigationCubit? _getNavigationCubit(BuildContext context) {
+    try {
+      return context.read<NavigationCubit>();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  int _getCurrentNavIndex(BuildContext context) {
+    if (navigationShell != null) {
+      return navigationShell!.currentIndex;
+    }
+    final loc = location ?? '';
+    if (loc.startsWith('/home')) return 0;
+    if (loc.startsWith('/stats')) return 1;
+    if (loc.startsWith('/ai-insights')) return 2;
+    if (loc.startsWith('/settings')) return 3;
     return 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = _getCurrentNavIndex();
+    final currentIndex = _getCurrentNavIndex(context);
+    final navCubit = _getNavigationCubit(context);
+
+    // Sync current index state to NavigationCubit
+    if (navCubit != null) {
+      if (navigationShell != null) {
+        final shellIndex = navigationShell!.currentIndex;
+        if (navCubit.state != shellIndex) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              navCubit.setTab(shellIndex);
+            }
+          });
+        }
+      } else {
+        // In widget tests / fallback, sync location-based index
+        if (navCubit.state != currentIndex) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              navCubit.setTab(currentIndex);
+            }
+          });
+        }
+      }
+    }
+
     return BlocBuilder<ThemeCubit, ThemeMode>(
-      builder: (context, state) {
+      builder: (context, themeState) {
         return Scaffold(
           body: Stack(
             children: [
               // Main screen body
-              child,
+              navigationShell ?? child!,
               // Bottom Navigation Bar
               Positioned(
                 bottom: 0,
@@ -35,61 +79,75 @@ class MainLayout extends StatelessWidget {
                 right: 0,
                 child: SafeArea(
                   top: false,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 22,
-                      vertical: 6,
-                    ),
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: state == ThemeMode.dark
-                          ? AppColors.darkBottomAppbar
-                          : AppColors.bottomAppbar,
-                    ),
-                    child: Row(
-                      spacing: 4,
-                      children: [
-                        _buildNavItem(
-                          context: context,
-                          index: 0,
-                          currentIndex: currentIndex,
-                          icon: Icons.home,
-                          label: 'HOME',
-                          route: '/home',
-                        ),
-                        _buildNavItem(
-                          context: context,
-                          index: 1,
-                          currentIndex: currentIndex,
-                          icon: Icons.bar_chart,
-                          label: 'STATS',
-                          route: '/stats',
-                        ),
-                        _buildNavItem(
-                          context: context,
-                          index: 2,
-                          currentIndex: currentIndex,
-                          icon: Icons.psychology,
-                          label: 'AI',
-                          route: '/ai-insights',
-                        ),
-                        _buildNavItem(
-                          context: context,
-                          index: 3,
-                          currentIndex: currentIndex,
-                          icon: Icons.settings,
-                          label: 'SETTINGS',
-                          route: '/settings',
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: navCubit != null
+                      ? BlocBuilder<NavigationCubit, int>(
+                          builder: (context, activeIndex) {
+                            return _buildNavBarContainer(context, themeState, activeIndex);
+                          },
+                        )
+                      : _buildNavBarContainer(context, themeState, currentIndex),
                 ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildNavBarContainer(
+    BuildContext context,
+    ThemeMode themeState,
+    int activeIndex,
+  ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 22,
+        vertical: 6,
+      ),
+      height: 72,
+      decoration: BoxDecoration(
+        color: themeState == ThemeMode.dark
+            ? AppColors.darkBottomAppbar
+            : AppColors.bottomAppbar,
+      ),
+      child: Row(
+        spacing: 4,
+        children: [
+          _buildNavItem(
+            context: context,
+            index: 0,
+            currentIndex: activeIndex,
+            icon: Icons.home,
+            label: 'HOME',
+            route: '/home',
+          ),
+          _buildNavItem(
+            context: context,
+            index: 1,
+            currentIndex: activeIndex,
+            icon: Icons.bar_chart,
+            label: 'STATS',
+            route: '/stats',
+          ),
+          _buildNavItem(
+            context: context,
+            index: 2,
+            currentIndex: activeIndex,
+            icon: Icons.psychology,
+            label: 'AI',
+            route: '/ai-insights',
+          ),
+          _buildNavItem(
+            context: context,
+            index: 3,
+            currentIndex: activeIndex,
+            icon: Icons.settings,
+            label: 'SETTINGS',
+            route: '/settings',
+          ),
+        ],
+      ),
     );
   }
 
@@ -110,8 +168,19 @@ class MainLayout extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          if (currentIndex != index) {
-            context.go(route);
+          final navCubit = _getNavigationCubit(context);
+          if (navCubit != null) {
+            navCubit.setTab(index);
+          }
+          if (navigationShell != null) {
+            navigationShell!.goBranch(
+              index,
+              initialLocation: index == navigationShell!.currentIndex,
+            );
+          } else {
+            if (currentIndex != index) {
+              context.go(route);
+            }
           }
         },
         child: Container(
@@ -148,4 +217,3 @@ class MainLayout extends StatelessWidget {
     );
   }
 }
-

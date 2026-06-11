@@ -12,6 +12,7 @@ import 'package:habit_flow/shared/models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:habit_flow/core/theme/theme_cubit.dart';
+import 'package:sizer/sizer.dart';
 
 import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
 import 'package:habit_flow/features/habit/domain/repositories/habit_repository.dart';
@@ -134,10 +135,12 @@ void main() {
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
-        child: const MaterialApp(
-          home: MainLayout(
-            location: '/home',
-            child: HomeScreen(),
+        child: Sizer(
+          builder: (context, orientation, deviceType) => const MaterialApp(
+            home: MainLayout(
+              location: '/home',
+              child: HomeScreen(),
+            ),
           ),
         ),
       ),
@@ -187,7 +190,11 @@ void main() {
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
-        child: const MaterialApp(home: HomeScreen()),
+        child: Sizer(
+          builder: (context, orientation, deviceType) => const MaterialApp(
+            home: HomeScreen(),
+          ),
+        ),
       ),
     );
 

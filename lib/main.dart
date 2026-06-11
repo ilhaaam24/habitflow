@@ -11,6 +11,7 @@ import 'core/utils/router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
 import 'core/di/injection.dart';
+import 'core/navigation/navigation_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => AuthBloc(authRepository: sl())),
         BlocProvider(create: (context) => HabitBloc(habitRepository: sl())),
+        BlocProvider(create: (context) => NavigationCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {

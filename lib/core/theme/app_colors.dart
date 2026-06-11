@@ -137,9 +137,7 @@ class AppColors {
 
   /// Resolves dialog background color automatically based on context theme.
   static Color dialogBgOf(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark
-      ? darkCard
-      : background;
+      Theme.of(context).brightness == Brightness.dark ? darkCard : background;
 
   /// Resolves secondary text color (87%/70% opacity) based on context theme.
   static Color textSecondaryOf(BuildContext context) =>
@@ -156,9 +154,7 @@ class AppColors {
   /// Resolves shadow color automatically based on context theme.
   /// In dark mode, uses a subtler shadow for depth without harshness.
   static Color shadowOf(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark
-      ? darkBorder
-      : black;
+      Theme.of(context).brightness == Brightness.dark ? darkBorder : black;
 
   /// Resolves divider color automatically based on context theme.
   static Color dividerOf(BuildContext context) =>

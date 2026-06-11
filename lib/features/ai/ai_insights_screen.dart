@@ -490,7 +490,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 style: TextStyle(
                   fontFamily: 'Syne',
                   fontWeight: FontWeight.w900,
-                  fontSize: 15.sp,
+                  fontSize: 16.sp,
                   letterSpacing: -1,
                   color: AppColors.textOf(context),
                 ),

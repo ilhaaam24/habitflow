@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Syne',
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 15.sp,
+                                    fontSize: 16.sp,
                                     color: textColor,
                                   ),
                                 ),

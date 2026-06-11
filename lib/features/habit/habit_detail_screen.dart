@@ -806,7 +806,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           style: TextStyle(
                             fontFamily: 'Syne',
                             fontWeight: FontWeight.w900,
-                            fontSize: 18,
+                            fontSize: 15.sp,
                             letterSpacing: 2,
                             color: AppColors.textOf(context),
                           ),
@@ -874,10 +874,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                 children: [
                                   Text(
                                     _habit!.title.toUpperCase(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'Syne',
                                       fontWeight: FontWeight.w900,
-                                      fontSize: 26,
+                                      fontSize: 20.sp,
                                       letterSpacing: -0.5,
                                       color: Colors.black,
                                     ),
@@ -1123,7 +1123,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                               style: TextStyle(
                                 fontFamily: 'Syne',
                                 fontWeight: FontWeight.w900,
-                                fontSize: 16,
+                                fontSize: 15.sp,
                                 letterSpacing: 2,
                                 color: AppColors.textOf(context),
                               ),
@@ -1445,7 +1445,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.bold,
-                    fontSize: 10,
+                    fontSize: 13.sp,
                     letterSpacing: 2,
                     color: labelColor,
                   ),
@@ -1460,7 +1460,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             style: TextStyle(
               fontFamily: 'SpaceGrotesk',
               fontWeight: FontWeight.w900,
-              fontSize: 48,
+              fontSize: 24.sp,
               height: 1.0,
               color: textColor,
             ),
@@ -1470,7 +1470,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             style: TextStyle(
               fontFamily: 'SpaceGrotesk',
               fontWeight: FontWeight.bold,
-              fontSize: 13,
+              fontSize: 13.sp,
               color: textColor,
             ),
           ),

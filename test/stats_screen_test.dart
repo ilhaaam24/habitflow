@@ -15,6 +15,7 @@ import 'package:habit_flow/shared/models/user_model.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:habit_flow/features/auth/domain/repositories/auth_repository.dart';
+import 'package:sizer/sizer.dart';
 
 class DummyAuthRepository implements AuthRepository {
   @override
@@ -132,8 +133,10 @@ void main() {
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
-        child: const MaterialApp(
-          home: StatsScreen(),
+        child: Sizer(
+          builder: (context, orientation, deviceType) => const MaterialApp(
+            home: StatsScreen(),
+          ),
         ),
       ),
     );
@@ -179,7 +182,7 @@ void main() {
     expect(find.byType(BarChart), findsOneWidget);
 
     // Verify Completion Trend Line Chart section
-    expect(find.text('COMPLETION TREND (4 WEEKS)'), findsOneWidget);
+    expect(find.text('COMPLETION TREND\n(4 WEEKS)'), findsOneWidget);
     for (var week in ["W1", "W2", "W3", "W4"]) {
       expect(find.text(week), findsOneWidget);
     }
@@ -242,8 +245,10 @@ void main() {
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
-        child: const MaterialApp(
-          home: StatsScreen(),
+        child: Sizer(
+          builder: (context, orientation, deviceType) => const MaterialApp(
+            home: StatsScreen(),
+          ),
         ),
       ),
     );
@@ -341,8 +346,10 @@ void main() {
           BlocProvider<AuthBloc>(create: (_) => authBloc),
           BlocProvider<HabitBloc>(create: (_) => habitBloc),
         ],
-        child: const MaterialApp(
-          home: StatsScreen(),
+        child: Sizer(
+          builder: (context, orientation, deviceType) => const MaterialApp(
+            home: StatsScreen(),
+          ),
         ),
       ),
     );

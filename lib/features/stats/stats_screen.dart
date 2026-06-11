@@ -532,7 +532,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 style: TextStyle(
                   fontFamily: 'Syne',
                   fontWeight: FontWeight.w900,
-                  fontSize: 15.sp,
+                  fontSize: 16.sp,
                   letterSpacing: -1,
                   color: onSurface,
                 ),
@@ -1075,7 +1075,7 @@ class _StatsScreenState extends State<StatsScreen> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              "COMPLETION TREND (4 WEEKS)",
+              "COMPLETION TREND\n(4 WEEKS)",
               style: TextStyle(
                 fontFamily: 'Syne',
                 fontWeight: FontWeight.w900,
