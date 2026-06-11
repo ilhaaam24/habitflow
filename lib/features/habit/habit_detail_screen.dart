@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:habit_flow/core/theme/app_colors.dart';
 import 'package:habit_flow/core/di/injection.dart';
 import 'package:habit_flow/features/habit/domain/repositories/habit_repository.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
@@ -77,6 +78,12 @@ class NeobrutalistSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+    final activeInnerColor = accentYellow;
+    final inactiveInnerColor = borderColor;
+
     return GestureDetector(
       onTap: () => onChanged(!value),
       child: AnimatedContainer(
@@ -84,8 +91,8 @@ class NeobrutalistSwitch extends StatelessWidget {
         width: 60,
         height: 32,
         decoration: BoxDecoration(
-          color: value ? Colors.black : Colors.white,
-          border: Border.all(color: Colors.black, width: 3),
+          color: value ? borderColor : cardBg,
+          border: Border.all(color: borderColor, width: 3),
           borderRadius: BorderRadius.circular(4),
         ),
         child: Stack(
@@ -99,8 +106,11 @@ class NeobrutalistSwitch extends StatelessWidget {
               child: Container(
                 width: 22,
                 decoration: BoxDecoration(
-                  color: value ? const Color(0xFFFFD93D) : Colors.black,
-                  border: Border.all(color: Colors.black, width: 2),
+                  color: value ? activeInnerColor : inactiveInnerColor,
+                  border: Border.all(
+                    color: value ? cardBg : borderColor,
+                    width: 2,
+                  ),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -433,6 +443,29 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     return longest;
   }
 
+  Color _resolveHabitColor(BuildContext context, int colorVal) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    if (!isDark) return Color(colorVal);
+    switch (colorVal) {
+      case 0xFFFFD93D:
+        return const Color(0xFFFFE17D);
+      case 0xFFFF6B6B:
+        return const Color(0xFFFF8A8A);
+      case 0xFF6BCB77:
+        return const Color(0xFF8CE397);
+      case 0xFF4D96FF:
+        return const Color(0xFF7CB1FF);
+      case 0xFFFF6FC8:
+        return const Color(0xFFFF94D9);
+      case 0xFFC77DFF:
+        return const Color(0xFFDCA8FF);
+      case 0xFF4C4546:
+        return const Color(0xFF8C8284);
+      default:
+        return Color(colorVal);
+    }
+  }
+
   String _toDateKey(DateTime date) {
     return '${date.year}-${date.month}-${date.day}';
   }
@@ -516,9 +549,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       context: context,
       builder: (context) {
         return Dialog(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: AppColors.dialogBgOf(context),
           shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black, width: 3),
+            side: BorderSide(color: AppColors.borderOf(context), width: 3),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Container(
@@ -527,22 +560,22 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "DELETE HABIT?",
                   style: TextStyle(
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: Colors.black,
+                    color: AppColors.textOf(context),
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                Text(
                   "Are you sure you want to delete this habit? This action cannot be undone.",
                   style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontSize: 14,
-                    color: Colors.black87,
+                    color: AppColors.textSecondaryOf(context),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -553,13 +586,13 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       onTap: () => Navigator.of(context).pop(),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 2),
+                          color: AppColors.cardOf(context),
+                          border: Border.all(color: AppColors.borderOf(context), width: 2),
                           borderRadius: BorderRadius.circular(4),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(2, 2),
+                              color: AppColors.shadowOf(context),
+                              offset: const Offset(2, 2),
                               blurRadius: 0,
                             ),
                           ],
@@ -568,13 +601,13 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           horizontal: 16,
                           vertical: 8,
                         ),
-                        child: const Text(
+                        child: Text(
                           "CANCEL",
                           style: TextStyle(
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
-                            color: Colors.black,
+                            color: AppColors.textOf(context),
                           ),
                         ),
                       ),
@@ -587,13 +620,13 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFF6B6B),
-                          border: Border.all(color: Colors.black, width: 2),
+                          color: AppColors.accentRedOf(context),
+                          border: Border.all(color: AppColors.borderOf(context), width: 2),
                           borderRadius: BorderRadius.circular(4),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(2, 2),
+                              color: AppColors.shadowOf(context),
+                              offset: const Offset(2, 2),
                               blurRadius: 0,
                             ),
                           ],
@@ -658,20 +691,20 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 3),
+          color: AppColors.cardOf(context),
+          border: Border.all(color: AppColors.borderOf(context), width: 3),
           borderRadius: BorderRadius.circular(6),
-          boxShadow: const [
-            BoxShadow(color: Colors.black, offset: Offset(3, 3), blurRadius: 0),
+          boxShadow: [
+            BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(3, 3), blurRadius: 0),
           ],
         ),
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: AppColors.textOf(context),
             ),
           ),
         ),
@@ -686,14 +719,14 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 3),
+          color: AppColors.cardOf(context),
+          border: Border.all(color: AppColors.borderOf(context), width: 3),
           borderRadius: BorderRadius.circular(6),
-          boxShadow: const [
-            BoxShadow(color: Colors.black, offset: Offset(3, 3), blurRadius: 0),
+          boxShadow: [
+            BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(3, 3), blurRadius: 0),
           ],
         ),
-        child: Center(child: Icon(icon, color: Colors.black, size: 20)),
+        child: Center(child: Icon(icon, color: AppColors.textOf(context), size: 20)),
       ),
     );
   }
@@ -703,11 +736,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     if (_isLoading || _habit == null) {
       return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: const Center(child: CircularProgressIndicator(color: Colors.black)),
+        body: Center(child: CircularProgressIndicator(color: AppColors.textOf(context))),
       );
     }
 
-    final habitColor = Color(_habit!.colorValue);
+    final habitColor = _resolveHabitColor(context, _habit!.colorValue);
     final weekDays = _getCurrentWeekDays();
     final weekMonthYearStr = DateFormat(
       'MMM yyyy',
@@ -731,10 +764,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             children: [
               // Sticky AppBar
               Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundOf(context),
                   border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 3),
+                    bottom: BorderSide(color: AppColors.borderOf(context), width: 3),
                   ),
                 ),
                 padding: const EdgeInsets.symmetric(
@@ -744,7 +777,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 child: Row(
                   children: [
                     _buildAppBarButton('←', () => context.pop()),
-                    const Expanded(
+                    Expanded(
                       child: Center(
                         child: Text(
                           'HABIT DETAIL',
@@ -753,7 +786,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                             fontWeight: FontWeight.w900,
                             fontSize: 18,
                             letterSpacing: 2,
-                            color: Colors.black,
+                            color: AppColors.textOf(context),
                           ),
                         ),
                       ),
@@ -777,8 +810,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: habitColor,
-                          border: const Border(
-                            bottom: BorderSide(color: Colors.black, width: 4),
+                          border: Border(
+                            bottom: BorderSide(color: AppColors.borderOf(context), width: 4),
                           ),
                         ),
                         padding: const EdgeInsets.all(20),
@@ -788,16 +821,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                               width: 72,
                               height: 72,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.cardOf(context),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: AppColors.borderOf(context),
                                   width: 4,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(6, 6),
+                                    color: AppColors.shadowOf(context),
+                                    offset: const Offset(6, 6),
                                     blurRadius: 0,
                                   ),
                                 ],
@@ -829,16 +862,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     children: [
                                       _buildHeaderTag(
                                         text: _habit!.category.toUpperCase(),
-                                        bgColor: Colors.black,
-                                        textColor: Colors.white,
-                                        borderColor: Colors.white,
+                                        bgColor: AppColors.borderOf(context),
+                                        textColor: AppColors.cardOf(context),
+                                        borderColor: AppColors.borderOf(context),
                                       ),
                                       const SizedBox(width: 8),
                                       _buildHeaderTag(
                                         text: 'ACTIVE ✓',
-                                        bgColor: Colors.white,
-                                        textColor: Colors.black,
-                                        borderColor: Colors.white,
+                                        bgColor: AppColors.cardOf(context),
+                                        textColor: AppColors.borderOf(context),
+                                        borderColor: AppColors.borderOf(context),
                                       ),
                                     ],
                                   ),
@@ -864,9 +897,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     value: '$_currentStreak',
                                     subtitle: 'DAYS 🔥',
                                     emoji: '🔥',
-                                    bgColor: const Color(0xFFFFD93D),
+                                    bgColor: AppColors.accentYellowOf(context),
                                     textColor: Colors.black,
-                                    labelColor: Colors.black54,
+                                    labelColor: Colors.black.withValues(alpha: 0.6),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -876,9 +909,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     value: '$_successRate%',
                                     subtitle: 'OF ACTIVE DAYS',
                                     emoji: '📈',
-                                    bgColor: const Color(0xFF4D96FF),
-                                    textColor: Colors.white,
-                                    labelColor: Colors.white70,
+                                    bgColor: AppColors.accentBlueOf(context),
+                                    textColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                                    labelColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.white70,
                                   ),
                                 ),
                               ],
@@ -892,9 +925,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     value: '$_totalCompleted',
                                     subtitle: 'COMPLETIONS',
                                     emoji: '✅',
-                                    bgColor: const Color(0xFF6BCB77),
+                                    bgColor: AppColors.accentGreenOf(context),
                                     textColor: Colors.black,
-                                    labelColor: Colors.black54,
+                                    labelColor: Colors.black.withValues(alpha: 0.6),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -904,9 +937,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                     value: '$_bestStreak',
                                     subtitle: 'DAYS 🔥',
                                     emoji: '🏆',
-                                    bgColor: const Color(0xFFFF6FC8),
+                                    bgColor: AppColors.accentPinkOf(context),
                                     textColor: Colors.black,
-                                    labelColor: Colors.black54,
+                                    labelColor: Colors.black.withValues(alpha: 0.6),
                                   ),
                                 ),
                               ],
@@ -924,22 +957,22 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           children: [
                             Row(
                               children: [
-                                const Text(
+                                Text(
                                   "THIS WEEK",
                                   style: TextStyle(
                                     fontFamily: 'Syne',
                                     fontWeight: FontWeight.w900,
                                     fontSize: 16,
                                     letterSpacing: 2,
-                                    color: Colors.black,
+                                    color: AppColors.textOf(context),
                                   ),
                                 ),
                                 const Spacer(),
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: AppColors.cardOf(context),
                                     border: Border.all(
-                                      color: Colors.black,
+                                      color: AppColors.borderOf(context),
                                       width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(4),
@@ -950,11 +983,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                   ),
                                   child: Text(
                                     weekMonthYearStr,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'SpaceGrotesk',
                                       fontWeight: FontWeight.bold,
                                       fontSize: 11,
-                                      color: Colors.black,
+                                      color: AppColors.textOf(context),
                                     ),
                                   ),
                                 ),
@@ -963,16 +996,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                             const SizedBox(height: 12),
                             Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.cardOf(context),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: AppColors.borderOf(context),
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(5, 5),
+                                    color: AppColors.shadowOf(context),
+                                    offset: const Offset(5, 5),
                                     blurRadius: 0,
                                   ),
                                 ],
@@ -998,7 +1031,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                   final isFuture = date.isAfter(today);
 
                                   double height = 8;
-                                  Color color = Colors.white;
+                                  Color color = AppColors.cardOf(context);
                                   bool isStriped = false;
 
                                   if (!isFuture) {
@@ -1007,14 +1040,14 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                       final isDone = _isDateCompleted(date);
                                       if (isDone) {
                                         height = 90;
-                                        color = const Color(0xFFFFD93D);
+                                        color = AppColors.accentYellowOf(context);
                                       } else {
                                         height = 20;
-                                        color = Colors.white;
+                                        color = AppColors.cardOf(context);
                                       }
                                     } else {
                                       height = 45;
-                                      color = Colors.white;
+                                      color = AppColors.cardOf(context);
                                       isStriped = true;
                                     }
                                   }
@@ -1040,29 +1073,29 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "MONTHLY VIEW",
                               style: TextStyle(
                                 fontFamily: 'Syne',
                                 fontWeight: FontWeight.w900,
                                 fontSize: 16,
                                 letterSpacing: 2,
-                                color: Colors.black,
+                                color: AppColors.textOf(context),
                               ),
                             ),
                             const SizedBox(height: 12),
                             Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.cardOf(context),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: AppColors.borderOf(context),
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(5, 5),
+                                    color: AppColors.shadowOf(context),
+                                    offset: const Offset(5, 5),
                                     blurRadius: 0,
                                   ),
                                 ],
@@ -1089,12 +1122,12 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                         DateFormat(
                                           'MMMM yyyy',
                                         ).format(_focusedDay).toUpperCase(),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontFamily: 'SpaceGrotesk',
                                           fontWeight: FontWeight.w900,
                                           fontSize: 14,
                                           letterSpacing: 2,
-                                          color: Colors.black,
+                                          color: AppColors.textOf(context),
                                         ),
                                       ),
                                       _buildCalendarHeaderButton(
@@ -1119,12 +1152,12 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                               child: Center(
                                                 child: Text(
                                                   day,
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontFamily: 'SpaceGrotesk',
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 11,
                                                     letterSpacing: 2,
-                                                    color: Colors.black,
+                                                    color: AppColors.textOf(context),
                                                   ),
                                                 ),
                                               ),
@@ -1133,7 +1166,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                         ).toList(),
                                   ),
                                   const SizedBox(height: 8),
-                                  Container(height: 2, color: Colors.black),
+                                  Container(height: 2, color: AppColors.borderOf(context)),
                                   const SizedBox(height: 8),
                                   // Table Calendar
                                   TableCalendar(
@@ -1176,13 +1209,13 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF4D96FF),
-                          border: Border.all(color: Colors.black, width: 3),
+                          color: AppColors.accentBlueOf(context),
+                          border: Border.all(color: AppColors.borderOf(context), width: 3),
                           borderRadius: BorderRadius.circular(8),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(5, 5),
+                              color: AppColors.shadowOf(context),
+                              offset: const Offset(5, 5),
                               blurRadius: 0,
                             ),
                           ],
@@ -1194,9 +1227,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.cardOf(context),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: AppColors.borderOf(context),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(6),
@@ -1256,22 +1289,22 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           margin: const EdgeInsets.all(24),
                           height: 56,
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black, width: 3),
+                            color: AppColors.cardOf(context),
+                            border: Border.all(color: AppColors.borderOf(context), width: 3),
                             borderRadius: BorderRadius.circular(6),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(4, 4),
+                                color: AppColors.shadowOf(context),
+                                offset: const Offset(4, 4),
                                 blurRadius: 0,
                               ),
                             ],
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("🗑", style: TextStyle(fontSize: 18)),
-                              SizedBox(width: 8),
+                              const Text("🗑", style: TextStyle(fontSize: 18)),
+                              const SizedBox(width: 8),
                               Text(
                                 "DELETE HABIT",
                                 style: TextStyle(
@@ -1279,7 +1312,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 15,
                                   letterSpacing: 1,
-                                  color: Color(0xFFFF6B6B),
+                                  color: AppColors.accentRedOf(context),
                                 ),
                               ),
                             ],
@@ -1334,10 +1367,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     return Container(
       decoration: BoxDecoration(
         color: bgColor,
-        border: Border.all(color: Colors.black, width: 3),
+        border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
-          BoxShadow(color: Colors.black, offset: Offset(5, 5), blurRadius: 0),
+        boxShadow: [
+          BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(5, 5), blurRadius: 0),
         ],
       ),
       padding: const EdgeInsets.all(16),
@@ -1402,8 +1435,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             width: 28,
             height: height,
             decoration: BoxDecoration(
-              color: isStriped ? Colors.white : color,
-              border: Border.all(color: Colors.black, width: 2),
+              color: isStriped ? AppColors.cardOf(context) : color,
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(4),
             ),
             child: isStriped
@@ -1411,7 +1444,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     borderRadius: BorderRadius.circular(2),
                     child: CustomPaint(
                       painter: StripesPainter(
-                        color: const Color(0x4D000000),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.borderOf(context).withValues(alpha: 0.3)
+                            : const Color(0x4D000000),
                         stripeWidth: 2,
                         gap: 3,
                       ),
@@ -1423,11 +1458,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         const SizedBox(height: 4),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'SpaceGrotesk',
             fontWeight: FontWeight.bold,
             fontSize: 11,
-            color: Colors.black,
+            color: AppColors.textOf(context),
           ),
         ),
       ],
@@ -1441,20 +1476,20 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         width: 32,
         height: 32,
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 2),
+          color: AppColors.cardOf(context),
+          border: Border.all(color: AppColors.borderOf(context), width: 2),
           borderRadius: BorderRadius.circular(4),
-          boxShadow: const [
-            BoxShadow(color: Colors.black, offset: Offset(2, 2), blurRadius: 0),
+          boxShadow: [
+            BoxShadow(color: AppColors.shadowOf(context), offset: const Offset(2, 2), blurRadius: 0),
           ],
         ),
         child: Center(
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14,
-              color: Colors.black,
+              color: AppColors.textOf(context),
             ),
           ),
         ),
@@ -1479,9 +1514,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       return Center(
         child: Text(
           day.day.toString(),
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'SpaceGrotesk',
-            color: Colors.black26,
+            color: AppColors.textMutedOf(context),
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),
@@ -1497,16 +1532,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.black,
-              border: Border.all(color: Colors.black, width: 3),
+              color: AppColors.borderOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 3),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Center(
               child: Text(
                 day.day.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
-                  color: Colors.white,
+                  color: AppColors.cardOf(context),
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                 ),
@@ -1526,8 +1561,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFD93D),
-              border: Border.all(color: Colors.black, width: 2),
+              color: AppColors.accentYellowOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Center(
@@ -1555,16 +1590,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 2),
+              color: AppColors.cardOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Center(
               child: Text(
                 day.day.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
-                  color: Colors.black,
+                  color: AppColors.textOf(context),
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                 ),
@@ -1581,8 +1616,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 2),
+              color: AppColors.cardOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Stack(
@@ -1590,9 +1625,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 Center(
                   child: Text(
                     day.day.toString(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
-                      color: Colors.black38,
+                      color: AppColors.textMutedOf(context),
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
                     ),
@@ -1601,7 +1636,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 Positioned.fill(
                   child: CustomPaint(
                     painter: StrikethroughPainter(
-                      color: const Color(0x80000000),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.borderOf(context).withValues(alpha: 0.5)
+                          : const Color(0x80000000),
                       strokeWidth: 2,
                     ),
                   ),

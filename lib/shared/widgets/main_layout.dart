@@ -102,6 +102,11 @@ class MainLayout extends StatelessWidget {
     required String route,
   }) {
     final isSelected = currentIndex == index;
+    final borderColor = AppColors.borderOf(context);
+    final selectedBg = AppColors.accentYellowOf(context);
+    final unselectedColor = AppColors.accentBrownOf(context);
+    final selectedTextColor = AppColors.textOf(context);
+
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -113,16 +118,16 @@ class MainLayout extends StatelessWidget {
           height: double.infinity,
           decoration: BoxDecoration(
             border: isSelected
-                ? Border.all(color: Colors.black, width: 2)
+                ? Border.all(color: borderColor, width: 2)
                 : null,
-            color: isSelected ? AppColors.accentYellow : Colors.transparent,
+            color: isSelected ? selectedBg : Colors.transparent,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 icon,
-                color: isSelected ? Colors.black : AppColors.accentBrown,
+                color: isSelected ? selectedTextColor : unselectedColor,
                 size: 24,
               ),
               const SizedBox(height: 2),
@@ -133,7 +138,7 @@ class MainLayout extends StatelessWidget {
                   fontWeight: FontWeight.w900,
                   fontSize: 14,
                   letterSpacing: 1,
-                  color: isSelected ? Colors.black : AppColors.accentBrown,
+                  color: isSelected ? selectedTextColor : unselectedColor,
                 ),
               ),
             ],
@@ -143,3 +148,4 @@ class MainLayout extends StatelessWidget {
     );
   }
 }
+

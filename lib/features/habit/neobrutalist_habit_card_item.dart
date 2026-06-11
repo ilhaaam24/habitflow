@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/neobrutalist_card.dart';
 import '../../shared/widgets/neobrutalist_checkbox.dart';
 
@@ -37,6 +38,7 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
   late AnimationController _slideController;
   late Animation<Offset> _slideAnimation;
   bool _isMilestone = false;
+  bool _flashSetup = false;
 
   @override
   void initState() {
@@ -49,32 +51,8 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
       duration: const Duration(milliseconds: 600),
     );
 
-    _borderColorAnimation = TweenSequence<Color?>([
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)),
-        weight: 16.6,
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black),
-        weight: 16.6,
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)),
-        weight: 16.6,
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black),
-        weight: 16.6,
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: Colors.black, end: const Color(0xFFFFD93D)),
-        weight: 16.6,
-      ),
-      TweenSequenceItem(
-        tween: ColorTween(begin: const Color(0xFFFFD93D), end: Colors.black),
-        weight: 16.6,
-      ),
-    ]).animate(_flashController);
+    // Border flash animation colors will be resolved in build
+    _borderColorAnimation = const AlwaysStoppedAnimation(null);
 
     _slideController = AnimationController(
       vsync: this,
@@ -86,11 +64,39 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
     ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOut));
 
     if (_isMilestone) {
-      _flashController.forward();
       Future.delayed(const Duration(milliseconds: 100), () {
         if (mounted) _slideController.forward();
       });
     }
+  }
+
+  void _setupFlashAnimation(Color baseColor, Color flashColor) {
+    _borderColorAnimation = TweenSequence<Color?>([
+      TweenSequenceItem(
+        tween: ColorTween(begin: baseColor, end: flashColor),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: flashColor, end: baseColor),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: baseColor, end: flashColor),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: flashColor, end: baseColor),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: baseColor, end: flashColor),
+        weight: 16.6,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: flashColor, end: baseColor),
+        weight: 16.6,
+      ),
+    ]).animate(_flashController);
   }
 
   @override
@@ -102,16 +108,29 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
 
   @override
   Widget build(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final textColor = AppColors.textOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+    final accentGreen = AppColors.accentGreenOf(context);
+
+    // Setup flash animation once with resolved colors
+    if (_isMilestone && !_flashSetup) {
+      _setupFlashAnimation(borderColor, accentYellow);
+      _flashController.forward();
+      _flashSetup = true;
+    }
+
     return AnimatedBuilder(
-      animation: _borderColorAnimation,
+      animation: _flashController,
       builder: (context, child) {
-        final borderColor = _isMilestone
-            ? (_borderColorAnimation.value ?? Colors.black)
-            : Colors.black;
+        final animBorderColor = _isMilestone
+            ? (_borderColorAnimation.value ?? borderColor)
+            : borderColor;
 
         return NeobrutalistCard(
           margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-          borderColor: borderColor,
+          borderColor: animBorderColor,
           borderWidth: 3,
           onTap: () => context.push('/habit/detail/${widget.id}'),
           padding: const EdgeInsets.all(16),
@@ -125,11 +144,11 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                       height: 52,
                       decoration: BoxDecoration(
                         color: Color(widget.colorVal),
-                        border: Border.all(color: Colors.black, width: 3),
-                        boxShadow: const [
+                        border: Border.all(color: borderColor, width: 3),
+                        boxShadow: [
                           BoxShadow(
-                            color: Colors.black,
-                            offset: Offset(3, 3),
+                            color: borderColor,
+                            offset: const Offset(3, 3),
                             blurRadius: 0,
                           ),
                         ],
@@ -148,12 +167,12 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                         children: [
                           Text(
                             widget.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Syne',
                               fontWeight: FontWeight.w900,
                               fontSize: 14,
                               letterSpacing: 0.5,
-                              color: Colors.black,
+                              color: textColor,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -162,9 +181,9 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                               Container(
                                 height: 22,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFFFD93D),
+                                  color: accentYellow,
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: borderColor,
                                     width: 2,
                                   ),
                                 ),
@@ -174,11 +193,11 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                 alignment: Alignment.center,
                                 child: Text(
                                   '🔥 ${widget.streak} DAYS',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
-                                    color: Colors.black,
+                                    color: textColor,
                                   ),
                                 ),
                               ),
@@ -187,10 +206,10 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                 height: 22,
                                 decoration: BoxDecoration(
                                   color: widget.isDone
-                                      ? const Color(0xFF6BCB77)
-                                      : Colors.white,
+                                      ? accentGreen
+                                      : cardBg,
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: borderColor,
                                     width: 2,
                                   ),
                                 ),
@@ -202,11 +221,11 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                   widget.isDone
                                       ? 'DONE ✓'
                                       : widget.category.toUpperCase(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
-                                    color: Colors.black,
+                                    color: textColor,
                                   ),
                                 ),
                               ),
@@ -218,9 +237,9 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                     child: Container(
                                       height: 22,
                                       decoration: BoxDecoration(
-                                        color: Colors.black,
+                                        color: borderColor,
                                         border: Border.all(
-                                          color: Colors.black,
+                                          color: borderColor,
                                           width: 2,
                                         ),
                                       ),
@@ -230,11 +249,11 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                       alignment: Alignment.center,
                                       child: Text(
                                         '🔥 ${widget.streak} DAYS!',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontFamily: 'SpaceGrotesk',
                                           fontWeight: FontWeight.w900,
                                           fontSize: 10,
-                                          color: Color(0xFFFFD93D),
+                                          color: accentYellow,
                                         ),
                                       ),
                                     ),

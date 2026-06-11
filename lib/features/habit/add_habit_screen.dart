@@ -224,6 +224,32 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     }
   }
 
+  Color _resolveHabitColor(BuildContext context, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    if (!isDark) return color;
+    if (color == const Color(0xFFFFD93D)) {
+      return const Color(0xFFFFE17D);
+    } else if (color == const Color(0xFFFF6B6B)) {
+      return const Color(0xFFFF8A8A);
+    } else if (color == const Color(0xFF6BCB77)) {
+      return const Color(0xFF8CE397);
+    } else if (color == const Color(0xFF4D96FF)) {
+      return const Color(0xFF7CB1FF);
+    } else if (color == const Color(0xFFFF6FC8) ||
+        color == const Color(0xFFFF85A2)) {
+      return const Color(0xFFFF94D9);
+    } else if (color == const Color(0xFFC77DFF)) {
+      return const Color(0xFFDCA8FF);
+    } else if (color == const Color(0xFFFFB347)) {
+      return const Color(0xFFFFE17D);
+    } else if (color == const Color(0xFF4C4546)) {
+      return const Color(0xFF8C8284);
+    } else if (color == const Color(0xFFFFFFFF)) {
+      return AppColors.darkCard;
+    }
+    return color;
+  }
+
   String _formatTime(TimeOfDay time) {
     final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final minute = time.minute.toString().padLeft(2, '0');
@@ -242,12 +268,12 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           content: Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFFFF6B6B),
-              border: Border.all(color: Colors.black, width: 3),
-              boxShadow: const [
+              color: AppColors.accentRedOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 3),
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(4, 4),
+                  color: AppColors.shadowOf(context),
+                  offset: const Offset(4, 4),
                   blurRadius: 0,
                 ),
               ],
@@ -316,13 +342,18 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   }
 
   Widget _buildSectionLabel({required String text, required Color bgColor}) {
+    final resolvedBg = _resolveHabitColor(context, bgColor);
     return Container(
       decoration: BoxDecoration(
-        color: bgColor,
-        border: Border.all(color: Colors.black, width: 2),
+        color: resolvedBg,
+        border: Border.all(color: AppColors.borderOf(context), width: 2),
         borderRadius: BorderRadius.circular(4),
-        boxShadow: const [
-          BoxShadow(color: Colors.black, offset: Offset(3, 3), blurRadius: 0),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadowOf(context),
+            offset: const Offset(3, 3),
+            blurRadius: 0,
+          ),
         ],
       ),
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
@@ -345,6 +376,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     final String userId = authState is AuthAuthenticated
         ? authState.user.uid
         : '';
+    final borderColor = AppColors.borderOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final textColor = AppColors.textOf(context);
+    final textMuted = AppColors.textMutedOf(context);
+    final shadowColor = AppColors.shadowOf(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -355,9 +391,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             children: [
               // Header
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundOf(context),
                   border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 3),
+                    bottom: BorderSide(color: borderColor, width: 3),
                   ),
                 ),
                 padding: const EdgeInsets.all(16),
@@ -370,24 +407,24 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 3),
+                          color: cardBg,
+                          border: Border.all(color: borderColor, width: 3),
                           borderRadius: BorderRadius.circular(6),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(3, 3),
+                              color: shadowColor,
+                              offset: const Offset(3, 3),
                               blurRadius: 0,
                             ),
                           ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             '←',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: textColor,
                             ),
                           ),
                         ),
@@ -397,12 +434,12 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       child: Center(
                         child: Text(
                           widget.habitId != null ? 'EDIT HABIT' : 'NEW HABIT',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Syne',
                             fontWeight: FontWeight.w900,
                             fontSize: 18,
                             letterSpacing: 2,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                         ),
                       ),
@@ -414,24 +451,24 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 3),
+                          color: cardBg,
+                          border: Border.all(color: borderColor, width: 3),
                           borderRadius: BorderRadius.circular(6),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(3, 3),
+                              color: shadowColor,
+                              offset: const Offset(3, 3),
                               blurRadius: 0,
                             ),
                           ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             '✓',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF6BCB77),
+                              color: AppColors.accentGreenOf(context),
                             ),
                           ),
                         ),
@@ -471,16 +508,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                               width: 88,
                               height: 88,
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFFD93D),
+                                color: AppColors.accentYellowOf(context),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: borderColor,
                                   width: 4,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
-                                boxShadow: const [
+                                boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(6, 6),
+                                    color: shadowColor,
+                                    offset: const Offset(6, 6),
                                     blurRadius: 0,
                                   ),
                                 ],
@@ -504,15 +541,15 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                               child: Container(
                                 height: 88,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: cardBg,
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: borderColor,
                                     width: 2,
                                   ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 padding: const EdgeInsets.all(12),
-                                child: const Align(
+                                child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
                                     'TAP TO CHOOSE ICON',
@@ -521,7 +558,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                       fontWeight: FontWeight.w900,
                                       fontSize: 11,
                                       letterSpacing: 1,
-                                      color: Colors.black,
+                                      color: textColor,
                                       height: 1.3,
                                     ),
                                   ),
@@ -538,8 +575,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black, width: 2),
+                            color: cardBg,
+                            border: Border.all(color: borderColor, width: 2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: GridView.builder(
@@ -565,18 +602,18 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? const Color(0xFFFFD93D)
-                                        : Colors.white,
+                                        ? AppColors.accentYellowOf(context)
+                                        : cardBg,
                                     border: Border.all(
-                                      color: Colors.black,
+                                      color: borderColor,
                                       width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(6),
                                     boxShadow: isSelected
-                                        ? const [
+                                        ? [
                                             BoxShadow(
-                                              color: Colors.black,
-                                              offset: Offset(2, 2),
+                                              color: shadowColor,
+                                              offset: const Offset(2, 2),
                                               blurRadius: 0,
                                             ),
                                           ]
@@ -597,39 +634,39 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       const SizedBox(height: 32),
 
                       // Habit Name Textfield
-                      const Text(
+                      Text(
                         'HABIT NAME *',
                         style: TextStyle(
                           fontFamily: 'SpaceGrotesk',
                           fontWeight: FontWeight.w900,
                           fontSize: 11,
                           letterSpacing: 2,
-                          color: Colors.black,
+                          color: textColor,
                         ),
                       ),
                       const SizedBox(height: 12),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 3),
+                          color: cardBg,
+                          border: Border.all(color: borderColor, width: 3),
                           borderRadius: BorderRadius.circular(6),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(4, 4),
+                              color: shadowColor,
+                              offset: const Offset(4, 4),
                               blurRadius: 0,
                             ),
                           ],
                         ),
                         child: TextFormField(
                           controller: _nameController,
-                          cursorColor: Colors.black,
+                          cursorColor: textColor,
                           cursorWidth: 3,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'SpaceGrotesk',
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                           maxLength: 30,
                           validator: (value) {
@@ -639,11 +676,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                             return null;
                           },
                           onChanged: (_) => setState(() {}),
-                          decoration: const InputDecoration(
-                            fillColor: AppColors.white,
-                            contentPadding: EdgeInsets.all(16),
+                          decoration: InputDecoration(
+                            fillColor: cardBg,
+                            contentPadding: const EdgeInsets.all(16),
                             hintText: 'e.g. Morning Run',
-                            hintStyle: TextStyle(color: Colors.black26),
+                            hintStyle: TextStyle(color: textMuted),
                             border: InputBorder.none,
                             counterText: '',
                           ),
@@ -654,11 +691,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         alignment: Alignment.centerRight,
                         child: Text(
                           '${_nameController.text.length}/30',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: 11,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                         ),
                       ),
@@ -690,16 +727,19 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? Color(catColor)
-                                    : Colors.white,
+                                    ? _resolveHabitColor(
+                                        context,
+                                        Color(catColor),
+                                      )
+                                    : cardBg,
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: borderColor,
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(4),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black,
+                                    color: shadowColor,
                                     offset: isSelected
                                         ? const Offset(3, 3)
                                         : const Offset(2, 2),
@@ -721,12 +761,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                   const SizedBox(width: 8),
                                   Text(
                                     catName,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'SpaceGrotesk',
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
                                       letterSpacing: 1,
-                                      color: Colors.black,
+                                      color: isSelected
+                                          ? Colors.black
+                                          : textColor,
                                     ),
                                   ),
                                 ],
@@ -760,16 +802,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                color: Color(val),
+                                color: _resolveHabitColor(context, Color(val)),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: borderColor,
                                   width: 3,
                                 ),
                                 boxShadow: isSelected
-                                    ? const [
+                                    ? [
                                         BoxShadow(
-                                          color: Colors.black,
-                                          offset: Offset(4, 4),
+                                          color: shadowColor,
+                                          offset: const Offset(4, 4),
                                           blurRadius: 0,
                                         ),
                                       ]
@@ -783,7 +825,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           border: Border.all(
-                                            color: Colors.black,
+                                            color: borderColor,
                                             width: 2,
                                           ),
                                         ),
@@ -826,18 +868,18 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                               height: 40,
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? const Color(0xFFFFD93D)
-                                    : Colors.white,
+                                    ? AppColors.accentYellowOf(context)
+                                    : cardBg,
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: borderColor,
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(4),
                                 boxShadow: isSelected
-                                    ? const [
+                                    ? [
                                         BoxShadow(
-                                          color: Colors.black,
-                                          offset: Offset(3, 3),
+                                          color: shadowColor,
+                                          offset: const Offset(3, 3),
                                           blurRadius: 0,
                                         ),
                                       ]
@@ -851,7 +893,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                     fontWeight: FontWeight.bold,
                                     color: isSelected
                                         ? Colors.black
-                                        : Colors.black38,
+                                        : textMuted,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -865,13 +907,13 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       // Daily Reminder Toggle Row
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.black, width: 2),
+                          color: cardBg,
+                          border: Border.all(color: borderColor, width: 2),
                           borderRadius: BorderRadius.circular(6),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(3, 3),
+                              color: shadowColor,
+                              offset: const Offset(3, 3),
                               blurRadius: 0,
                             ),
                           ],
@@ -885,9 +927,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 width: 32,
                                 height: 32,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFFFD93D),
+                                  color: AppColors.accentYellowOf(context),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: borderColor,
                                     width: 2,
                                   ),
                                   borderRadius: BorderRadius.circular(4),
@@ -907,14 +949,14 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'DAILY REMINDER',
                                       style: TextStyle(
                                         fontFamily: 'SpaceGrotesk',
                                         fontWeight: FontWeight.w900,
                                         fontSize: 13,
                                         letterSpacing: 1,
-                                        color: Colors.black,
+                                        color: textColor,
                                       ),
                                     ),
                                     Text(
@@ -922,8 +964,8 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                       style: TextStyle(
                                         fontFamily: 'SpaceGrotesk',
                                         color: _isReminderEnabled
-                                            ? Colors.black
-                                            : Colors.black38,
+                                            ? textColor
+                                            : textMuted,
                                         fontSize: 14,
                                       ),
                                     ),
@@ -944,11 +986,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 height: 26,
                                 decoration: BoxDecoration(
                                   color: _isReminderEnabled
-                                      ? Colors.black
-                                      : Colors.white,
+                                      ? borderColor
+                                      : cardBg,
                                   borderRadius: BorderRadius.circular(4),
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: borderColor,
                                     width: 2,
                                   ),
                                 ),
@@ -966,13 +1008,15 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                       height: 18,
                                       decoration: BoxDecoration(
                                         color: _isReminderEnabled
-                                            ? const Color(0xFFFFD93D)
-                                            : Colors.white,
+                                            ? AppColors.accentYellowOf(context)
+                                            : cardBg,
                                         borderRadius: BorderRadius.circular(2),
                                         border: Border.all(
                                           color: _isReminderEnabled
-                                              ? Colors.black
-                                              : Colors.black45,
+                                              ? borderColor
+                                              : borderColor.withValues(
+                                                  alpha: 0.5,
+                                                ),
                                           width: 2,
                                         ),
                                       ),
@@ -991,13 +1035,13 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         width: double.infinity,
                         height: 72,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF6BCB77), // Green
-                          border: Border.all(color: Colors.black, width: 3),
+                          color: AppColors.accentGreenOf(context),
+                          border: Border.all(color: borderColor, width: 3),
                           borderRadius: BorderRadius.circular(8),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(6, 6),
+                              color: shadowColor,
+                              offset: const Offset(6, 6),
                               blurRadius: 0,
                             ),
                           ],
@@ -1014,9 +1058,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'CREATE HABIT',
-                                style: TextStyle(
+                              Text(
+                                widget.habitId != null
+                                    ? 'SAVE CHANGES'
+                                    : 'CREATE HABIT',
+                                style: const TextStyle(
                                   fontFamily: 'SpaceGrotesk',
                                   fontWeight: FontWeight.w900,
                                   fontSize: 18,
@@ -1029,18 +1075,18 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 width: 32,
                                 height: 32,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: cardBg,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: borderColor,
                                     width: 2,
                                   ),
                                 ),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
                                     '→',
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: textColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
                                     ),

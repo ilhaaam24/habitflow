@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 
 class NeobrutalistCheckbox extends StatefulWidget {
   final bool value;
@@ -79,6 +80,11 @@ class _NeobrutalistCheckboxState extends State<NeobrutalistCheckbox>
 
   @override
   Widget build(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final bgUnchecked = AppColors.cardOf(context);
+    final greenColor = AppColors.accentGreenOf(context);
+    final textColor = AppColors.textOf(context);
+
     return GestureDetector(
       onTap: _handleTap,
       child: AnimatedBuilder(
@@ -97,28 +103,28 @@ class _NeobrutalistCheckboxState extends State<NeobrutalistCheckbox>
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: widget.value ? const Color(0xFF6BCB77) : Colors.white,
-                border: Border.all(color: Colors.black, width: 3),
+                color: widget.value ? greenColor : bgUnchecked,
+                border: Border.all(color: borderColor, width: 3),
                 borderRadius: BorderRadius.circular(6),
                 boxShadow: widget.value
                     ? null
-                    : const [
+                    : [
                         BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(3, 3),
+                          color: borderColor,
+                          offset: const Offset(3, 3),
                           blurRadius: 0,
                         ),
                       ],
               ),
               child: widget.value
-                  ? const Center(
+                  ? Center(
                       child: Text(
                         '✓',
                         style: TextStyle(
                           fontFamily: 'SpaceGrotesk',
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: Colors.black,
+                          color: textColor,
                         ),
                       ),
                     )
@@ -130,3 +136,4 @@ class _NeobrutalistCheckboxState extends State<NeobrutalistCheckbox>
     );
   }
 }
+

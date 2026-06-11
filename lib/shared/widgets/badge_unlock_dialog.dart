@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../shared/models/badge_model.dart';
+import '../../core/theme/app_colors.dart';
 
 class BadgeUnlockDialog extends StatelessWidget {
   final BadgeModel badge;
@@ -8,18 +9,25 @@ class BadgeUnlockDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final bgColor = AppColors.dialogBgOf(context);
+    final textColor = AppColors.textOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final textMuted = AppColors.textMutedOf(context);
+    final greenColor = AppColors.accentGreenOf(context);
+
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFEF0),
-          border: Border.all(color: Colors.black, width: 4),
+          color: bgColor,
+          border: Border.all(color: borderColor, width: 4),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.black,
-              offset: Offset(8, 8),
+              color: borderColor,
+              offset: const Offset(8, 8),
               blurRadius: 0,
             ),
           ],
@@ -34,12 +42,12 @@ class BadgeUnlockDialog extends StatelessWidget {
               height: 90,
               decoration: BoxDecoration(
                 color: Color(badge.colorValue),
-                border: Border.all(color: Colors.black, width: 4),
+                border: Border.all(color: borderColor, width: 4),
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(4, 4),
+                    color: borderColor,
+                    offset: const Offset(4, 4),
                   ),
                 ],
               ),
@@ -51,25 +59,25 @@ class BadgeUnlockDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
+            Text(
               "BADGE UNLOCKED! 🏆",
               style: TextStyle(
                 fontFamily: 'SpaceGrotesk',
                 fontWeight: FontWeight.w900,
                 fontSize: 12,
                 letterSpacing: 2,
-                color: Colors.black54,
+                color: textMuted,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               badge.name.toUpperCase(),
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Syne',
                 fontWeight: FontWeight.w900,
                 fontSize: 24,
-                color: Colors.black,
+                color: textColor,
                 letterSpacing: -0.5,
               ),
             ),
@@ -77,11 +85,11 @@ class BadgeUnlockDialog extends StatelessWidget {
             Text(
               badge.description.toUpperCase(),
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'SpaceGrotesk',
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
-                color: Colors.black87,
+                color: textSecondary,
               ),
             ),
             const SizedBox(height: 24),
@@ -91,17 +99,17 @@ class BadgeUnlockDialog extends StatelessWidget {
                 height: 48,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF6BCB77), // Green
-                  border: Border.all(color: Colors.black, width: 3),
+                  color: greenColor,
+                  border: Border.all(color: borderColor, width: 3),
                   borderRadius: BorderRadius.circular(8),
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
-                      color: Colors.black,
-                      offset: Offset(4, 4),
+                      color: borderColor,
+                      offset: const Offset(4, 4),
                     ),
                   ],
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
                     "AWESOME! ⚡",
                     style: TextStyle(
@@ -109,7 +117,7 @@ class BadgeUnlockDialog extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                       fontSize: 13,
                       letterSpacing: 1.5,
-                      color: Colors.black,
+                      color: textColor,
                     ),
                   ),
                 ),
@@ -121,3 +129,4 @@ class BadgeUnlockDialog extends StatelessWidget {
     );
   }
 }
+

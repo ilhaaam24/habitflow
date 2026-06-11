@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
 import 'dart:ui';
+import 'package:habit_flow/core/theme/app_colors.dart';
 
 class AISettingsScreen extends StatefulWidget {
   const AISettingsScreen({super.key});
@@ -40,9 +41,9 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     final key = _keyController.text.trim();
     if (key.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('API Key cannot be empty!'),
-          backgroundColor: Color(0xFFFF6B6B),
+        SnackBar(
+          content: const Text('API Key cannot be empty!'),
+          backgroundColor: AppColors.accentRedOf(context),
         ),
       );
       return;
@@ -62,9 +63,9 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
         _isTesting = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('API Key tested and saved successfully! 🤖'),
-          backgroundColor: Color(0xFF6BCB77),
+        SnackBar(
+          content: const Text('API Key tested and saved successfully! 🤖'),
+          backgroundColor: AppColors.accentGreenOf(context),
         ),
       );
     }
@@ -78,9 +79,12 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     });
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('API Key removed successfully.'),
-          backgroundColor: Colors.black,
+        SnackBar(
+          content: Text(
+            'API Key removed successfully.',
+            style: TextStyle(color: AppColors.backgroundOf(context)),
+          ),
+          backgroundColor: AppColors.borderOf(context),
         ),
       );
     }
@@ -89,7 +93,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFEF0),
+      backgroundColor: AppColors.backgroundOf(context),
       body: SafeArea(
         child: Column(
           children: [
@@ -101,22 +105,22 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildStatusBanner(),
-                    _buildSectionLabel(text: "HOW IT WORKS", bgColor: const Color(0xFFFFD93D)),
+                    _buildSectionLabel(text: "HOW IT WORKS", bgColor: AppColors.accentYellowOf(context)),
                     _buildStepCard(
                       number: "01",
-                      color: const Color(0xFFFFD93D),
+                      color: AppColors.accentYellowOf(context),
                       title: "GET FREE API KEY",
                       subtitle: "Visit Google AI Studio. Generate your free Gemini key.",
                     ),
                     _buildStepCard(
                       number: "02",
-                      color: const Color(0xFFFF6B6B),
+                      color: AppColors.accentRedOf(context),
                       title: "PASTE KEY SECURELY",
                       subtitle: "Enter the key into the secure input form below.",
                     ),
                     _buildStepCard(
                       number: "03",
-                      color: const Color(0xFF6BCB77),
+                      color: AppColors.accentGreenOf(context),
                       title: "ACTIVATE COACH",
                       subtitle: "Test and save your key to unlock behavioral tracking.",
                     ),
@@ -138,10 +142,10 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
 
   Widget _buildHeader() {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: AppColors.bottomAppbarOf(context),
         border: Border(
-          bottom: BorderSide(color: Colors.black, width: 4),
+          bottom: BorderSide(color: AppColors.borderOf(context), width: 4),
         ),
       ),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -154,15 +158,15 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 2),
+                border: Border.all(color: AppColors.borderOf(context), width: 2),
                 borderRadius: BorderRadius.circular(4),
-                color: Colors.white,
+                color: AppColors.cardOf(context),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   "←",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.textOf(context),
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -170,10 +174,10 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
               ),
             ),
           ),
-          const Text(
+          Text(
             "AI SETUP",
             style: TextStyle(
-              color: Colors.black,
+              color: AppColors.textOf(context),
               fontFamily: 'Syne',
               fontWeight: FontWeight.w900,
               fontSize: 20,
@@ -191,13 +195,13 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isConnected ? const Color(0xFF6BCB77) : const Color(0xFFFF6B6B),
-        border: Border.all(color: Colors.black, width: 3),
+        color: isConnected ? AppColors.accentGreenOf(context) : AppColors.accentRedOf(context),
+        border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Colors.black,
-            offset: Offset(5, 5),
+            color: AppColors.borderOf(context),
+            offset: const Offset(5, 5),
             blurRadius: 0,
           ),
         ],
@@ -209,15 +213,15 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.black,
-              border: Border.all(color: Colors.black, width: 2),
+              color: AppColors.borderOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Center(
               child: Text(
                 isConnected ? "✓" : "!",
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: AppColors.backgroundOf(context),
                   fontFamily: 'SpaceGrotesk',
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
@@ -260,14 +264,15 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     );
   }
 
-  Widget _buildSectionLabel({required String text, Color bgColor = const Color(0xFFFFD93D)}) {
+  Widget _buildSectionLabel({required String text, required Color bgColor}) {
+    final isDarkLabel = bgColor == Colors.black || bgColor == AppColors.borderOf(context);
     return Container(
       margin: const EdgeInsets.only(left: 16, top: 20, bottom: 8),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 2),
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(4),
               color: bgColor,
             ),
@@ -279,7 +284,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                 fontWeight: FontWeight.w900,
                 fontSize: 10,
                 letterSpacing: 3,
-                color: bgColor == Colors.black ? Colors.white : Colors.black,
+                color: isDarkLabel ? AppColors.backgroundOf(context) : Colors.black,
               ),
             ),
           ),
@@ -297,13 +302,13 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     return Container(
       margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 3),
+        color: AppColors.cardOf(context),
+        border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Colors.black,
-            offset: Offset(4, 4),
+            color: AppColors.borderOf(context),
+            offset: const Offset(4, 4),
             blurRadius: 0,
           ),
         ],
@@ -317,12 +322,12 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
             height: 40,
             decoration: BoxDecoration(
               color: color,
-              border: Border.all(color: Colors.black, width: 3),
+              border: Border.all(color: AppColors.borderOf(context), width: 3),
               borderRadius: BorderRadius.circular(6),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(3, 3),
+                  color: AppColors.borderOf(context),
+                  offset: const Offset(3, 3),
                   blurRadius: 0,
                 ),
               ],
@@ -346,8 +351,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: AppColors.textOf(context),
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
@@ -357,8 +362,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    color: Colors.black87,
+                  style: TextStyle(
+                    color: AppColors.textSecondaryOf(context),
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.normal,
                     fontSize: 13,
@@ -377,22 +382,22 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     return GestureDetector(
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Opening Google AI Studio (makersuite.google.com)... 🌐'),
-            backgroundColor: Color(0xFFFFD93D),
+          SnackBar(
+            content: const Text('Opening Google AI Studio (makersuite.google.com)... 🌐'),
+            backgroundColor: AppColors.accentYellowOf(context),
           ),
         );
       },
       child: Container(
         margin: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 3),
+          color: AppColors.cardOf(context),
+          border: Border.all(color: AppColors.borderOf(context), width: 3),
           borderRadius: BorderRadius.circular(8),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.black,
-              offset: Offset(4, 4),
+              color: AppColors.borderOf(context),
+              offset: const Offset(4, 4),
               blurRadius: 0,
             ),
           ],
@@ -408,22 +413,22 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     "GET YOUR FREE API KEY",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.textOf(context),
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
                       letterSpacing: 1,
                     ),
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
                     "makersuite.google.com →",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: AppColors.textSecondaryOf(context),
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.normal,
                       fontSize: 12,
@@ -437,8 +442,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFD93D),
-                border: Border.all(color: Colors.black, width: 2),
+                color: AppColors.accentYellowOf(context),
+                border: Border.all(color: AppColors.borderOf(context), width: 2),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: const Center(
@@ -462,12 +467,12 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 16, bottom: 4),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, bottom: 4),
           child: Text(
             "YOUR API KEY",
             style: TextStyle(
-              color: Colors.black,
+              color: AppColors.textOf(context),
               fontFamily: 'SpaceGrotesk',
               fontWeight: FontWeight.bold,
               fontSize: 11,
@@ -478,13 +483,13 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 3),
+            color: AppColors.cardOf(context),
+            border: Border.all(color: AppColors.borderOf(context), width: 3),
             borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black,
-                offset: Offset(5, 5),
+                color: AppColors.borderOf(context),
+                offset: const Offset(5, 5),
                 blurRadius: 0,
               ),
             ],
@@ -497,15 +502,15 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                 child: TextField(
                   controller: _keyController,
                   obscureText: _obscureText,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: AppColors.textOf(context),
                     fontFamily: 'monospace',
                     fontSize: 14,
                   ),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "AIzaSyXXXXXXXXXXXXXXXXXXXXX",
                     hintStyle: TextStyle(
-                      color: Colors.black38,
+                      color: AppColors.textMutedOf(context),
                       fontFamily: 'monospace',
                     ),
                     border: InputBorder.none,
@@ -514,8 +519,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                   ),
                 ),
               ),
-              const Divider(
-                color: Colors.black,
+              Divider(
+                color: AppColors.dividerOf(context),
                 thickness: 2,
                 height: 2,
               ),
@@ -534,14 +539,14 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                         children: [
                           Icon(
                             _obscureText ? Icons.visibility_off : Icons.visibility,
-                            color: Colors.black,
+                            color: AppColors.textOf(context),
                             size: 18,
                           ),
                           const SizedBox(width: 8),
-                          const Text(
+                          Text(
                             "SHOW / HIDE KEY",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: AppColors.textOf(context),
                               fontFamily: 'SpaceGrotesk',
                               fontWeight: FontWeight.bold,
                               fontSize: 11,
@@ -554,8 +559,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                     const Spacer(),
                     Text(
                       "${_keyController.text.length} CHARS",
-                      style: const TextStyle(
-                        color: Colors.black,
+                      style: TextStyle(
+                        color: AppColors.textOf(context),
                         fontFamily: 'SpaceGrotesk',
                         fontWeight: FontWeight.bold,
                         fontSize: 11,
@@ -577,7 +582,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
       height: 48,
       child: CustomPaint(
         painter: DashedRectanglePainter(
-          color: Colors.black,
+          color: AppColors.borderOf(context),
           strokeWidth: 2.0,
           gap: 4.0,
           dashLength: 6.0,
@@ -585,23 +590,23 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0x4DFFD93D), // yellow 30%
+            color: AppColors.accentYellowOf(context).withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(6),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "🔒",
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   "STORED ONLY ON YOUR DEVICE. WE NEVER SEE YOUR KEY.",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.textOf(context),
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
@@ -626,15 +631,15 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
             margin: const EdgeInsets.all(16),
             height: 64,
             decoration: BoxDecoration(
-              color: const Color(0xFF6BCB77), // green
-              border: Border.all(color: Colors.black, width: 3),
+              color: AppColors.accentGreenOf(context),
+              border: Border.all(color: AppColors.borderOf(context), width: 3),
               borderRadius: BorderRadius.circular(8),
               boxShadow: _isTesting
                   ? null
-                  : const [
+                  : [
                       BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(5, 5),
+                        color: AppColors.borderOf(context),
+                        offset: const Offset(5, 5),
                         blurRadius: 0,
                       ),
                     ],
@@ -660,22 +665,22 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
               margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               height: 52,
               decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black, width: 3),
+                color: AppColors.cardOf(context),
+                border: Border.all(color: AppColors.borderOf(context), width: 3),
                 borderRadius: BorderRadius.circular(8),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(3, 3),
+                    color: AppColors.borderOf(context),
+                    offset: const Offset(3, 3),
                     blurRadius: 0,
                   ),
                 ],
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
                   "✕ REMOVE API KEY",
                   style: TextStyle(
-                    color: Color(0xFFFF6B6B),
+                    color: AppColors.accentRedOf(context),
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
@@ -699,17 +704,17 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
 
     return Column(
       children: [
-        _buildSectionLabel(text: "YOU'LL UNLOCK", bgColor: Colors.black),
+        _buildSectionLabel(text: "YOU'LL UNLOCK", bgColor: AppColors.borderOf(context)),
         Container(
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 3),
+            color: AppColors.cardOf(context),
+            border: Border.all(color: AppColors.borderOf(context), width: 3),
             borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black,
-                offset: Offset(4, 4),
+                color: AppColors.borderOf(context),
+                offset: const Offset(4, 4),
                 blurRadius: 0,
               ),
             ],
@@ -727,8 +732,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                           width: 24,
                           height: 24,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFFD93D),
-                            border: Border.all(color: Colors.black, width: 2),
+                            color: AppColors.accentYellowOf(context),
+                            border: Border.all(color: AppColors.borderOf(context), width: 2),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: const Center(
@@ -745,8 +750,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                         const SizedBox(width: 12),
                         Text(
                           items[index],
-                          style: const TextStyle(
-                            color: Colors.black,
+                          style: TextStyle(
+                            color: AppColors.textOf(context),
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: 13,
@@ -757,8 +762,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                     ),
                   ),
                   if (!isLast)
-                    const Divider(
-                      color: Colors.black,
+                    Divider(
+                      color: AppColors.dividerOf(context),
                       thickness: 1,
                       height: 1,
                     ),

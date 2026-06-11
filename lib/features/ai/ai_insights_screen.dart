@@ -12,6 +12,7 @@ import '../../shared/models/habit_model.dart';
 import '../../shared/models/habit_log_model.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
 import '../../core/helpers/completion_rate_calculator.dart';
+import 'package:habit_flow/core/theme/app_colors.dart';
 
 class AIInsightsScreen extends StatefulWidget {
   const AIInsightsScreen({super.key});
@@ -316,11 +317,11 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
       backgroundColor: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFFFFEF0),
-          border: Border.all(color: Colors.black, width: 4),
+          color: AppColors.dialogBgOf(context),
+          border: Border.all(color: AppColors.borderOf(context), width: 4),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(color: Colors.black, offset: Offset(6, 6)),
+          boxShadow: [
+            BoxShadow(color: AppColors.borderOf(context), offset: const Offset(6, 6)),
           ],
         ),
         padding: const EdgeInsets.all(24),
@@ -329,23 +330,23 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           children: [
             const Text("🤖", style: TextStyle(fontSize: 48)),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               "API KEY REQUIRED",
               style: TextStyle(
                 fontFamily: 'Syne',
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
-                color: Colors.black,
+                color: AppColors.textOf(context),
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               "Connect your free Gemini key in AI Settings to unlock this feature.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'SpaceGrotesk',
                 fontSize: 14,
-                color: Colors.black87,
+                color: AppColors.textSecondaryOf(context),
               ),
             ),
             const SizedBox(height: 20),
@@ -357,17 +358,18 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     child: Container(
                       height: 44,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.black, width: 2.5),
+                        color: AppColors.cardOf(context),
+                        border: Border.all(color: AppColors.borderOf(context), width: 2.5),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           "CANCEL",
                           style: TextStyle(
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
+                            color: AppColors.textOf(context),
                           ),
                         ),
                       ),
@@ -384,8 +386,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     child: Container(
                       height: 44,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFD93D),
-                        border: Border.all(color: Colors.black, width: 2.5),
+                        color: AppColors.accentYellowOf(context),
+                        border: Border.all(color: AppColors.borderOf(context), width: 2.5),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Center(
@@ -395,6 +397,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -412,19 +415,19 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFEF0),
+      backgroundColor: AppColors.backgroundOf(context),
       body: SafeArea(
         child: Stack(
           children: [
             // Decorative background watermark
-            const Positioned.fill(
+            Positioned.fill(
               child: IgnorePointer(
                 child: Center(
                   child: Text(
                     "🤖",
                     style: TextStyle(
                       fontSize: 200,
-                      color: Color(0x0D000000), // 5% black
+                      color: AppColors.textOf(context).withValues(alpha: 0.05),
                     ),
                   ),
                 ),
@@ -460,8 +463,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
 
   Widget _buildHeader() {
     return Container(
-      decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black, width: 4)),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: AppColors.borderOf(context), width: 4)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: Row(
@@ -469,7 +472,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 "AI INSIGHTS",
                 style: TextStyle(
@@ -477,10 +480,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   fontWeight: FontWeight.w900,
                   fontSize: 32,
                   letterSpacing: -1,
-                  color: Colors.black,
+                  color: AppColors.textOf(context),
                 ),
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(
                 "YOUR BRUTAL TRUTH 🤖",
                 style: TextStyle(
@@ -488,7 +491,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 11,
                   letterSpacing: 2,
-                  color: Colors.black,
+                  color: AppColors.textSecondaryOf(context),
                 ),
               ),
             ],
@@ -499,13 +502,13 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             },
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 2),
+                border: Border.all(color: AppColors.borderOf(context), width: 2),
                 borderRadius: BorderRadius.circular(6),
                 color: _isApiKeyActive
-                    ? const Color(0xFFC77DFF)
-                    : const Color(0xFFFF6B6B),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black, offset: Offset(3, 3)),
+                    ? AppColors.accentPurpleOf(context)
+                    : AppColors.accentRedOf(context),
+                boxShadow: [
+                  BoxShadow(color: AppColors.borderOf(context), offset: const Offset(3, 3)),
                 ],
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -528,10 +531,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFD93D),
-        border: Border.all(color: Colors.black, width: 4),
+        color: AppColors.accentYellowOf(context),
+        border: Border.all(color: AppColors.borderOf(context), width: 4),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(8, 8))],
+        boxShadow: [BoxShadow(color: AppColors.borderOf(context), offset: const Offset(8, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,25 +542,25 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           // Header Row
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.black, width: 3)),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.borderOf(context), width: 3)),
             ),
             child: Row(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(color: Colors.black, width: 2),
+                    color: AppColors.borderOf(context),
+                    border: Border.all(color: AppColors.borderOf(context), width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  child: const Text(
+                  child: Text(
                     "✦ TODAY'S MOTIVATION",
                     style: TextStyle(
-                      color: Color(0xFFFFD93D),
+                      color: AppColors.backgroundOf(context),
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
                       letterSpacing: 1,
@@ -571,24 +574,24 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black, width: 2),
+                      color: AppColors.cardOf(context),
+                      border: Border.all(color: AppColors.borderOf(context), width: 2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Center(
                       child: _isLoadingMotivation
-                          ? const SizedBox(
+                          ? SizedBox(
                               width: 14,
                               height: 14,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.black,
+                                color: AppColors.textOf(context),
                               ),
                             )
-                          : const Text(
+                          : Text(
                               "↺",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.textOf(context),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -618,8 +621,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           // Footer
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: Colors.black, width: 2)),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: AppColors.borderOf(context), width: 2)),
             ),
             child: Row(
               children: [
@@ -635,8 +638,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 const Spacer(),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black, width: 2),
+                    color: AppColors.cardOf(context),
+                    border: Border.all(color: AppColors.borderOf(context), width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   padding: const EdgeInsets.symmetric(
@@ -644,13 +647,13 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                     vertical: 6,
                   ),
                   child: Row(
-                    children: const [
-                      Text("✨", style: TextStyle(fontSize: 10)),
-                      SizedBox(width: 4),
+                    children: [
+                      const Text("✨", style: TextStyle(fontSize: 10)),
+                      const SizedBox(width: 4),
                       Text(
                         "POWERED",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: AppColors.textOf(context),
                           fontWeight: FontWeight.bold,
                           fontSize: 9,
                         ),
@@ -673,19 +676,19 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         children: [
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 2),
+              border: Border.all(color: AppColors.borderOf(context), width: 2),
               borderRadius: BorderRadius.circular(4),
-              color: Colors.black,
+              color: AppColors.borderOf(context),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'SpaceGrotesk',
                 fontWeight: FontWeight.w900,
                 fontSize: 10,
                 letterSpacing: 3,
-                color: Colors.white,
+                color: AppColors.backgroundOf(context),
               ),
             ),
           ),
@@ -703,7 +706,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             children: [
               Expanded(
                 child: _buildInsightCard(
-                  color: const Color(0xFFFFD93D),
+                  color: AppColors.accentYellowOf(context),
                   emoji: "📅",
                   label: "MOST PRODUCTIVE",
                   value: _productiveDay,
@@ -713,7 +716,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildInsightCard(
-                  color: const Color(0xFF6BCB77),
+                  color: AppColors.accentGreenOf(context),
                   emoji: "💪",
                   label: "STRONGEST HABIT",
                   value: _strongestHabit,
@@ -727,7 +730,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             children: [
               Expanded(
                 child: _buildInsightCard(
-                  color: const Color(0xFFFF6B6B),
+                  color: AppColors.accentRedOf(context),
                   emoji: "⚠️",
                   label: "NEEDS WORK",
                   value: _weakestHabit,
@@ -737,7 +740,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildInsightCard(
-                  color: const Color(0xFF4D96FF),
+                  color: AppColors.accentBlueOf(context),
                   emoji: "🏆",
                   label: "BEST RECORD",
                   value: _bestRecord,
@@ -761,9 +764,9 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     return Container(
       decoration: BoxDecoration(
         color: color,
-        border: Border.all(color: Colors.black, width: 3),
+        border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(5, 5))],
+        boxShadow: [BoxShadow(color: AppColors.borderOf(context), offset: const Offset(5, 5))],
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -775,8 +778,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 2),
+                  color: AppColors.cardOf(context),
+                  border: Border.all(color: AppColors.borderOf(context), width: 2),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
@@ -837,10 +840,10 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 3),
+        color: AppColors.cardOf(context),
+        border: Border.all(color: AppColors.borderOf(context), width: 3),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(5, 5))],
+        boxShadow: [BoxShadow(color: AppColors.borderOf(context), offset: const Offset(5, 5))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -848,8 +851,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
           // Header
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.black, width: 2)),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.borderOf(context), width: 2)),
             ),
             child: Row(
               children: [
@@ -857,8 +860,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black, width: 2),
+                    color: AppColors.cardOf(context),
+                    border: Border.all(color: AppColors.borderOf(context), width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Center(
@@ -867,7 +870,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: const Text(
+                  child: Text(
                     "WEEKLY SUMMARY",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -875,24 +878,24 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                       fontWeight: FontWeight.w900,
                       fontSize: 14,
                       letterSpacing: 0.5,
-                      color: Colors.black,
+                      color: AppColors.textOf(context),
                     ),
                   ),
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(color: Colors.black, width: 2),
+                    color: AppColors.borderOf(context),
+                    border: Border.all(color: AppColors.borderOf(context), width: 2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 6,
                   ),
-                  child: const Text(
+                  child: Text(
                     "NEW",
                     style: TextStyle(
-                      color: Color(0xFFFFD93D),
+                      color: AppColors.backgroundOf(context),
                       fontWeight: FontWeight.bold,
                       fontSize: 10,
                       letterSpacing: 2,
@@ -908,13 +911,13 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
             padding: const EdgeInsets.all(16),
             child: _isGeneratingSummary
                 ? Column(
-                    children: const [
-                      NeobrutalistProgressBar(
+                    children: [
+                      const NeobrutalistProgressBar(
                         value: 0.7,
                         height: 12,
                         showLoadingText: false,
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       Center(
                         child: Text(
                           "COMPILING TRUTH...",
@@ -922,7 +925,7 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
-                            color: Colors.black,
+                            color: AppColors.textOf(context),
                           ),
                         ),
                       ),
@@ -931,33 +934,33 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                 : _hasGeneratedSummary
                 ? Text(
                     _weeklySummaryText,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
                       height: 1.5,
-                      color: Colors.black,
+                      color: AppColors.textOf(context),
                     ),
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         "WANT YOUR WEEKLY REPORT?",
                         style: TextStyle(
                           fontFamily: 'SpaceGrotesk',
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Colors.black,
+                          color: AppColors.textOf(context),
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         "Let AI analyze your entire week and give you a no-nonsense breakdown.",
                         style: TextStyle(
                           fontFamily: 'SpaceGrotesk',
                           fontSize: 14,
-                          color: Colors.black87,
+                          color: AppColors.textSecondaryOf(context),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -966,13 +969,13 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                         child: Container(
                           height: 52,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFC77DFF),
-                            border: Border.all(color: Colors.black, width: 3),
+                            color: AppColors.accentPurpleOf(context),
+                            border: Border.all(color: AppColors.borderOf(context), width: 3),
                             borderRadius: BorderRadius.circular(6),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(4, 4),
+                                color: AppColors.borderOf(context),
+                                offset: const Offset(4, 4),
                               ),
                             ],
                           ),
@@ -1001,14 +1004,14 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
   Widget _buildRecommendations() {
     final List<Map<String, dynamic>> recs = [
       {
-        "color": const Color(0xFFFFD93D),
+        "color": AppColors.accentYellowOf(context),
         "tag": "SCHEDULE",
         "title": "TRY EVENING RUN AT 6PM",
         "desc":
             "Your completion drops 40% on late evenings. Shift it earlier for better results.",
       },
       {
-        "color": const Color(0xFFC77DFF),
+        "color": AppColors.accentPurpleOf(context),
         "tag": "ROUTINE",
         "title": "STACK VITAMINS WITH BREAKFAST",
         "desc":
@@ -1021,11 +1024,11 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
         return Container(
           margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 3),
+            color: AppColors.cardOf(context),
+            border: Border.all(color: AppColors.borderOf(context), width: 3),
             borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
-              BoxShadow(color: Colors.black, offset: Offset(4, 4)),
+            boxShadow: [
+              BoxShadow(color: AppColors.borderOf(context), offset: const Offset(4, 4)),
             ],
           ),
           child: IntrinsicHeight(
@@ -1037,8 +1040,8 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                   width: 6,
                   decoration: BoxDecoration(
                     color: rec['color'] as Color,
-                    border: const Border(
-                      right: BorderSide(color: Colors.black, width: 2),
+                    border: Border(
+                      right: BorderSide(color: AppColors.borderOf(context), width: 2),
                     ),
                   ),
                 ),
@@ -1054,9 +1057,9 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                             const SizedBox(width: 8),
                             Container(
                               decoration: BoxDecoration(
-                                color: const Color(0xFFFFD93D),
+                                color: AppColors.accentYellowOf(context),
                                 border: Border.all(
-                                  color: Colors.black,
+                                  color: AppColors.borderOf(context),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(4),
@@ -1080,22 +1083,22 @@ class _AIInsightsScreenState extends State<AIInsightsScreen> {
                         const SizedBox(height: 10),
                         Text(
                           rec['title'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Syne',
                             fontWeight: FontWeight.w900,
                             fontSize: 15,
                             letterSpacing: 0.3,
-                            color: Colors.black,
+                            color: AppColors.textOf(context),
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           rec['desc'] as String,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'SpaceGrotesk',
                             fontSize: 13,
                             height: 1.5,
-                            color: Colors.black87,
+                            color: AppColors.textSecondaryOf(context),
                           ),
                         ),
                       ],

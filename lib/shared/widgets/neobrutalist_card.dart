@@ -3,9 +3,9 @@ import '../../core/theme/app_colors.dart';
 
 class NeobrutalistCard extends StatefulWidget {
   final Widget child;
-  final Color color;
-  final Color borderColor;
-  final Color shadowColor;
+  final Color? color;
+  final Color? borderColor;
+  final Color? shadowColor;
   final double borderWidth;
   final double shadowOffset;
   final double borderRadius;
@@ -16,9 +16,9 @@ class NeobrutalistCard extends StatefulWidget {
   const NeobrutalistCard({
     super.key,
     required this.child,
-    this.color = AppColors.white,
-    this.borderColor = AppColors.black,
-    this.shadowColor = AppColors.black,
+    this.color,
+    this.borderColor,
+    this.shadowColor,
     this.borderWidth = 3.0,
     this.shadowOffset = 5.0,
     this.borderRadius = 4.0,
@@ -40,21 +40,25 @@ class _NeobrutalistCardState extends State<NeobrutalistCard> {
     final double translation = _isPressed ? 3.0 : 0.0;
     final double currentShadowOffset = _isPressed ? 2.0 : widget.shadowOffset;
 
+    final resolvedColor = widget.color ?? AppColors.cardOf(context);
+    final resolvedBorderColor = widget.borderColor ?? AppColors.borderOf(context);
+    final resolvedShadowColor = widget.shadowColor ?? AppColors.shadowOf(context);
+
     Widget cardContent = AnimatedContainer(
       duration: const Duration(milliseconds: 80),
       curve: Curves.linear,
       transform: Matrix4.translationValues(translation, translation, 0.0),
       padding: widget.padding,
       decoration: BoxDecoration(
-        color: widget.color,
+        color: resolvedColor,
         borderRadius: BorderRadius.circular(widget.borderRadius),
         border: Border.all(
-          color: widget.borderColor,
+          color: resolvedBorderColor,
           width: widget.borderWidth,
         ),
         boxShadow: [
           BoxShadow(
-            color: widget.shadowColor,
+            color: resolvedShadowColor,
             offset: Offset(currentShadowOffset, currentShadowOffset),
             blurRadius: 0,
           ),
@@ -79,3 +83,4 @@ class _NeobrutalistCardState extends State<NeobrutalistCard> {
     return Container(margin: widget.margin, child: cardContent);
   }
 }
+

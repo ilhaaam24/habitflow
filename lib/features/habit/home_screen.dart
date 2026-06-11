@@ -66,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (authState is! AuthAuthenticated) {
       return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: const Center(
-          child: CircularProgressIndicator(color: Colors.black),
+        body: Center(
+          child: CircularProgressIndicator(color: AppColors.textOf(context)),
         ),
       );
     }
@@ -81,6 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final todayFormatted = DateFormat(
       'EEEE, MMM d',
     ).format(DateTime.now()).toUpperCase();
+
+    final borderColor = AppColors.borderOf(context);
+    final textColor = AppColors.textOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+    final accentGreen = AppColors.accentGreenOf(context);
 
     return MultiBlocListener(
       listeners: [
@@ -125,9 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       // TOP BAR
                       Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(color: Colors.black, width: 2),
+                            bottom: BorderSide(color: borderColor, width: 2),
                           ),
                         ),
                         padding: const EdgeInsets.symmetric(
@@ -142,21 +148,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Text(
                                   todayFormatted,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
                                     letterSpacing: 2,
+                                    color: textColor,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   '${getGreeting()}\n${displayName.split(" ").first} 👋'
                                       .toUpperCase(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Syne',
                                     fontWeight: FontWeight.w900,
                                     fontSize: 20,
+                                    color: textColor,
                                   ),
                                 ),
                               ],
@@ -168,15 +176,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 48,
                                   height: 48,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: cardBg,
                                     border: Border.all(
-                                      color: Colors.black,
+                                      color: borderColor,
                                       width: 3,
                                     ),
-                                    boxShadow: const [
+                                    boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(3, 3),
+                                        color: borderColor,
+                                        offset: const Offset(3, 3),
                                         blurRadius: 0,
                                       ),
                                     ],
@@ -192,11 +200,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               displayName.isNotEmpty
                                                   ? displayName[0]
                                                   : 'U',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontFamily: 'SpaceGrotesk',
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
-                                                color: Colors.black,
+                                                color: textColor,
                                               ),
                                             ),
                                           ),
@@ -209,18 +217,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: 16,
                                     height: 16,
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF6BCB77),
+                                      color: accentGreen,
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: Colors.black,
+                                        color: borderColor,
                                         width: 2,
                                       ),
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                       child: Text(
                                         '3',
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: cardBg,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 8,
                                         ),
@@ -236,9 +244,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       // DATE STRIP
                       Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(color: Colors.black, width: 2),
+                            bottom: BorderSide(color: borderColor, width: 2),
                           ),
                         ),
                         height: 80,
@@ -268,12 +276,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Text(
                                       dayLabel,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontFamily: 'SpaceGrotesk',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 10,
                                         letterSpacing: 1,
-                                        color: Colors.black,
+                                        color: textColor,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
@@ -282,13 +290,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       height: 36,
                                       decoration: BoxDecoration(
                                         color: isToday
-                                            ? const Color(0xFFFFD93D)
-                                            : Colors.white,
+                                            ? accentYellow
+                                            : cardBg,
                                         boxShadow: isToday
-                                            ? const [
+                                            ? [
                                                 BoxShadow(
-                                                  color: Colors.black,
-                                                  offset: Offset(3, 3),
+                                                  color: borderColor,
+                                                  offset: const Offset(3, 3),
                                                   blurRadius: 0,
                                                 ),
                                               ]
@@ -297,11 +305,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Center(
                                         child: Text(
                                           dayDate.day.toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: 'SpaceGrotesk',
                                             fontWeight: FontWeight.w900,
                                             fontSize: 15,
-                                            color: Colors.black,
+                                            color: textColor,
                                           ),
                                         ),
                                       ),
@@ -328,9 +336,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return _buildEmptyHabitsState();
                               }
                             } else if (state is HabitLoading) {
-                              return const Center(
+                              return Center(
                                 child: CircularProgressIndicator(
-                                  color: Colors.black,
+                                  color: textColor,
                                 ),
                               );
                             }
@@ -364,15 +372,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Container(
                                     margin: const EdgeInsets.all(16),
                                     decoration: BoxDecoration(
-                                      color: AppColors.accentYellow,
+                                      color: accentYellow,
                                       border: Border.all(
-                                        color: Colors.black,
+                                        color: borderColor,
                                         width: 3,
                                       ),
-                                      boxShadow: const [
+                                      boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black,
-                                          offset: Offset(6, 6),
+                                          color: borderColor,
+                                          offset: const Offset(6, 6),
                                           blurRadius: 0,
                                         ),
                                       ],
@@ -387,14 +395,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const Text(
+                                              Text(
                                                 "TODAY'S SCORE",
                                                 style: TextStyle(
                                                   fontFamily: 'SpaceGrotesk',
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 11,
                                                   letterSpacing: 2,
-                                                  color: Colors.black,
+                                                  color: textColor,
                                                 ),
                                               ),
                                               const SizedBox(height: 8),
@@ -404,13 +412,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 children: [
                                                   Text(
                                                     completedCount.toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontFamily: 'Syne',
                                                       fontWeight:
                                                           FontWeight.w900,
                                                       fontSize: 64,
                                                       height: 1.0,
-                                                      color: Colors.black,
+                                                      color: textColor,
                                                     ),
                                                   ),
                                                   const SizedBox(width: 8),
@@ -423,17 +431,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     children: [
                                                       Text(
                                                         '/$totalCount',
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontFamily:
                                                               'SpaceGrotesk',
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 24,
                                                           height: 1.0,
-                                                          color: Colors.black,
+                                                          color: textColor,
                                                         ),
                                                       ),
-                                                      const Text(
+                                                      Text(
                                                         'done',
                                                         style: TextStyle(
                                                           fontFamily:
@@ -442,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               FontWeight.normal,
                                                           fontSize: 14,
                                                           height: 1.0,
-                                                          color: Colors.black,
+                                                          color: textColor,
                                                         ),
                                                       ),
                                                     ],
@@ -470,13 +478,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       const SizedBox(width: 8),
                                                       Text(
                                                         progressText,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontFamily:
                                                               'SpaceGrotesk',
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 13,
-                                                          color: Colors.black,
+                                                          color: textColor,
                                                         ),
                                                       ),
                                                     ],
@@ -489,14 +497,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const SizedBox(width: 20),
                                         Column(
                                           children: [
-                                            const Text(
+                                            Text(
                                               'STREAK',
                                               style: TextStyle(
                                                 fontFamily: 'SpaceGrotesk',
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11,
                                                 letterSpacing: 2,
-                                                color: Colors.black,
+                                                color: textColor,
                                               ),
                                             ),
                                             const SizedBox(height: 8),
@@ -504,16 +512,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                               width: 80,
                                               height: 80,
                                               decoration: BoxDecoration(
-                                                color: Colors.white,
+                                                color: cardBg,
                                                 border: Border.all(
-                                                  color: Colors.black,
+                                                  color: borderColor,
                                                   width: 3,
                                                 ),
 
-                                                boxShadow: const [
+                                                boxShadow: [
                                                   BoxShadow(
-                                                    color: Colors.black,
-                                                    offset: Offset(4, 4),
+                                                    color: borderColor,
+                                                    offset: const Offset(4, 4),
                                                     blurRadius: 0,
                                                   ),
                                                 ],
@@ -530,17 +538,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                   Text(
                                                     overallStreak.toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontFamily:
                                                           'SpaceGrotesk',
                                                       fontWeight:
                                                           FontWeight.w900,
                                                       fontSize: 20,
-                                                      color: Colors.black,
+                                                      color: textColor,
                                                       height: 1.0,
                                                     ),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'DAYS',
                                                     style: TextStyle(
                                                       fontFamily:
@@ -549,7 +557,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           FontWeight.bold,
                                                       fontSize: 10,
                                                       letterSpacing: 1,
-                                                      color: Colors.black,
+                                                      color: textColor,
                                                       height: 1.0,
                                                     ),
                                                   ),
@@ -564,10 +572,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   // SECTION HEADER
                                   Container(
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       border: Border(
                                         top: BorderSide(
-                                          color: Colors.black,
+                                          color: borderColor,
                                           width: 2,
                                         ),
                                       ),
@@ -578,30 +586,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: Row(
                                       children: [
-                                        const Text(
+                                        Text(
                                           'MY HABITS',
                                           style: TextStyle(
                                             fontFamily: 'Syne',
                                             fontWeight: FontWeight.w900,
                                             fontSize: 18,
                                             letterSpacing: 1,
+                                            color: textColor,
                                           ),
                                         ),
                                         const Spacer(),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: cardBg,
                                             border: Border.all(
-                                              color: Colors.black,
+                                              color: borderColor,
                                               width: 2,
                                             ),
                                             borderRadius: BorderRadius.circular(
                                               4,
                                             ),
-                                            boxShadow: const [
+                                            boxShadow: [
                                               BoxShadow(
-                                                color: Colors.black,
-                                                offset: Offset(2, 2),
+                                                color: borderColor,
+                                                offset: const Offset(2, 2),
                                                 blurRadius: 0,
                                               ),
                                             ],
@@ -610,14 +619,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             vertical: 6,
                                             horizontal: 12,
                                           ),
-                                          child: const Text(
+                                          child: Text(
                                             'SEE ALL →',
                                             style: TextStyle(
                                               fontFamily: 'SpaceGrotesk',
                                               fontWeight: FontWeight.bold,
                                               fontSize: 11,
                                               letterSpacing: 1,
-                                              color: Colors.black,
+                                              color: textColor,
                                             ),
                                           ),
                                         ),
@@ -963,25 +972,25 @@ class _NeobrutalistFabState extends State<NeobrutalistFab> {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFD93D),
+              color: AppColors.accentYellowOf(context),
               boxShadow: _isPressed
                   ? const []
-                  : const [
+                  : [
                       BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(5, 5),
+                        color: AppColors.borderOf(context),
+                        offset: const Offset(5, 5),
                         blurRadius: 0,
                       ),
                     ],
             ),
-            child: const Center(
+            child: Center(
               child: Text(
                 '+',
                 style: TextStyle(
                   fontFamily: 'SpaceGrotesk',
                   fontSize: 32,
                   fontWeight: FontWeight.w900,
-                  color: Colors.black,
+                  color: AppColors.textOf(context),
                   height: 1.0,
                 ),
               ),
@@ -1002,17 +1011,17 @@ class _NeobrutalistFabState extends State<NeobrutalistFab> {
               child: RotationTransition(
                 turns: const AlwaysStoppedAnimation(15 / 360),
                 child: Container(
-                  decoration: BoxDecoration(color: const Color(0xFFFF6B6B)),
+                  decoration: BoxDecoration(color: AppColors.accentRedOf(context)),
                   padding: const EdgeInsets.symmetric(
                     vertical: 2,
                     horizontal: 6,
                   ),
-                  child: const Text(
+                  child: Text(
                     'NEW!',
                     style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: AppColors.cardOf(context),
                       fontSize: 8,
                     ),
                   ),

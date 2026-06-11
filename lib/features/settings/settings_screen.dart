@@ -10,6 +10,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/features/auth/presentation/bloc/auth_event.dart';
 import 'package:habit_flow/core/services/badge_service.dart';
 import 'package:habit_flow/shared/models/badge_model.dart';
+import 'package:habit_flow/core/theme/app_colors.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -56,6 +57,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showLogoutConfirmation(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final bgColor = AppColors.dialogBgOf(context);
+    final textColor = AppColors.textOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final accentRed = AppColors.accentRedOf(context);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -64,13 +72,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           insetPadding: const EdgeInsets.symmetric(horizontal: 24),
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFFFFEF0),
-              border: Border.all(color: Colors.black, width: 4),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 4),
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(8, 8),
+                  color: borderColor,
+                  offset: const Offset(8, 8),
                   blurRadius: 0,
                 ),
               ],
@@ -79,34 +87,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   "✕",
                   style: TextStyle(
-                    color: Color(0xFFFF6B6B),
+                    color: accentRed,
                     fontWeight: FontWeight.w900,
                     fontSize: 48,
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                Text(
                   "REALLY SIGN OUT?",
                   style: TextStyle(
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
-                    color: Colors.black,
+                    color: textColor,
                     letterSpacing: 0.5,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "You will need to sign in again to sync your habits.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    color: Colors.black87,
+                    color: textSecondary,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -118,18 +126,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Container(
                           height: 48,
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black, width: 2.5),
+                            color: cardBg,
+                            border: Border.all(color: borderColor, width: 2.5),
                             borderRadius: BorderRadius.circular(6),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(3, 3),
+                                color: borderColor,
+                                offset: const Offset(3, 3),
                                 blurRadius: 0,
                               ),
                             ],
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               "CANCEL",
                               style: TextStyle(
@@ -137,7 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.w900,
                                 fontSize: 13,
                                 letterSpacing: 1.5,
-                                color: Colors.black,
+                                color: textColor,
                               ),
                             ),
                           ),
@@ -154,18 +162,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Container(
                           height: 48,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFF6B6B),
-                            border: Border.all(color: Colors.black, width: 2.5),
+                            color: accentRed,
+                            border: Border.all(color: borderColor, width: 2.5),
                             borderRadius: BorderRadius.circular(6),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(3, 3),
+                                color: borderColor,
+                                offset: const Offset(3, 3),
                                 blurRadius: 0,
                               ),
                             ],
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               "YES, LOG OUT",
                               style: TextStyle(
@@ -173,7 +181,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.w900,
                                 fontSize: 13,
                                 letterSpacing: 1.5,
-                                color: Colors.black,
+                                color: textColor,
                               ),
                             ),
                           ),
@@ -191,6 +199,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showLanguageSelector(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final bgColor = AppColors.dialogBgOf(context);
+    final textColor = AppColors.textOf(context);
+    final dividerColor = AppColors.dividerOf(context);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -198,13 +211,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFFFFEF0),
-              border: Border.all(color: Colors.black, width: 4),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 4),
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(6, 6),
+                  color: borderColor,
+                  offset: const Offset(6, 6),
                   blurRadius: 0,
                 ),
               ],
@@ -214,17 +227,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "SELECT LANGUAGE",
                   style: TextStyle(
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: Colors.black,
+                    color: textColor,
                     letterSpacing: 0.5,
                   ),
                 ),
-                const Divider(color: Colors.black, thickness: 2, height: 20),
+                Divider(color: dividerColor, thickness: 2, height: 20),
                 _buildLanguageOption(context, "ENGLISH", isSelected: true),
                 _buildLanguageOption(context, "INDONESIAN"),
                 _buildLanguageOption(context, "SPANISH"),
@@ -242,13 +255,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String lang, {
     bool isSelected = false,
   }) {
+    final borderColor = AppColors.borderOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final textColor = AppColors.textOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+    final accentGreen = AppColors.accentGreenOf(context);
+
     return GestureDetector(
       onTap: () {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Language changed to $lang!'),
-            backgroundColor: const Color(0xFF6BCB77),
+            backgroundColor: accentGreen,
           ),
         );
       },
@@ -256,11 +275,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         margin: const EdgeInsets.symmetric(vertical: 6),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFFFD93D) : Colors.white,
-          border: Border.all(color: Colors.black, width: 2),
+          color: isSelected ? accentYellow : cardBg,
+          border: Border.all(color: borderColor, width: 2),
           borderRadius: BorderRadius.circular(6),
           boxShadow: isSelected
-              ? const [BoxShadow(color: Colors.black, offset: Offset(2, 2))]
+              ? [BoxShadow(color: borderColor, offset: const Offset(2, 2))]
               : null,
         ),
         child: Row(
@@ -268,20 +287,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             Text(
               lang,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'SpaceGrotesk',
                 fontWeight: FontWeight.w900,
                 fontSize: 14,
-                color: Colors.black,
+                color: textColor,
               ),
             ),
             if (isSelected)
-              const Text(
+              Text(
                 "✓",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.black,
+                  color: textColor,
                 ),
               ),
           ],
@@ -291,6 +310,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showExportDataSelector(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final bgColor = AppColors.dialogBgOf(context);
+    final textColor = AppColors.textOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final dividerColor = AppColors.dividerOf(context);
+    final accentPurple = AppColors.accentPurpleOf(context);
+    final accentBlue = AppColors.accentBlueOf(context);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -298,13 +325,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFFFFEF0),
-              border: Border.all(color: Colors.black, width: 4),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 4),
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(6, 6),
+                  color: borderColor,
+                  offset: const Offset(6, 6),
                   blurRadius: 0,
                 ),
               ],
@@ -314,27 +341,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "EXPORT DATA",
                   style: TextStyle(
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: Colors.black,
+                    color: textColor,
                     letterSpacing: 0.5,
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
+                Text(
                   "Select the format for your habit logs backup:",
                   style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
-                    color: Colors.black87,
+                    color: textSecondary,
                   ),
                 ),
-                const Divider(color: Colors.black, thickness: 2, height: 24),
+                Divider(color: dividerColor, thickness: 2, height: 24),
                 Row(
                   children: [
                     Expanded(
@@ -346,28 +373,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Container(
                           height: 80,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFC77DFF),
-                            border: Border.all(color: Colors.black, width: 2.5),
+                            color: accentPurple,
+                            border: Border.all(color: borderColor, width: 2.5),
                             borderRadius: BorderRadius.circular(8),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(3, 3),
+                                color: borderColor,
+                                offset: const Offset(3, 3),
                               ),
                             ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text("📋", style: TextStyle(fontSize: 24)),
-                              SizedBox(height: 4),
+                            children: [
+                              const Text("📋", style: TextStyle(fontSize: 24)),
+                              const SizedBox(height: 4),
                               Text(
                                 "PDF REPORT",
                                 style: TextStyle(
                                   fontFamily: 'SpaceGrotesk',
                                   fontWeight: FontWeight.w900,
                                   fontSize: 12,
-                                  color: Colors.black,
+                                  color: textColor,
                                 ),
                               ),
                             ],
@@ -385,28 +412,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Container(
                           height: 80,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF4D96FF),
-                            border: Border.all(color: Colors.black, width: 2.5),
+                            color: accentBlue,
+                            border: Border.all(color: borderColor, width: 2.5),
                             borderRadius: BorderRadius.circular(8),
-                            boxShadow: const [
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(3, 3),
+                                color: borderColor,
+                                offset: const Offset(3, 3),
                               ),
                             ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text("📊", style: TextStyle(fontSize: 24)),
-                              SizedBox(height: 4),
+                            children: [
+                              const Text("📊", style: TextStyle(fontSize: 24)),
+                              const SizedBox(height: 4),
                               Text(
                                 "CSV SHEET",
                                 style: TextStyle(
                                   fontFamily: 'SpaceGrotesk',
                                   fontWeight: FontWeight.w900,
                                   fontSize: 12,
-                                  color: Colors.black,
+                                  color: textColor,
                                 ),
                               ),
                             ],
@@ -428,12 +455,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Habit data exported successfully as $format! 📂'),
-        backgroundColor: const Color(0xFF6BCB77),
+        backgroundColor: AppColors.accentGreenOf(context),
       ),
     );
   }
 
   void _showPrivacyPolicy(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final bgColor = AppColors.dialogBgOf(context);
+    final textColor = AppColors.textOf(context);
+    final textMuted = AppColors.textMutedOf(context);
+    final dividerColor = AppColors.dividerOf(context);
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -445,14 +478,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           maxChildSize: 0.9,
           builder: (_, controller) {
             return Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFFFFEF0),
+              decoration: BoxDecoration(
+                color: bgColor,
                 border: Border(
-                  top: BorderSide(color: Colors.black, width: 4),
-                  left: BorderSide(color: Colors.black, width: 4),
-                  right: BorderSide(color: Colors.black, width: 4),
+                  top: BorderSide(color: borderColor, width: 4),
+                  left: BorderSide(color: borderColor, width: 4),
+                  right: BorderSide(color: borderColor, width: 4),
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
@@ -465,34 +498,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: Container(
                       width: 60,
                       height: 6,
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      decoration: BoxDecoration(
+                        color: borderColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(3)),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
+                  Text(
                     "🔐 PRIVACY POLICY",
                     style: TextStyle(
                       fontFamily: 'Syne',
                       fontWeight: FontWeight.w900,
                       fontSize: 24,
-                      color: Colors.black,
+                      color: textColor,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     "Last updated: May 2026",
                     style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
-                      color: Colors.black54,
+                      color: textMuted,
                     ),
                   ),
-                  const Divider(color: Colors.black, thickness: 2, height: 24),
-                  const Text(
+                  Divider(color: dividerColor, thickness: 2, height: 24),
+                  Text(
                     "Your privacy is critically important to us. HabitFlow AI is committed to protecting the records, streak tracking data, and customizable preferences you submit.\n\n"
                     "1. DATA COLLECTION\n"
                     "HabitFlow is designed as a local-first application. All habit entries, completion history log files, and custom preferences are stored locally on your device's SharedPreferences and databases.\n\n"
@@ -504,7 +537,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
-                      color: Colors.black,
+                      color: textColor,
                       height: 1.5,
                     ),
                   ),
@@ -519,6 +552,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildAchievementsCard(BuildContext context) {
     final Box badgesBox = GetIt.instance<Box>(instanceName: 'badgesBox');
+    final borderColor = AppColors.borderOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final textColor = AppColors.textOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+    final dividerColor = AppColors.dividerOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final lockedBg = isDark ? Colors.grey[800]! : Colors.grey[200]!;
+    final lockedBorder = isDark ? Colors.grey[600]! : Colors.black38;
 
     return ValueListenableBuilder(
       valueListenable: badgesBox.listenable(),
@@ -533,13 +574,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black, width: 3),
+            color: cardBg,
+            border: Border.all(color: borderColor, width: 3),
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Colors.black,
-                offset: Offset(5, 5),
+                color: borderColor,
+                offset: const Offset(5, 5),
                 blurRadius: 0,
               ),
             ],
@@ -551,21 +592,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "🏆 ACHIEVEMENTS",
                     style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.w900,
                       fontSize: 14,
                       letterSpacing: 0.5,
-                      color: Colors.black,
+                      color: textColor,
                     ),
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.5),
+                      border: Border.all(color: borderColor, width: 1.5),
                       borderRadius: BorderRadius.circular(4),
-                      color: const Color(0xFFFFD93D),
+                      color: accentYellow,
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -573,17 +614,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     child: Text(
                       "$unlockedCount / ${BadgeService.allBadges.length} UNLOCKED",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'SpaceGrotesk',
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
-                        color: Colors.black,
+                        color: textColor,
                       ),
                     ),
                   ),
                 ],
               ),
-              const Divider(color: Colors.black, thickness: 2, height: 20),
+              Divider(color: dividerColor, thickness: 2, height: 20),
               const SizedBox(height: 4),
               Wrap(
                 spacing: 10,
@@ -602,17 +643,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         decoration: BoxDecoration(
                           color: isUnlocked
                               ? Color(badge.colorValue)
-                              : Colors.grey[200]!.withAlpha(204),
+                              : lockedBg.withAlpha(204),
                           border: Border.all(
-                            color: isUnlocked ? Colors.black : Colors.black38,
+                            color: isUnlocked ? borderColor : lockedBorder,
                             width: 2.5,
                           ),
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: isUnlocked
-                              ? const [
+                              ? [
                                   BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(2, 2),
+                                    color: borderColor,
+                                    offset: const Offset(2, 2),
                                   ),
                                 ]
                               : null,
@@ -622,7 +663,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             isUnlocked ? badge.icon : "🔒",
                             style: TextStyle(
                               fontSize: 22,
-                              color: isUnlocked ? null : Colors.black38,
+                              color: isUnlocked ? null : lockedBorder,
                             ),
                           ),
                         ),
@@ -643,6 +684,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     BadgeModel badge,
     bool isUnlocked,
   ) {
+    final borderColor = AppColors.borderOf(context);
+    final bgColor = AppColors.dialogBgOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final textColor = AppColors.textOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final accentGreen = AppColors.accentGreenOf(context);
+    final accentRed = AppColors.accentRedOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -651,13 +701,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           insetPadding: const EdgeInsets.symmetric(horizontal: 24),
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFFFFEF0),
-              border: Border.all(color: Colors.black, width: 4),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 4),
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(6, 6),
+                  color: borderColor,
+                  offset: const Offset(6, 6),
                   blurRadius: 0,
                 ),
               ],
@@ -673,11 +723,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   decoration: BoxDecoration(
                     color: isUnlocked
                         ? Color(badge.colorValue)
-                        : Colors.grey[300],
-                    border: Border.all(color: Colors.black, width: 3),
+                        : isDark ? Colors.grey[700] : Colors.grey[300],
+                    border: Border.all(color: borderColor, width: 3),
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black, offset: Offset(3, 3)),
+                    boxShadow: [
+                      BoxShadow(color: borderColor, offset: const Offset(3, 3)),
                     ],
                   ),
                   child: Center(
@@ -691,11 +741,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Status badge
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1.5),
+                    border: Border.all(color: borderColor, width: 1.5),
                     borderRadius: BorderRadius.circular(4),
-                    color: isUnlocked
-                        ? const Color(0xFF6BCB77)
-                        : const Color(0xFFFF6B6B),
+                    color: isUnlocked ? accentGreen : accentRed,
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -703,11 +751,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   child: Text(
                     isUnlocked ? "UNLOCKED 🏆" : "LOCKED 🔒",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.bold,
                       fontSize: 10,
-                      color: Colors.black,
+                      color: textColor,
                     ),
                   ),
                 ),
@@ -715,11 +763,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   badge.name.toUpperCase(),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
-                    color: Colors.black,
+                    color: textColor,
                     letterSpacing: -0.5,
                   ),
                 ),
@@ -727,11 +775,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   badge.description.toUpperCase(),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
-                    color: Colors.black87,
+                    color: textSecondary,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -741,14 +789,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 44,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black, width: 2.5),
+                      color: cardBg,
+                      border: Border.all(color: borderColor, width: 2.5),
                       borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black, offset: Offset(3, 3)),
+                      boxShadow: [
+                        BoxShadow(color: borderColor, offset: const Offset(3, 3)),
                       ],
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         "CLOSE",
                         style: TextStyle(
@@ -756,7 +804,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           fontWeight: FontWeight.w900,
                           fontSize: 12,
                           letterSpacing: 1.5,
-                          color: Colors.black,
+                          color: textColor,
                         ),
                       ),
                     ),
@@ -771,13 +819,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildSectionLabel({required String text, required Color bgColor}) {
+    final borderColor = AppColors.borderOf(context);
+    final textColor = AppColors.textOf(context);
+    final cardBg = AppColors.cardOf(context);
+
     return Container(
       margin: const EdgeInsets.only(left: 16, top: 20, bottom: 8),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 2),
+              border: Border.all(color: borderColor, width: 2),
               borderRadius: BorderRadius.circular(4),
               color: bgColor,
             ),
@@ -789,7 +841,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 fontWeight: FontWeight.w900,
                 fontSize: 10,
                 letterSpacing: 3,
-                color: bgColor == Colors.black ? Colors.white : Colors.black,
+                color: bgColor == borderColor ? cardBg : textColor,
               ),
             ),
           ),
@@ -806,13 +858,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required Widget action,
     bool isLast = false,
   }) {
+    final borderColor = AppColors.borderOf(context);
+    final textColor = AppColors.textOf(context);
+    final textMuted = AppColors.textMutedOf(context);
+
     return Container(
       height: 68,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         border: isLast
             ? null
-            : const Border(bottom: BorderSide(color: Colors.black, width: 2)),
+            : Border(bottom: BorderSide(color: borderColor, width: 2)),
       ),
       child: Row(
         children: [
@@ -820,13 +876,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 2),
+              border: Border.all(color: borderColor, width: 2),
               borderRadius: BorderRadius.circular(8),
               color: iconColor,
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(2, 2),
+                  color: borderColor,
+                  offset: const Offset(2, 2),
                   blurRadius: 0,
                 ),
               ],
@@ -843,24 +899,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'SpaceGrotesk',
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
                     letterSpacing: 0.5,
-                    color: Colors.black,
+                    color: textColor,
                   ),
                 ),
                 if (subtitle != null) ...[
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
                       letterSpacing: 1,
-                      color: Colors.black54,
+                      color: textMuted,
                     ),
                   ),
                 ],
@@ -898,14 +954,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Stack(
             children: [
               // Decorative: "⚙" watermark centered behind content
-              const Positioned.fill(
+              Positioned.fill(
                 child: IgnorePointer(
                   child: Center(
                     child: Text(
                       "⚙",
                       style: TextStyle(
                         fontSize: 200,
-                        color: Color(0x0D000000), // 5% black
+                        color: AppColors.textOf(context).withValues(alpha: 0.05),
                       ),
                     ),
                   ),
@@ -916,9 +972,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   // HEADER
                   Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Colors.black, width: 4),
+                        bottom: BorderSide(color: AppColors.borderOf(context), width: 4),
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -930,7 +986,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 "SETTINGS",
                                 style: TextStyle(
@@ -938,9 +994,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 32,
                                   letterSpacing: -1,
+                                  color: AppColors.textOf(context),
                                 ),
                               ),
-                              SizedBox(height: 2),
+                              const SizedBox(height: 2),
                               Text(
                                 "CONTROL YOUR EXPERIENCE",
                                 style: TextStyle(
@@ -948,6 +1005,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 11,
                                   letterSpacing: 3,
+                                  color: AppColors.textMutedOf(context),
                                 ),
                               ),
                             ],
@@ -1538,6 +1596,10 @@ class NeobrutalistSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderColor = AppColors.borderOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+
     return GestureDetector(
       onTap: () => onChanged(!value),
       child: AnimatedContainer(
@@ -1545,8 +1607,8 @@ class NeobrutalistSwitch extends StatelessWidget {
         width: 52,
         height: 28,
         decoration: BoxDecoration(
-          color: value ? Colors.black : Colors.white,
-          border: Border.all(color: Colors.black, width: 2),
+          color: value ? borderColor : cardBg,
+          border: Border.all(color: borderColor, width: 2),
           borderRadius: BorderRadius.circular(4),
         ),
         child: AnimatedAlign(
@@ -1558,9 +1620,9 @@ class NeobrutalistSwitch extends StatelessWidget {
               width: 20,
               height: 20,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFD93D),
+                color: accentYellow,
                 border: Border.all(
-                  color: value ? Colors.white : Colors.black,
+                  color: value ? cardBg : borderColor,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(2),

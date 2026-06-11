@@ -9,6 +9,7 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_state.dart';
 import 'package:habit_flow/shared/models/habit_model.dart';
 import 'package:habit_flow/shared/models/habit_log_model.dart';
 import 'package:habit_flow/core/helpers/completion_rate_calculator.dart';
+import 'package:habit_flow/core/theme/app_colors.dart';
 import '../../shared/widgets/neobrutalist_progress_bar.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -551,7 +552,7 @@ class _StatsScreenState extends State<StatsScreen> {
           // Month Pill
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFFFD93D),
+              color: AppColors.accentYellowOf(context),
               border: Border.all(color: onSurface, width: 2),
               borderRadius: BorderRadius.circular(6),
               boxShadow: [
@@ -654,7 +655,7 @@ class _StatsScreenState extends State<StatsScreen> {
             child: Container(
               height: 156,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFD93D),
+                color: AppColors.accentYellowOf(context),
                 border: Border(
                   top: BorderSide(color: onSurface, width: 3),
                   bottom: BorderSide(color: onSurface, width: 3),
@@ -714,11 +715,11 @@ class _StatsScreenState extends State<StatsScreen> {
                     ),
                     child: Text(
                       metrics['badge'] as String,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'SpaceGrotesk',
                         fontWeight: FontWeight.bold,
                         fontSize: 11,
-                        color: Color(0xFFFFD93D),
+                        color: AppColors.accentYellowOf(context),
                       ),
                     ),
                   ),
@@ -731,7 +732,7 @@ class _StatsScreenState extends State<StatsScreen> {
             child: Container(
               height: 156,
               decoration: BoxDecoration(
-                color: const Color(0xFFFF6B6B),
+                color: AppColors.accentRedOf(context),
                 border: Border(
                   top: BorderSide(color: onSurface, width: 3),
                   bottom: BorderSide(color: onSurface, width: 3),
@@ -852,19 +853,19 @@ class _StatsScreenState extends State<StatsScreen> {
                 Row(
                   children: [
                     _buildLegendDot(
-                      const Color(0xFFFFD93D),
+                      AppColors.accentYellowOf(context),
                       "Fitness",
                       onSurface,
                     ),
                     const SizedBox(width: 8),
                     _buildLegendDot(
-                      const Color(0xFFFF6B6B),
+                      AppColors.accentRedOf(context),
                       "Health",
                       onSurface,
                     ),
                     const SizedBox(width: 8),
                     _buildLegendDot(
-                      const Color(0xFF6BCB77),
+                      AppColors.accentGreenOf(context),
                       "Learning",
                       onSurface,
                     ),
@@ -989,21 +990,21 @@ class _StatsScreenState extends State<StatsScreen> {
                       barRods: [
                         BarChartRodData(
                           toY: data[0],
-                          color: const Color(0xFFFFD93D),
+                          color: AppColors.accentYellowOf(context),
                           width: 8,
                           borderRadius: BorderRadius.zero,
                           borderSide: BorderSide(color: onSurface, width: 1.5),
                         ),
                         BarChartRodData(
                           toY: data[1],
-                          color: const Color(0xFFFF6B6B),
+                          color: AppColors.accentRedOf(context),
                           width: 8,
                           borderRadius: BorderRadius.zero,
                           borderSide: BorderSide(color: onSurface, width: 1.5),
                         ),
                         BarChartRodData(
                           toY: data[2],
-                          color: const Color(0xFF6BCB77),
+                          color: AppColors.accentGreenOf(context),
                           width: 8,
                           borderRadius: BorderRadius.zero,
                           borderSide: BorderSide(color: onSurface, width: 1.5),
@@ -1192,7 +1193,7 @@ class _StatsScreenState extends State<StatsScreen> {
                         return FlSpot(index.toDouble(), _fourWeeksData[index]);
                       }),
                       isCurved: false,
-                      color: const Color(0xFFFF6B6B),
+                      color: AppColors.accentRedOf(context),
                       barWidth: 4,
                       isStrokeCapRound: true,
                       dotData: FlDotData(
@@ -1200,14 +1201,14 @@ class _StatsScreenState extends State<StatsScreen> {
                         getDotPainter: (spot, percent, barData, index) =>
                             FlDotCirclePainter(
                               radius: 5,
-                              color: const Color(0xFFFFD93D),
+                              color: AppColors.accentYellowOf(context),
                               strokeWidth: 2,
                               strokeColor: onSurface,
                             ),
                       ),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: const Color(0xFFFFD93D).withValues(alpha: 0.1),
+                        color: AppColors.accentYellowOf(context).withValues(alpha: 0.1),
                       ),
                     ),
                   ],
@@ -1419,7 +1420,7 @@ class _StatsScreenState extends State<StatsScreen> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF6BCB77),
+                        color: AppColors.accentGreenOf(context),
                         border: Border.all(color: onSurface, width: 2),
                         borderRadius: BorderRadius.circular(6),
                         boxShadow: [
@@ -1466,7 +1467,7 @@ class _StatsScreenState extends State<StatsScreen> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFF6B6B),
+                        color: AppColors.accentRedOf(context),
                         border: Border.all(color: onSurface, width: 2),
                         borderRadius: BorderRadius.circular(6),
                         boxShadow: [
@@ -1560,11 +1561,11 @@ class _StatsScreenState extends State<StatsScreen> {
             // Determine badge background color
             Color badgeBg;
             if (rate > 70) {
-              badgeBg = const Color(0xFF6BCB77);
+              badgeBg = AppColors.accentGreenOf(context);
             } else if (rate >= 40) {
-              badgeBg = const Color(0xFFFFD93D);
+              badgeBg = AppColors.accentYellowOf(context);
             } else {
-              badgeBg = const Color(0xFFFF6B6B);
+              badgeBg = AppColors.accentRedOf(context);
             }
 
             final isLast = index == _rankingData.length - 1;
@@ -1739,9 +1740,9 @@ class _StatsScreenState extends State<StatsScreen> {
       if (hash < 4) {
         return surfaceColor;
       } else if (hash < 7) {
-        return const Color(0xFFFFD93D).withValues(alpha: 0.3);
+        return AppColors.accentYellowOf(context).withValues(alpha: 0.3);
       } else if (hash < 10) {
-        return const Color(0xFFFFD93D).withValues(alpha: 0.7);
+        return AppColors.accentYellowOf(context).withValues(alpha: 0.7);
       } else {
         return onSurface;
       }
@@ -1766,9 +1767,9 @@ class _StatsScreenState extends State<StatsScreen> {
     if (completedCount == 0) {
       return surfaceColor;
     } else if (completedCount == 1) {
-      return const Color(0xFFFFD93D).withValues(alpha: 0.3);
+      return AppColors.accentYellowOf(context).withValues(alpha: 0.3);
     } else if (completedCount == 2) {
-      return const Color(0xFFFFD93D).withValues(alpha: 0.7);
+      return AppColors.accentYellowOf(context).withValues(alpha: 0.7);
     } else {
       return onSurface;
     }

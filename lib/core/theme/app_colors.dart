@@ -128,4 +128,41 @@ class AppColors {
       Theme.of(context).brightness == Brightness.dark
       ? darkAccentPurple
       : accentPurple;
+
+  /// Resolves accent brown color automatically based on context theme.
+  static Color accentBrownOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkAccentBrown
+      : accentBrown;
+
+  /// Resolves dialog background color automatically based on context theme.
+  static Color dialogBgOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkCard
+      : background;
+
+  /// Resolves secondary text color (87%/70% opacity) based on context theme.
+  static Color textSecondaryOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkText.withValues(alpha: 0.7)
+      : black.withValues(alpha: 0.87);
+
+  /// Resolves muted text color (54%/50% opacity) based on context theme.
+  static Color textMutedOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkText.withValues(alpha: 0.5)
+      : black.withValues(alpha: 0.54);
+
+  /// Resolves shadow color automatically based on context theme.
+  /// In dark mode, uses a subtler shadow for depth without harshness.
+  static Color shadowOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkBorder
+      : black;
+
+  /// Resolves divider color automatically based on context theme.
+  static Color dividerOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+      ? darkText.withValues(alpha: 0.3)
+      : black;
 }

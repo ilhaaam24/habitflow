@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 
 class NeobrutalistProgressBar extends StatefulWidget {
   final double value; // 0.0 to 1.0
   final double height;
   final bool showLoadingText;
-  final Color fillColor;
-  final Color backgroundColor;
-  final Color borderColor;
+  final Color? fillColor;
+  final Color? backgroundColor;
+  final Color? borderColor;
   final double borderWidth;
 
   const NeobrutalistProgressBar({
@@ -14,9 +15,9 @@ class NeobrutalistProgressBar extends StatefulWidget {
     required this.value,
     this.height = 16.0,
     this.showLoadingText = false,
-    this.fillColor = Colors.black,
-    this.backgroundColor = Colors.white,
-    this.borderColor = Colors.black,
+    this.fillColor,
+    this.backgroundColor,
+    this.borderColor,
     this.borderWidth = 2.0,
   });
 
@@ -64,11 +65,17 @@ class _NeobrutalistProgressBarState extends State<NeobrutalistProgressBar>
 
   @override
   Widget build(BuildContext context) {
+    final resolvedFillColor = widget.fillColor ?? AppColors.borderOf(context);
+    final resolvedBgColor = widget.backgroundColor ?? AppColors.cardOf(context);
+    final resolvedBorderColor = widget.borderColor ?? AppColors.borderOf(context);
+    final textColor = AppColors.textOf(context);
+    final invertedTextColor = AppColors.cardOf(context);
+
     return Container(
       height: widget.height,
       decoration: BoxDecoration(
-        color: widget.backgroundColor,
-        border: Border.all(color: widget.borderColor, width: widget.borderWidth),
+        color: resolvedBgColor,
+        border: Border.all(color: resolvedBorderColor, width: widget.borderWidth),
         borderRadius: BorderRadius.circular(2),
       ),
       child: AnimatedBuilder(
@@ -84,7 +91,7 @@ class _NeobrutalistProgressBarState extends State<NeobrutalistProgressBar>
                 widthFactor: progress.clamp(0.0, 1.0),
                 heightFactor: 1.0,
                 child: Container(
-                  color: widget.fillColor,
+                  color: resolvedFillColor,
                 ),
               ),
               if (widget.showLoadingText && isAnimating)
@@ -95,7 +102,7 @@ class _NeobrutalistProgressBarState extends State<NeobrutalistProgressBar>
                       fontFamily: 'SpaceGrotesk',
                       fontWeight: FontWeight.w900,
                       fontSize: widget.height * 0.6,
-                      color: progress > 0.5 ? Colors.white : Colors.black,
+                      color: progress > 0.5 ? invertedTextColor : textColor,
                       letterSpacing: 1,
                     ),
                   ),
@@ -107,3 +114,4 @@ class _NeobrutalistProgressBarState extends State<NeobrutalistProgressBar>
     );
   }
 }
+
