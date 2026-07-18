@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../shared/models/habit_model.dart';
 import '../../../../shared/models/habit_log_model.dart';
 
 abstract class HabitLocalDataSource {
   Future<void> cacheHabit(HabitModel habit);
+  Future<void> cacheHabits(List<HabitModel> habits);
   Future<void> deleteHabit(String id);
   HabitModel? getCachedHabit(String id);
   List<HabitModel> getCachedHabits(String userId);
@@ -22,6 +24,15 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
   @override
   Future<void> cacheHabit(HabitModel habit) async {
     await habitsBox.put(habit.id, habit.toJson());
+  }
+
+  @override
+  Future<void> cacheHabits(List<HabitModel> habits) async {
+    final entries = <String, Map<String, dynamic>>{};
+    for (final habit in habits) {
+      entries[habit.id] = habit.toJson();
+    }
+    await habitsBox.putAll(entries);
   }
 
   @override
@@ -69,11 +80,36 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
   }
 
   @override
-  Stream<List<HabitModel>> watchCachedHabits(String userId) async* {
-    yield getCachedHabits(userId);
-    await for (final _ in habitsBox.watch()) {
-      yield getCachedHabits(userId);
-    }
+  Stream<List<HabitModel>> watchCachedHabits(String userId) {
+    final controller = StreamController<List<HabitModel>>();
+    Timer? debounceTimer;
+    StreamSubscription? subscription;
+    
+    controller.onListen = () {
+      // Emit initial cached habits asynchronously to match microtask execution order
+      scheduleMicrotask(() {
+        if (!controller.isClosed) {
+          controller.add(getCachedHabits(userId));
+        }
+      });
+      
+      subscription = habitsBox.watch().listen((_) {
+        debounceTimer?.cancel();
+        debounceTimer = Timer(const Duration(milliseconds: 300), () {
+          if (!controller.isClosed) {
+            controller.add(getCachedHabits(userId));
+          }
+        });
+      });
+    };
+    
+    controller.onCancel = () {
+      debounceTimer?.cancel();
+      subscription?.cancel();
+      controller.close();
+    };
+    
+    return controller.stream;
   }
 
   @override

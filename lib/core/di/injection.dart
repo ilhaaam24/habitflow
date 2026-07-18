@@ -13,20 +13,33 @@ import '../services/badge_service.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
 import '../../features/habit/data/datasources/habit_local_data_source.dart';
 import '../../features/habit/data/datasources/habit_remote_data_source.dart';
 import '../../features/habit/domain/repositories/habit_repository.dart';
 import '../../features/habit/data/repositories/habit_repository_impl.dart';
-import '../../features/habit/presentation/bloc/habit_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
 Future<void> initDependencyInjection(
   SharedPreferences sharedPreferences,
 ) async {
-  // Services
+  // Core & External
+  sl.registerSingleton<SharedPreferences>(sharedPreferences);
+  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
+
+  await Hive.initFlutter();
+  final habitsBox = await Hive.openBox('habits');
+  final logsBox = await Hive.openBox('habit_logs');
+  final badgesBox = await Hive.openBox('badges');
+
+  sl.registerSingleton<Box>(habitsBox, instanceName: 'habitsBox');
+  sl.registerSingleton<Box>(logsBox, instanceName: 'logsBox');
+  sl.registerSingleton<Box>(badgesBox, instanceName: 'badgesBox');
+
+  // Services - Basic / Infrastructure
   final notificationService = NotificationService();
   await notificationService.initialize();
   sl.registerSingleton<NotificationService>(notificationService);
@@ -43,37 +56,6 @@ Future<void> initDependencyInjection(
     () => ThemeCubit(sharedPreferences: sharedPreferences),
   );
 
-  sl.registerLazySingleton<GeminiService>(
-    () => GeminiService(
-      sharedPreferences: sl(),
-      dio: sl(),
-      habitRepository: sl(),
-    ),
-  );
-
-  sl.registerLazySingleton<BadgeService>(
-    () => BadgeService(
-      badgesBox: sl(instanceName: 'badgesBox'),
-      habitRepository: sl(),
-      sharedPreferences: sl(),
-    ),
-  );
-
-  // Core & External
-  await Hive.initFlutter();
-  final habitsBox = await Hive.openBox('habits');
-  final logsBox = await Hive.openBox('habit_logs');
-  final badgesBox = await Hive.openBox('badges');
-
-  sl.registerSingleton<SharedPreferences>(sharedPreferences);
-  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
-  sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
-  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
-
-  sl.registerSingleton<Box>(habitsBox, instanceName: 'habitsBox');
-  sl.registerSingleton<Box>(logsBox, instanceName: 'logsBox');
-  sl.registerSingleton<Box>(badgesBox, instanceName: 'badgesBox');
-
   // Features - Auth
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
@@ -88,9 +70,6 @@ Future<void> initDependencyInjection(
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
-
-  // Blocs
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
 
   // Features - Habit
   // Data Sources
@@ -110,6 +89,20 @@ Future<void> initDependencyInjection(
     () => HabitRepositoryImpl(localDataSource: sl(), remoteDataSource: sl()),
   );
 
-  // Blocs
-  sl.registerFactory(() => HabitBloc(habitRepository: sl()));
+  // Services depending on Repositories / Boxes
+  sl.registerLazySingleton<GeminiService>(
+    () => GeminiService(
+      sharedPreferences: sl(),
+      dio: sl(),
+      habitRepository: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<BadgeService>(
+    () => BadgeService(
+      badgesBox: sl(instanceName: 'badgesBox'),
+      habitRepository: sl(),
+      sharedPreferences: sl(),
+    ),
+  );
 }

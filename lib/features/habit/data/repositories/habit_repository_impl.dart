@@ -58,8 +58,8 @@ class HabitRepositoryImpl implements HabitRepository {
   Future<void> _syncRemoteHabits(String userId) async {
     try {
       final remoteHabits = await remoteDataSource.fetchHabits(userId);
-      for (final habit in remoteHabits) {
-        await localDataSource.cacheHabit(habit);
+      if (remoteHabits.isNotEmpty) {
+        await localDataSource.cacheHabits(remoteHabits);
       }
     } catch (_) {
       // Silent catch

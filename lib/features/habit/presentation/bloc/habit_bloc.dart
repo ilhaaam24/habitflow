@@ -17,6 +17,11 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
   DateTime? _selectedDate;
   List<HabitModel> _currentHabits = [];
 
+  Timer? _notificationDebounce;
+  Map<String, int> _cachedStreaks = {};
+  int _cachedOverallStreak = 0;
+  bool _streaksCalculated = false;
+
   HabitBloc({required HabitRepository habitRepository})
     : _habitRepository = habitRepository,
       super(HabitInitial()) {
@@ -34,6 +39,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
   ) async {
     _userId = event.userId;
     _selectedDate = event.date;
+    _streaksCalculated = false; // Reset streaks on new user/date load
 
     emit(HabitLoading());
 
@@ -51,11 +57,14 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
   ) async {
     _currentHabits = event.habits;
 
-    try {
-      if (sl.isRegistered<NotificationService>()) {
-        sl<NotificationService>().rescheduleAll(event.habits);
-      }
-    } catch (_) {}
+    _notificationDebounce?.cancel();
+    _notificationDebounce = Timer(const Duration(seconds: 2), () {
+      try {
+        if (sl.isRegistered<NotificationService>()) {
+          sl<NotificationService>().rescheduleAll(event.habits);
+        }
+      } catch (_) {}
+    });
 
     if (_userId == null || _selectedDate == null) return;
 
@@ -64,23 +73,41 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
         _userId!,
         _selectedDate!,
       );
-      final streaks = <String, int>{};
+
+      bool needsRecalculate = !_streaksCalculated;
       for (final habit in _currentHabits) {
-        streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
+        if (!_cachedStreaks.containsKey(habit.id)) {
+          needsRecalculate = true;
+          break;
+        }
       }
-      final overallStreak = await _calculateOverallStreak(_currentHabits);
+
+      if (needsRecalculate) {
+        await _recalculateAllStreaks();
+      }
+
       emit(
         HabitLoaded(
           habits: _currentHabits,
           todayLogs: logs,
           selectedDate: _selectedDate!,
-          streaks: streaks,
-          overallStreak: overallStreak,
+          streaks: Map.from(_cachedStreaks),
+          overallStreak: _cachedOverallStreak,
         ),
       );
     } catch (e) {
       emit(HabitError(e.toString()));
     }
+  }
+
+  Future<void> _recalculateAllStreaks() async {
+    final streaks = <String, int>{};
+    for (final habit in _currentHabits) {
+      streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
+    }
+    _cachedStreaks = streaks;
+    _cachedOverallStreak = await _calculateOverallStreak(_currentHabits);
+    _streaksCalculated = true;
   }
 
   Future<void> _onAddHabitRequested(
@@ -158,18 +185,20 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
         _userId!,
         _selectedDate!,
       );
-      final streaks = <String, int>{};
-      for (final habit in _currentHabits) {
-        streaks[habit.id] = await _habitRepository.calculateStreak(habit.id);
-      }
-      final overallStreak = await _calculateOverallStreak(_currentHabits);
+
+      // Update streak only for the toggled habit
+      _cachedStreaks[event.habitId] = await _habitRepository.calculateStreak(
+        event.habitId,
+      );
+      _cachedOverallStreak = await _calculateOverallStreak(_currentHabits);
+
       emit(
         HabitLoaded(
           habits: _currentHabits,
           todayLogs: updatedLogs,
           selectedDate: _selectedDate!,
-          streaks: streaks,
-          overallStreak: overallStreak,
+          streaks: Map.from(_cachedStreaks),
+          overallStreak: _cachedOverallStreak,
         ),
       );
     } catch (e) {
@@ -202,8 +231,11 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
     int streak = 0;
     DateTime current = today;
 
-    while (current.isAfter(earliestStripped) || current.isAtSameMomentAs(earliestStripped)) {
-      final activeHabitsOnDay = habits.where((h) => _isDayActive(h, current)).toList();
+    while (current.isAfter(earliestStripped) ||
+        current.isAtSameMomentAs(earliestStripped)) {
+      final activeHabitsOnDay = habits
+          .where((h) => _isDayActive(h, current))
+          .toList();
 
       if (activeHabitsOnDay.isEmpty) {
         current = current.subtract(const Duration(days: 1));
@@ -252,6 +284,7 @@ class HabitBloc extends Bloc<HabitEvent, HabitState> {
 
   @override
   Future<void> close() {
+    _notificationDebounce?.cancel();
     _habitsSubscription?.cancel();
     return super.close();
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final AnimationController _controller;
   DateTime _selectedDate = DateTime.now();
+  Timer? _badgeCheckDebounce;
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _badgeCheckDebounce?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -110,21 +113,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           },
         ),
         BlocListener<HabitBloc, HabitState>(
-          listener: (context, state) async {
+          listener: (context, state) {
             if (state is HabitLoaded) {
               final authState = context.read<AuthBloc>().state;
               if (authState is AuthAuthenticated) {
-                final newlyUnlocked = await sl<BadgeService>()
-                    .checkAndUnlockBadges(authState.user.uid);
-                if (newlyUnlocked.isNotEmpty && context.mounted) {
-                  for (final badge in newlyUnlocked) {
-                    await showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => BadgeUnlockDialog(badge: badge),
-                    );
+                _badgeCheckDebounce?.cancel();
+                _badgeCheckDebounce = Timer(const Duration(seconds: 5), () async {
+                  if (!context.mounted) return;
+                  final currentAuthState = context.read<AuthBloc>().state;
+                  if (currentAuthState is AuthAuthenticated) {
+                    final newlyUnlocked = await sl<BadgeService>()
+                        .checkAndUnlockBadges(currentAuthState.user.uid);
+                    if (newlyUnlocked.isNotEmpty && context.mounted) {
+                      for (final badge in newlyUnlocked) {
+                        await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => BadgeUnlockDialog(badge: badge),
+                        );
+                      }
+                    }
                   }
-                }
+                });
               }
             }
           },
@@ -543,6 +553,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 children: [
                                                   Lottie.asset(
                                                     controller: _controller,
+                                                    frameRate: const FrameRate(30),
                                                     onLoaded: (composition) {
                                                       _controller.forward();
                                                     },

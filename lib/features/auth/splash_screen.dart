@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
       final isCompletedOnboarding = prefs.getBool('is_onboarded') ?? false;
 
       if (isCompletedOnboarding) {
-        context.go('/onboarding');
+        context.go('/login');
       } else {
         context.go('/onboarding');
       }
