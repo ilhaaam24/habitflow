@@ -57,7 +57,6 @@ class DefaultFirebaseOptions {
     projectId: 'habit-flow-79f0a',
     storageBucket: 'habit-flow-79f0a.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCUsbGJL2fFjCT0MWHakMc717C31M9YcCY',
     appId: '1:579306392370:ios:704bd43718e1439968252b',

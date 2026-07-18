@@ -17,7 +17,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final prefs = await SharedPreferences.getInstance();
-  await GoogleSignIn.instance.initialize();
+  await GoogleSignIn.instance.initialize(
+    serverClientId:
+        '579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com',
+  );
   await initDependencyInjection(prefs);
   runApp(const MyApp());
 }

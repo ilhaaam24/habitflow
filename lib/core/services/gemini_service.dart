@@ -23,7 +23,8 @@ class GeminiService {
 
   /// Sends a test query to verify if the provided API key is valid.
   Future<bool> testConnection(String apiKey) async {
-    final url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
+    final url =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
     try {
       final response = await dio.post(
         url,
@@ -31,14 +32,12 @@ class GeminiService {
           "contents": [
             {
               "parts": [
-                {"text": "Hello"}
-              ]
-            }
-          ]
+                {"text": "Hello"},
+              ],
+            },
+          ],
         },
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
       return response.statusCode == 200;
     } catch (e) {
@@ -72,7 +71,7 @@ class GeminiService {
 
     // 3. Compile stats
     final habitList = habits.map((h) => h.title).join(', ');
-    
+
     // Find best streak
     int bestStreak = 0;
     if (streaks.isNotEmpty) {
@@ -130,7 +129,8 @@ class GeminiService {
     }
 
     // 4. Construct prompt
-    final prompt = """
+    final prompt =
+        """
 Kamu adalah AI coach untuk habit tracker.
 Data user:
 - Nama: $name
@@ -156,7 +156,8 @@ Jangan gunakan emoji berlebihan.
       return "Tidak ada koneksi internet. Pelatih offline sementara, tapi Anda tetap harus disiplin hari ini!";
     }
 
-    final prompt = """
+    final prompt =
+        """
 Kamu adalah AI coach untuk habit tracker yang sangat jujur, blak-blakan, dan tegas (brutally honest coach).
 Data aktivitas mingguan: $habitData
 
@@ -170,7 +171,8 @@ Format: 3-4 kalimat, ALL CAPS.
   }
 
   Future<String> _callGemini(String apiKey, String prompt) async {
-    final url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
+    final url =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
     try {
       final response = await dio.post(
         url,
@@ -178,14 +180,12 @@ Format: 3-4 kalimat, ALL CAPS.
           "contents": [
             {
               "parts": [
-                {"text": prompt}
-              ]
-            }
-          ]
+                {"text": prompt},
+              ],
+            },
+          ],
         },
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode == 200 && response.data != null) {

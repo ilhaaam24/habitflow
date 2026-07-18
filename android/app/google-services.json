@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:579306392370:android:abe8e5cb81a72f4c68252b",
+        "mobilesdk_app_id": "1:579306392370:android:ef9f5c6e7c6bcddd68252b",
         "android_client_info": {
-          "package_name": "com.example.habit_flow"
+          "package_name": "com.ilhaaam24.habit_flow"
         }
       },
       "oauth_client": [
         {
-          "client_id": "579306392370-gah5q76p8o391drj76bnu39q7ideuhc5.apps.googleusercontent.com",
+          "client_id": "579306392370-uin3b4691pii62mketgcasps7bvv92o6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.habit_flow",
-            "certificate_hash": "bbbf5492f535e841c56d0bf20f76f574eb6ff0f9"
+            "package_name": "com.ilhaaam24.habit_flow",
+            "certificate_hash": "22476c6025367b019694098d3a35876018573f0c"
           }
         },
         {
@@ -39,54 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com",
+              "client_id": "579306392370-25svnku39crsv1pm8609bpk35sbhhnl1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.habitFlow"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:579306392370:android:b9cbfc5ab9f7451868252b",
-        "android_client_info": {
-          "package_name": "com.ilhaaam24.habitflow"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "579306392370-bav1o63ojoqhmj5fuc6uq1oh500km02f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ilhaaam24.habitflow",
-            "certificate_hash": "bbbf5492f535e841c56d0bf20f76f574eb6ff0f9"
-          }
-        },
-        {
-          "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDPHa_36JeA_qyBG6oK63XmhVS8CUZ7ma8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "579306392370-3elml5ta1rqnmibl0k6s2t1s6cmacnfk.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "579306392370-78j465mm617lrp45a8uo4vblke1cpgfh.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.habitFlow"
+                "bundle_id": "com.ilhaaam24.habitflow"
               }
             }
           ]
