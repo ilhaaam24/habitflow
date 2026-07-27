@@ -11,6 +11,8 @@ import 'package:habit_flow/features/auth/presentation/bloc/auth_event.dart';
 import 'package:habit_flow/core/services/badge_service.dart';
 import 'package:habit_flow/shared/models/badge_model.dart';
 import 'package:habit_flow/core/theme/app_colors.dart';
+import 'package:habit_flow/features/habit/presentation/bloc/habit_bloc.dart';
+import 'package:habit_flow/features/habit/presentation/bloc/habit_state.dart';
 import 'package:sizer/sizer.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -1140,37 +1142,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     const SizedBox(height: 8),
                                     Row(
                                       children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black,
-                                              width: 2,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              4,
-                                            ),
-                                            color: Colors.black,
-                                            boxShadow: const [
-                                              BoxShadow(
+                                        BlocBuilder<HabitBloc, HabitState>(
+                                          builder: (context, habitState) {
+                                            int streakCount = 0;
+                                            if (habitState is HabitLoaded) {
+                                              streakCount =
+                                                  habitState.overallStreak;
+                                            }
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.black,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
                                                 color: Colors.black,
-                                                offset: Offset(2, 2),
-                                                blurRadius: 0,
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                    color: Colors.black,
+                                                    offset: Offset(2, 2),
+                                                    blurRadius: 0,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                            vertical: 6,
-                                          ),
-                                          child: const Text(
-                                            "🔥 23 DAY STREAK",
-                                            style: TextStyle(
-                                              color: Color(0xFFFFD93D),
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11,
-                                              letterSpacing: 1,
-                                            ),
-                                          ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 12,
+                                                    vertical: 6,
+                                                  ),
+                                              child: Text(
+                                                "🔥 $streakCount DAY STREAK",
+                                                style: const TextStyle(
+                                                  color: Color(0xFFFFD93D),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 11,
+                                                  letterSpacing: 1,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),

@@ -38,8 +38,9 @@ class _NeobrutalistButtonState extends State<NeobrutalistButton> {
     final double translation = _isPressed ? widget.shadowOffset : 0.0;
 
     final resolvedColor = widget.color ?? AppColors.accentYellowOf(context);
-    final resolvedBorderColor = widget.borderColor ?? AppColors.borderOf(context);
-    final resolvedShadowColor = widget.shadowColor ?? AppColors.shadowOf(context);
+    final resolvedBorderColor = Colors.black;
+    final resolvedShadowColor =
+        widget.shadowColor ?? AppColors.shadowOf(context);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final disabledColor = isDark ? Colors.grey.shade700 : Colors.grey.shade400;
@@ -80,4 +81,3 @@ class _NeobrutalistButtonState extends State<NeobrutalistButton> {
     );
   }
 }
-

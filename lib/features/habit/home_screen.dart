@@ -335,7 +335,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             fontSize: 15,
                                             color: isToday
                                                 ? Colors.black
-                                                : Colors.white,
+                                                : Theme.of(
+                                                        context,
+                                                      ).brightness ==
+                                                      Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         ),
                                       ),
