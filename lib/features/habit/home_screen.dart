@@ -118,23 +118,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               final authState = context.read<AuthBloc>().state;
               if (authState is AuthAuthenticated) {
                 _badgeCheckDebounce?.cancel();
-                _badgeCheckDebounce = Timer(const Duration(seconds: 5), () async {
-                  if (!context.mounted) return;
-                  final currentAuthState = context.read<AuthBloc>().state;
-                  if (currentAuthState is AuthAuthenticated) {
-                    final newlyUnlocked = await sl<BadgeService>()
-                        .checkAndUnlockBadges(currentAuthState.user.uid);
-                    if (newlyUnlocked.isNotEmpty && context.mounted) {
-                      for (final badge in newlyUnlocked) {
-                        await showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => BadgeUnlockDialog(badge: badge),
-                        );
+                _badgeCheckDebounce = Timer(
+                  const Duration(seconds: 5),
+                  () async {
+                    if (!context.mounted) return;
+                    final currentAuthState = context.read<AuthBloc>().state;
+                    if (currentAuthState is AuthAuthenticated) {
+                      final newlyUnlocked = await sl<BadgeService>()
+                          .checkAndUnlockBadges(currentAuthState.user.uid);
+                      if (newlyUnlocked.isNotEmpty && context.mounted) {
+                        for (final badge in newlyUnlocked) {
+                          await showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) =>
+                                BadgeUnlockDialog(badge: badge),
+                          );
+                        }
                       }
                     }
-                  }
-                });
+                  },
+                );
               }
             }
           },
@@ -422,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 13.sp,
                                                   letterSpacing: 2,
-                                                  color: textColor,
+                                                  color: Colors.black,
                                                 ),
                                               ),
                                               const SizedBox(height: 8),
@@ -438,7 +442,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           FontWeight.w900,
                                                       fontSize: 32.sp,
                                                       height: 1.0,
-                                                      color: textColor,
+                                                      color: Colors.black,
                                                     ),
                                                   ),
                                                   const SizedBox(width: 8),
@@ -458,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                               FontWeight.bold,
                                                           fontSize: 20.sp,
                                                           height: 1.0,
-                                                          color: textColor,
+                                                          color: Colors.black,
                                                         ),
                                                       ),
                                                       Text(
@@ -470,7 +474,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                               FontWeight.normal,
                                                           fontSize: 14.sp,
                                                           height: 1.0,
-                                                          color: textColor,
+                                                          color: Colors.black,
                                                         ),
                                                       ),
                                                     ],
@@ -504,7 +508,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 13,
-                                                          color: textColor,
+                                                          color: Colors.black,
                                                         ),
                                                       ),
                                                     ],
@@ -524,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11,
                                                 letterSpacing: 2,
-                                                color: textColor,
+                                                color: Colors.black,
                                               ),
                                             ),
                                             const SizedBox(height: 8),
@@ -553,7 +557,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 children: [
                                                   Lottie.asset(
                                                     controller: _controller,
-                                                    frameRate: const FrameRate(30),
+                                                    frameRate: const FrameRate(
+                                                      30,
+                                                    ),
                                                     onLoaded: (composition) {
                                                       _controller.forward();
                                                     },
@@ -715,6 +721,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildEmptyHabitsState() {
+    final borderColor = AppColors.borderOf(context);
+    final textColor = AppColors.textOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final textMuted = AppColors.textMutedOf(context);
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Stack(
@@ -730,7 +741,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     fontFamily: 'Syne',
                     fontWeight: FontWeight.w900,
                     fontSize: 200,
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: textColor.withValues(alpha: 0.05),
                   ),
                 ),
               ),
@@ -748,12 +759,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   height: 200,
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFD93D),
-                    border: Border.all(color: Colors.black, width: 4),
+                    border: Border.all(color: borderColor, width: 4),
                     borderRadius: BorderRadius.circular(8),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(8, 8),
+                        color: borderColor,
+                        offset: const Offset(8, 8),
                         blurRadius: 0,
                       ),
                     ],
@@ -767,8 +778,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: Text(
                           '+',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SpaceGrotesk',
+                            fontWeight: FontWeight.w900,
                             fontSize: 16,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -778,8 +791,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: Text(
                           '+',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SpaceGrotesk',
+                            fontWeight: FontWeight.w900,
                             fontSize: 16,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -789,8 +804,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: Text(
                           '+',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'SpaceGrotesk',
+                            fontWeight: FontWeight.w900,
                             fontSize: 16,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -800,36 +817,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: Text(
                           '+',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          '?',
-                          style: TextStyle(
                             fontFamily: 'SpaceGrotesk',
                             fontWeight: FontWeight.w900,
-                            fontSize: 100,
-                            color: Colors.black.withValues(alpha: 0.3),
+                            fontSize: 16,
+                            color: Colors.black,
                           ),
                         ),
                       ),
+                      // Main icon
                       Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text('📋', style: TextStyle(fontSize: 48)),
-                            SizedBox(height: 4),
-                            Text(
-                              'EMPTY!',
-                              style: TextStyle(
-                                fontFamily: 'SpaceGrotesk',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 18,
-                                letterSpacing: 2,
-                                color: Colors.black,
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '🌱',
+                                  style: TextStyle(fontSize: 40),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Container(
+                              color: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              child: const Text(
+                                'BLANK SLATE',
+                                style: TextStyle(
+                                  fontFamily: 'SpaceGrotesk',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10,
+                                  letterSpacing: 2,
+                                  color: Color(0xFFFFD93D),
+                                ),
                               ),
                             ),
                           ],
@@ -842,8 +875,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 // Info block
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black, width: 3),
+                    color: cardBg,
+                    border: Border.all(color: borderColor, width: 3),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: ClipRRect(
@@ -854,25 +887,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           children: [
-                            const Text(
+                            Text(
                               'NO HABITS YET.',
                               style: TextStyle(
                                 fontFamily: 'Syne',
                                 fontWeight: FontWeight.w900,
                                 fontSize: 24,
                                 letterSpacing: -0.5,
-                                color: Colors.black,
+                                color: textColor,
                               ),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 8),
-                            const Text(
+                            Text(
                               'Start by adding your first habit.\nSmall steps, massive results.',
                               style: TextStyle(
                                 fontFamily: 'SpaceGrotesk',
                                 fontWeight: FontWeight.normal,
                                 fontSize: 15,
-                                color: Colors.black,
+                                color: textMuted,
                                 height: 1.6,
                               ),
                               textAlign: TextAlign.center,

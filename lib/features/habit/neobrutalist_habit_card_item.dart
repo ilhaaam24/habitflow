@@ -197,7 +197,7 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
-                                    color: textColor,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
@@ -205,9 +205,7 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                               Container(
                                 height: 22,
                                 decoration: BoxDecoration(
-                                  color: widget.isDone
-                                      ? accentGreen
-                                      : cardBg,
+                                  color: widget.isDone ? accentGreen : cardBg,
                                   border: Border.all(
                                     color: borderColor,
                                     width: 2,
@@ -225,7 +223,7 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
-                                    color: textColor,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),

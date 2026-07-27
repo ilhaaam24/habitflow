@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -18,8 +19,10 @@ class NotificationService {
 
     String timeZoneName = 'UTC';
     try {
-      final tzInfo = await FlutterTimezone.getLocalTimezone();
-      timeZoneName = tzInfo.identifier;
+      final TimezoneInfo tzInfo = await FlutterTimezone.getLocalTimezone();
+      final String tzInfoData = tzInfo.identifier;
+      debugPrint('timezone: $tzInfoData');
+      timeZoneName = tzInfoData;
     } catch (_) {
       timeZoneName = 'Asia/Jakarta';
     }
@@ -63,7 +66,7 @@ class NotificationService {
         },
       );
 
-      // Request permissions for Android 13+
+      // Request permissions for Android 13+ and Exact Alarms permission
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
           _notificationsPlugin
               .resolvePlatformSpecificImplementation<
@@ -71,6 +74,7 @@ class NotificationService {
               >();
       if (androidImplementation != null) {
         await androidImplementation.requestNotificationsPermission();
+        await androidImplementation.requestExactAlarmsPermission();
       }
 
       // Handle app launch from notification click (cold starts)
@@ -113,9 +117,14 @@ class NotificationService {
 
     const NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
-      iOS: DarwinNotificationDetails(),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
     );
 
+    int scheduledCount = 0;
     // Schedule a reminder for each active weekday
     for (final dayStr in habit.activeDays) {
       final weekday = _mapWeekdayStringToInt(dayStr);
@@ -137,9 +146,33 @@ class NotificationService {
           matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
           payload: habit.id,
         );
-      } catch (_) {
-        // Safe fallback for tests / unsupported platforms
+        scheduledCount++;
+      } catch (e) {
+        // Fallback to inexact mode if exact alarm permission is not granted
+        try {
+          await _notificationsPlugin.zonedSchedule(
+            id: notificationId,
+            title: 'Time for ${habit.title}! 💪',
+            body: 'Keep your streak alive! Let\'s do it today.',
+            scheduledDate: scheduledDate,
+            notificationDetails: notificationDetails,
+            androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+            matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+            payload: habit.id,
+          );
+          scheduledCount++;
+        } catch (err) {
+          debugPrint(
+            '❌ Gagal menjadwalkan notifikasi [ID: $notificationId]: $err',
+          );
+        }
       }
+    }
+
+    if (scheduledCount > 0) {
+      debugPrint(
+        '🔔 TERJADWAL: $scheduledCount notifikasi mingguan untuk "${habit.title}" (Jam ${habit.reminderTime})',
+      );
     }
   }
 
@@ -204,9 +237,14 @@ class NotificationService {
       now.day,
       hour,
       minute,
+      0,
     );
 
-    while (scheduledDate.isBefore(now) || scheduledDate.weekday != weekday) {
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    while (scheduledDate.weekday != weekday) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;

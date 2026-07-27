@@ -28,22 +28,28 @@ class _NeobrutalistCheckboxState extends State<NeobrutalistCheckbox>
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
-    
+
     // Checked transition: scale spring 1.1x -> 1.0x
     _scaleAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 1.1)
-            .chain(CurveTween(curve: Curves.easeOut)),
+        tween: Tween<double>(
+          begin: 1.0,
+          end: 1.1,
+        ).chain(CurveTween(curve: Curves.easeOut)),
         weight: 30,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.1, end: 0.95)
-            .chain(CurveTween(curve: Curves.easeInOut)),
+        tween: Tween<double>(
+          begin: 1.1,
+          end: 0.95,
+        ).chain(CurveTween(curve: Curves.easeInOut)),
         weight: 40,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 0.95, end: 1.0)
-            .chain(CurveTween(curve: Curves.easeIn)),
+        tween: Tween<double>(
+          begin: 0.95,
+          end: 1.0,
+        ).chain(CurveTween(curve: Curves.easeIn)),
         weight: 30,
       ),
     ]).animate(_controller);
@@ -124,7 +130,7 @@ class _NeobrutalistCheckboxState extends State<NeobrutalistCheckbox>
                           fontFamily: 'SpaceGrotesk',
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
-                          color: textColor,
+                          color: Colors.black,
                         ),
                       ),
                     )
@@ -136,4 +142,3 @@ class _NeobrutalistCheckboxState extends State<NeobrutalistCheckbox>
     );
   }
 }
-

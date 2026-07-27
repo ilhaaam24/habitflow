@@ -944,6 +944,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final authState = context.watch<AuthBloc>().state;
     final user = authState is AuthAuthenticated ? authState.user : null;
 
+    final borderColor = AppColors.borderOf(context);
+    final cardBg = AppColors.cardOf(context);
+    final textColor = AppColors.textOf(context);
+    final textMuted = AppColors.textMutedOf(context);
+    final accentYellow = AppColors.accentYellowOf(context);
+    final accentRed = AppColors.accentRedOf(context);
+    final accentGreen = AppColors.accentGreenOf(context);
+    final accentPurple = AppColors.accentPurpleOf(context);
+    final accentBlue = AppColors.accentBlueOf(context);
+
     final String displayName =
         (user?.displayName != null && user!.displayName.isNotEmpty)
         ? user.displayName.toUpperCase()
@@ -958,6 +968,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       child: Scaffold(
+        backgroundColor: AppColors.backgroundOf(context),
         body: SafeArea(
           child: Stack(
             children: [
@@ -969,9 +980,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       "⚙",
                       style: TextStyle(
                         fontSize: 200,
-                        color: AppColors.textOf(
-                          context,
-                        ).withValues(alpha: 0.05),
+                        color: textColor.withValues(alpha: 0.05),
                       ),
                     ),
                   ),
@@ -984,10 +993,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(
-                          color: AppColors.borderOf(context),
-                          width: 4,
-                        ),
+                        bottom: BorderSide(color: borderColor, width: 4),
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
@@ -1007,7 +1013,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 16.sp,
                                   letterSpacing: -1,
-                                  color: AppColors.textOf(context),
+                                  color: textColor,
                                 ),
                               ),
                               const SizedBox(height: 2),
@@ -1018,7 +1024,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontWeight: FontWeight.w900,
                                   fontSize: 14.sp,
                                   letterSpacing: 3,
-                                  color: AppColors.textMutedOf(context),
+                                  color: textMuted,
                                 ),
                               ),
                             ],
@@ -1201,18 +1207,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // SECTION 1 — PREFERENCES
                         _buildSectionLabel(
                           text: "PREFERENCES",
-                          bgColor: Colors.black,
+                          bgColor: borderColor,
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 3),
+                            border: Border.all(color: borderColor, width: 3),
                             borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: const [
+                            color: cardBg,
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(5, 5),
+                                color: borderColor,
+                                offset: const Offset(5, 5),
                                 blurRadius: 0,
                               ),
                             ],
@@ -1255,22 +1261,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: Colors.black,
+                                              color: borderColor,
                                               width: 1.5,
                                             ),
                                             borderRadius: BorderRadius.circular(
                                               4,
                                             ),
-                                            color: Colors.black,
+                                            color: borderColor,
                                           ),
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 8,
                                             vertical: 4,
                                           ),
-                                          child: const Text(
+                                          child: Text(
                                             "ENGLISH",
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: cardBg,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 10,
                                               letterSpacing: 1,
@@ -1278,10 +1284,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           ),
                                         ),
                                         const SizedBox(width: 6),
-                                        const Text(
+                                        Text(
                                           "→",
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: textColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
@@ -1299,18 +1305,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // SECTION 2 — AI & DATA
                         _buildSectionLabel(
                           text: "AI & DATA",
-                          bgColor: const Color(0xFFC77DFF),
+                          bgColor: accentPurple,
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 3),
+                            border: Border.all(color: borderColor, width: 3),
                             borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: const [
+                            color: cardBg,
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(5, 5),
+                                color: borderColor,
+                                offset: const Offset(5, 5),
                                 blurRadius: 0,
                               ),
                             ],
@@ -1335,15 +1341,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: Colors.black,
+                                              color: borderColor,
                                               width: 1.5,
                                             ),
                                             borderRadius: BorderRadius.circular(
                                               4,
                                             ),
                                             color: _apiKeyConnected
-                                                ? const Color(0xFF6BCB77)
-                                                : const Color(0xFFFFD93D),
+                                                ? accentGreen
+                                                : accentYellow,
                                           ),
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 8,
@@ -1362,10 +1368,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           ),
                                         ),
                                         const SizedBox(width: 6),
-                                        const Text(
+                                        Text(
                                           "→",
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: textColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
@@ -1383,10 +1389,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     iconColor: const Color(0xFFBBF7D0),
                                     title: "EXPORT DATA",
                                     subtitle: "PDF OR CSV",
-                                    action: const Text(
+                                    action: Text(
                                       "→",
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: textColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                       ),
@@ -1410,20 +1416,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
 
                         // SECTION 3 — ABOUT
-                        _buildSectionLabel(
-                          text: "ABOUT",
-                          bgColor: const Color(0xFF4D96FF),
-                        ),
+                        _buildSectionLabel(text: "ABOUT", bgColor: accentBlue),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 3),
+                            border: Border.all(color: borderColor, width: 3),
                             borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: const [
+                            color: cardBg,
+                            boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                offset: Offset(5, 5),
+                                color: borderColor,
+                                offset: const Offset(5, 5),
                                 blurRadius: 0,
                               ),
                             ],
@@ -1433,11 +1436,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               GestureDetector(
                                 onTap: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
+                                    SnackBar(
+                                      content: const Text(
                                         'Thank you for rating HabitFlow 5 stars! ⭐⭐⭐⭐⭐',
                                       ),
-                                      backgroundColor: Color(0xFF6BCB77),
+                                      backgroundColor: accentGreen,
                                     ),
                                   );
                                 },
@@ -1447,10 +1450,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     iconColor: const Color(0xFFFEF08A),
                                     title: "RATE HABITFLOW",
                                     subtitle: "SUPPORT THE APP",
-                                    action: const Text(
+                                    action: Text(
                                       "→",
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: textColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                       ),
@@ -1466,10 +1469,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     iconColor: const Color(0xFFFECACA),
                                     title: "PRIVACY POLICY",
                                     subtitle: "LEGAL & SECURITY",
-                                    action: const Text(
+                                    action: Text(
                                       "↗",
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: textColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                       ),
@@ -1485,20 +1488,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 action: Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Colors.black,
+                                      color: borderColor,
                                       width: 1.5,
                                     ),
                                     borderRadius: BorderRadius.circular(4),
-                                    color: Colors.black,
+                                    color: borderColor,
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 4,
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     "V 1.0.0",
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: cardBg,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                       letterSpacing: 1,
@@ -1521,33 +1524,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             height: 64,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 3),
+                              border: Border.all(color: borderColor, width: 3),
                               borderRadius: BorderRadius.circular(8),
-                              color: Colors.white,
-                              boxShadow: const [
+                              color: cardBg,
+                              boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black,
-                                  offset: Offset(5, 5),
+                                  color: borderColor,
+                                  offset: const Offset(5, 5),
                                   blurRadius: 0,
                                 ),
                               ],
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Text(
                                   "✕",
                                   style: TextStyle(
-                                    color: Color(0xFFFF6B6B),
+                                    color: accentRed,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 20,
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Text(
                                   "SIGN OUT",
                                   style: TextStyle(
-                                    color: Color(0xFFFF6B6B),
+                                    color: accentRed,
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.w900,
                                     fontSize: 16,
@@ -1561,7 +1564,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                         // FOOTER
                         Column(
-                          children: const [
+                          children: [
                             Text(
                               "HABITFLOW v1.0.0",
                               style: TextStyle(
@@ -1569,9 +1572,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.w900,
                                 fontSize: 12,
                                 letterSpacing: 2,
+                                color: textColor,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               "MADE WITH ♥ BY HABITFLOW TEAM",
                               style: TextStyle(
@@ -1579,6 +1583,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
                                 letterSpacing: 1,
+                                color: textMuted,
                               ),
                             ),
                           ],

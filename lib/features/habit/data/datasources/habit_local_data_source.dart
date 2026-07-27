@@ -23,16 +23,36 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
 
   @override
   Future<void> cacheHabit(HabitModel habit) async {
-    await habitsBox.put(habit.id, habit.toJson());
+    final existing = habitsBox.get(habit.id);
+    final json = habit.toJson();
+    if (existing == null ||
+        !_isMapEqual(Map<String, dynamic>.from(existing as Map), json)) {
+      await habitsBox.put(habit.id, json);
+    }
   }
 
   @override
   Future<void> cacheHabits(List<HabitModel> habits) async {
-    final entries = <String, Map<String, dynamic>>{};
+    final entriesToUpdate = <String, Map<String, dynamic>>{};
     for (final habit in habits) {
-      entries[habit.id] = habit.toJson();
+      final existing = habitsBox.get(habit.id);
+      final json = habit.toJson();
+      if (existing == null ||
+          !_isMapEqual(Map<String, dynamic>.from(existing as Map), json)) {
+        entriesToUpdate[habit.id] = json;
+      }
     }
-    await habitsBox.putAll(entries);
+    if (entriesToUpdate.isNotEmpty) {
+      await habitsBox.putAll(entriesToUpdate);
+    }
+  }
+
+  bool _isMapEqual(Map m1, Map m2) {
+    if (m1.length != m2.length) return false;
+    for (final key in m1.keys) {
+      if (m1[key]?.toString() != m2[key]?.toString()) return false;
+    }
+    return true;
   }
 
   @override
@@ -84,7 +104,7 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
     final controller = StreamController<List<HabitModel>>();
     Timer? debounceTimer;
     StreamSubscription? subscription;
-    
+
     controller.onListen = () {
       // Emit initial cached habits asynchronously to match microtask execution order
       scheduleMicrotask(() {
@@ -92,7 +112,7 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
           controller.add(getCachedHabits(userId));
         }
       });
-      
+
       subscription = habitsBox.watch().listen((_) {
         debounceTimer?.cancel();
         debounceTimer = Timer(const Duration(milliseconds: 300), () {
@@ -102,19 +122,24 @@ class HabitLocalDataSourceImpl implements HabitLocalDataSource {
         });
       });
     };
-    
+
     controller.onCancel = () {
       debounceTimer?.cancel();
       subscription?.cancel();
       controller.close();
     };
-    
+
     return controller.stream;
   }
 
   @override
   Future<void> cacheHabitLog(HabitLogModel log) async {
-    await logsBox.put(log.id, log.toJson());
+    final existing = logsBox.get(log.id);
+    final json = log.toJson();
+    if (existing == null ||
+        !_isMapEqual(Map<String, dynamic>.from(existing as Map), json)) {
+      await logsBox.put(log.id, json);
+    }
   }
 
   @override

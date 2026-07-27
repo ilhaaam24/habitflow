@@ -10,12 +10,8 @@ class MainLayout extends StatelessWidget {
   final String? location;
   final StatefulNavigationShell? navigationShell;
 
-  const MainLayout({
-    super.key,
-    this.child,
-    this.location,
-    this.navigationShell,
-  }) : assert(navigationShell != null || (child != null && location != null));
+  const MainLayout({super.key, this.child, this.location, this.navigationShell})
+    : assert(navigationShell != null || (child != null && location != null));
 
   NavigationCubit? _getNavigationCubit(BuildContext context) {
     try {
@@ -82,10 +78,18 @@ class MainLayout extends StatelessWidget {
                   child: navCubit != null
                       ? BlocBuilder<NavigationCubit, int>(
                           builder: (context, activeIndex) {
-                            return _buildNavBarContainer(context, themeState, activeIndex);
+                            return _buildNavBarContainer(
+                              context,
+                              themeState,
+                              activeIndex,
+                            );
                           },
                         )
-                      : _buildNavBarContainer(context, themeState, currentIndex),
+                      : _buildNavBarContainer(
+                          context,
+                          themeState,
+                          currentIndex,
+                        ),
                 ),
               ),
             ],
@@ -101,10 +105,7 @@ class MainLayout extends StatelessWidget {
     int activeIndex,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 22,
-        vertical: 6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
       height: 72,
       decoration: BoxDecoration(
         color: themeState == ThemeMode.dark
@@ -163,7 +164,7 @@ class MainLayout extends StatelessWidget {
     final borderColor = AppColors.borderOf(context);
     final selectedBg = AppColors.accentYellowOf(context);
     final unselectedColor = AppColors.accentBrownOf(context);
-    final selectedTextColor = AppColors.textOf(context);
+    final selectedTextColor = Colors.black;
 
     return Expanded(
       child: GestureDetector(
