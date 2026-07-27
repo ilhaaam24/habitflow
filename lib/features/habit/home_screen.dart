@@ -333,7 +333,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             fontFamily: 'SpaceGrotesk',
                                             fontWeight: FontWeight.w900,
                                             fontSize: 15,
-                                            color: textColor,
+                                            color: isToday
+                                                ? Colors.black
+                                                : Colors.white,
                                           ),
                                         ),
                                       ),
@@ -1048,7 +1050,7 @@ class _NeobrutalistFabState extends State<NeobrutalistFab> {
                   fontFamily: 'SpaceGrotesk',
                   fontSize: 32,
                   fontWeight: FontWeight.w900,
-                  color: AppColors.textOf(context),
+                  color: Colors.black,
                   height: 1.0,
                 ),
               ),

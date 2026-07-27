@@ -621,7 +621,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         fontFamily: 'SpaceGrotesk',
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
-                        color: textColor,
+                        color: Colors.black,
                       ),
                     ),
                   ),

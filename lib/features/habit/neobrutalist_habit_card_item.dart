@@ -223,7 +223,9 @@ class _NeobrutalistHabitCardItemState extends State<NeobrutalistHabitCardItem>
                                     fontFamily: 'SpaceGrotesk',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 11,
-                                    color: Colors.black,
+                                    color: widget.isDone
+                                        ? Colors.black
+                                        : Colors.white,
                                   ),
                                 ),
                               ),
